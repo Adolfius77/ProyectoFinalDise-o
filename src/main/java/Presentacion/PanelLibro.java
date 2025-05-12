@@ -5,6 +5,8 @@
 package Presentacion;
 
 import DTOS.LibroDTO;
+import java.io.File;
+import java.net.URL;
 import javax.swing.ImageIcon;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -29,32 +31,55 @@ public class PanelLibro extends javax.swing.JPanel {
         initComponents();
         this.libro = libro;
         this.carrito = carrito;
-        this.LblNombreLibro.setText(libro.getTitulo());
-        this.LblPrecio.setText(String.format("%.2f", libro.getPrecio()));
-        this.LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
-        cargarImagen(libro.getRutaImagen());
+        if (libro != null) {
+            this.LblNombreLibro.setText(libro.getTitulo());
+            this.LblPrecio.setText(String.format("$"+"%.2f", libro.getPrecio()));
+            this.LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
+            cargarImagen(libro.getRutaImagen());
+        }else{
+            LblNombreLibro.setText("libros no disponible");
+            LblPrecio.setText("N/A");
+            LblDisponibildiad.setText("N/A");
+            LblImagenSol.setText("error");
+        }
+
     }
-    
+
     private void cargarImagen(String rutaImagen) {
         if (rutaImagen != null && !rutaImagen.isEmpty()) {
-            try {
-                ImageIcon imagen = new ImageIcon(getClass().getResource(rutaImagen));
-                LblImagenSol.setIcon(imagen);
-            } catch (Exception e) {
-                System.err.println("Error al cargar la imagen: " + rutaImagen);
-                e.printStackTrace();
-                LblImagenSol.setText("Imagen no encontrada");
+            ImageIcon imagen = null;
+            
+            URL imgUrl = getClass().getResource(rutaImagen);
+            if(imgUrl != null){
+                imagen = new ImageIcon(imgUrl);
+            }else{
+                File archivoImagen = new File(rutaImagen);
+                if (archivoImagen.exists() && archivoImagen.isFile()) {
+                    imagen = new ImageIcon(rutaImagen);
+                }
             }
-        } else {
-            LblImagenSol.setText("Sin imagen");
+            if(imagen != null && imagen.getImageLoadStatus() == java.awt.MediaTracker.COMPLETE){
+                LblImagenSol.setIcon(imagen);
+                LblImagenSol.setText("");
+            }else{
+                System.out.println("error al cargar la imagen o no es encontrada : " + rutaImagen);
+                LblImagenSol.setText("imagen no encontrada");
+                LblImagenSol.setIcon(null);
+                
+            }
+        }else{
+            LblImagenSol.setText("sin imagen");
+            LblImagenSol.setIcon(null);
         }
     }
+
     public void setAsAddedToCart() {
         if (BtnAgregarCarrito != null) {
             BtnAgregarCarrito.setEnabled(false); // Deshabilita el botón
             BtnAgregarCarrito.setText("EN CARRITO"); // Cambia el texto
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -150,13 +175,13 @@ public class PanelLibro extends javax.swing.JPanel {
                         .addGroup(PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LblDisponibildiad, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(LblNombreLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
                         .addGap(72, 72, 72)
-                        .addComponent(BtnAgregarCarrito))
-                    .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BtnAgregarCarrito)))
                 .addContainerGap(13, Short.MAX_VALUE))
         );
         PanelLasPruebasDelSolLayout.setVerticalGroup(
@@ -168,7 +193,7 @@ public class PanelLibro extends javax.swing.JPanel {
                 .addComponent(LblNombreLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(LblDisponibildiad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnAgregarCarrito)
@@ -188,7 +213,7 @@ public class PanelLibro extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 476, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -199,19 +224,19 @@ public class PanelLibro extends javax.swing.JPanel {
 
     private void BtnAgregarCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarCarritoActionPerformed
         if (libro.getCantidad() <= 0) {
-             JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " está agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
-             return;
+            JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " está agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
+            return;
         }
 
         if (carrito != null) {
             carrito.add(libro); // Añade a la lista compartida
             JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado al carrito.");
             setAsAddedToCart(); // Llama al método para cambiar la apariencia del botón
-      
-              libro.setCantidad(libro.getCantidad() - 1); // NO hacer esto directamente en el DTO original
-              LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
+
+            libro.setCantidad(libro.getCantidad() - 1); // NO hacer esto directamente en el DTO original
+            LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
         } else {
-             JOptionPane.showMessageDialog(this, "Error: El carrito no está inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error: El carrito no está inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
     }//GEN-LAST:event_BtnAgregarCarritoActionPerformed
     }
 

@@ -104,13 +104,11 @@ public class ControlNavegacion {
     }
 
     public void navegarCategorias(JFrame frameActual) {
+    if(frameActual != null){
         frameActual.dispose();
-        GUICategorias categoriasGUI = new GUICategorias(new ArrayList<>(), carrito); // Inicializa con una lista vacía y el carrito
-        List<LibroDTO> listaDeLibros = categoriasGUI.obtenerLibros(); // Llama al método para obtener los libros
-
-        // Crea una nueva instancia de GUICategorias con la lista de libros real
-        GUICategorias categoriasFinalGUI = new GUICategorias(listaDeLibros, carrito);
-        categoriasFinalGUI.setVisible(true);
+    }
+    GUICategorias categorias = new GUICategorias(this.carrito);
+    categorias.setVisible(true);
     }
 
     public void navegarPerfil(JFrame frameActual) {

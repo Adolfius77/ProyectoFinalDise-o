@@ -1,31 +1,49 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Negocio;
 
 import DTOS.LibroDTO;
+import Persistencia.IlibroDAO; // Asegúrate que esta sea la interfaz correcta
+import Persistencia.LibroDAOImplMemoria; // Implementación en memoria
+import expciones.PersistenciaException; // Si aplica para los métodos DAO
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author USER
- */
 public class BoProductos {
-    private static List<LibroDTO> listaDelibros = new ArrayList<>();
-    
-    public static boolean agregarLibro(LibroDTO libro){
-        if(libro != null && !libro.getTitulo().isEmpty() && !libro.getIsbn().isEmpty()){
-            listaDelibros.add(libro);
-            System.out.println("libro agregado correctamente "+ libro);
-            return true;
-        }else{
-            System.out.println("error el libro no puede ser nulo o debe tener un titulo o isbn");
+    // Usar la interfaz DAO para la persistencia de libros
+    private IlibroDAO libroDAO;
+
+    public BoProductos() {
+        // Instanciar la implementación en memoria del DAO
+        // En una aplicación real, esto podría ser inyectado o gestionado por un framework.
+        this.libroDAO = new LibroDAOImplMemoria();
+    }
+
+    public boolean agregarLibro(LibroDTO libro) {
+        if (libro != null && !libro.getTitulo().isEmpty() && !libro.getIsbn().isEmpty()) {
+            try {
+                boolean agregado = libroDAO.agregarLibro(libro);
+                if (agregado) {
+                    System.out.println("Libro agregado correctamente a través de BoProductos -> DAO: " + libro.getTitulo());
+                } else {
+                    System.out.println("El libro con ISBN " + libro.getIsbn() + " ya existe (BoProductos -> DAO).");
+                }
+                return agregado;
+            } catch (PersistenciaException e) {
+                System.err.println("Error de persistencia al agregar libro (BoProductos): " + e.getMessage());
+                return false;
+            }
+        } else {
+            System.out.println("Error: el libro no puede ser nulo o debe tener un título o ISBN.");
             return false;
         }
     }
-    public static  List<LibroDTO> obetenerLibrosAgregados(){
-        return new ArrayList<>(listaDelibros);
+
+    public List<LibroDTO> obtenerTodosLosLibros() {
+        try {
+            return libroDAO.obtenerTodosLosLibros();
+        } catch (PersistenciaException e) {
+            System.err.println("Error de persistencia al obtener todos los libros (BoProductos): " + e.getMessage());
+            return new ArrayList<>(); // Devolver lista vacía en caso de error
+        }
     }
 }

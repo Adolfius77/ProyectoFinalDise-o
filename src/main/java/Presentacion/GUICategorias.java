@@ -14,13 +14,15 @@ public class GUICategorias extends javax.swing.JFrame {
     private List<LibroDTO> librosDisponibles;
     private List<LibroDTO> carrito;
 
-    public GUICategorias(List<LibroDTO> libros , List<LibroDTO> carrito) {
+    public GUICategorias(List<LibroDTO> carrito) {
         initComponents();
-        this.librosDisponibles = libros;
+        this.carrito = carrito;
+
+        BoProductos boProductos = new BoProductos();
+        this.librosDisponibles = boProductos.obtenerTodosLosLibros();
         setLocationRelativeTo(null);
-       
         configurarNavegacionYCategorias();
-        mostrarLibrosPorCategoria((String)CMBCategorias.getSelectedItem()) ;
+        
     }
 
     private void configurarNavegacionYCategorias() {
@@ -77,7 +79,6 @@ public class GUICategorias extends javax.swing.JFrame {
         CMBOpciones.setSelectedIndex(0);
 
     }
-    
 
     public List<LibroDTO> obtenerLibros() {
         List<LibroDTO> libros = new ArrayList<>();
@@ -124,7 +125,7 @@ public class GUICategorias extends javax.swing.JFrame {
     }
 
     private void mostrarLibrosPorCategoria(String categoria) {
-        if (PanelDinamico == null) { 
+        if (PanelDinamico == null) {
             System.err.println("PanelDinamico no inicializado en GUICategorias");
             return;
         }
@@ -139,7 +140,7 @@ public class GUICategorias extends javax.swing.JFrame {
         }
 
         if (librosFiltrados.isEmpty()) {
-            PanelDinamico.add(new javax.swing.JLabel("No hay libros en esta categoría."));
+            PanelDinamico.add(new javax.swing.JLabel(categoria == null ? "No hay libros." : "No hay libros en la categoría: " + categoria.toUpperCase()));
         } else {
             for (LibroDTO libro : librosFiltrados) {
                 // Crea el panel para este libro, pasando el carrito compartido
@@ -160,30 +161,41 @@ public class GUICategorias extends javax.swing.JFrame {
         PanelDinamico.repaint();
 
         // Actualiza el título de la categoría
-        if (jLabel1 != null) {
+        if (jLabel1 != null && categoria != null) {
             jLabel1.setText(categoria.toUpperCase());
+        }else if( jLabel1 != null){
+            jLabel1.setText("todas la categorias");
         }
+    }
+    public void refrescarVisualizacionDelibros(){
+        BoProductos boProductos = new BoProductos();
+        this.librosDisponibles = boProductos.obtenerTodosLosLibros();
+        mostrarLibrosPorCategoria((String)CMBCategorias.getSelectedItem());
     }
 
     private List<LibroDTO> filtrarLibrosPorCategoria(String categoria) {
         List<LibroDTO> librosFiltrados = new ArrayList<>();
-        for (LibroDTO libro : librosDisponibles) {
+        if(categoria == null || this.librosDisponibles == null) {
+            return librosFiltrados;
+        }
+        for (LibroDTO libro : this.librosDisponibles) {
             if (libro.getCategoria().equalsIgnoreCase(categoria)) {
                 librosFiltrados.add(libro);
             }
         }
         return librosFiltrados;
     }
-    public void agregarNuevoLibroo(LibroDTO nuevoLibro){
-       librosDisponibles.add(nuevoLibro);
-       PanelLibro nuevoPanelLibro = new PanelLibro(nuevoLibro, carrito);
-       PanelDinamico.add(nuevoPanelLibro);
-       PanelDinamico.revalidate();
-       PanelDinamico.repaint();
-        mostrarLibrosPorCategoria((String)CMBCategorias.getSelectedItem());
-       
+
+    public void agregarNuevoLibroo(LibroDTO nuevoLibro) {
+        librosDisponibles.add(nuevoLibro);
+        PanelLibro nuevoPanelLibro = new PanelLibro(nuevoLibro, carrito);
+        PanelDinamico.add(nuevoPanelLibro);
+        PanelDinamico.revalidate();
+        PanelDinamico.repaint();
+        mostrarLibrosPorCategoria((String) CMBCategorias.getSelectedItem());
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -444,10 +456,10 @@ public class GUICategorias extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
-            public   void run() {
-           List<LibroDTO> listaInicialLibros = new ArrayList<>();
-           List<LibroDTO> carritoInicial = new ArrayList<>();
-                new GUICategorias(listaInicialLibros, carritoInicial).setVisible(true);
+            public void run() {
+              
+                List<LibroDTO> carrito = new ArrayList<>();
+                new GUICategorias( carrito).setVisible(true);
             }
         });
     }

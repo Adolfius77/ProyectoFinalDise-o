@@ -32,7 +32,10 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         configurarNavegacion();
 
     }
-
+     public GUIRegistroLibro(GUICategorias categoriasGUI) {
+        this();
+        this.categoriasGUI = categoriasGUI;
+    }
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
@@ -77,10 +80,7 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         CMBOpciones1.setSelectedIndex(0); // Resetear
     }
 
-    public GUIRegistroLibro(GUICategorias categoriasGUI) {
-        this(); // Llama al constructor sin parámetros para inicializar los componentes
-        this.categoriasGUI = categoriasGUI;
-    }
+   
 
     //para despues
     /**
@@ -644,18 +644,24 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         try {
             cantidad = Integer.parseInt(txtCantidad.getText());
             precio = Double.parseDouble(txtPrecio.getText());
+            
+            if (cantidad < 0 || precio < 0) {
+                JOptionPane.showMessageDialog(this, "Cantidad y Precio no pueden ser negativos.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
             Date fechaLanzamiento = sdf.parse(fechaStr);
 
-            LibroDTO nuevoLibros = new LibroDTO(titulo, autor, isbn, fechaLanzamiento, categoria, precio, cantidad, rutaImagenSeleccionada); 
+            LibroDTO nuevoLibro = new LibroDTO(titulo, autor, isbn, fechaLanzamiento, categoria, precio, cantidad, rutaImagenSeleccionada); 
             BoProductos boProductos = new BoProductos();
-            boProductos.agregarLibro(nuevoLibros);
+            boProductos.agregarLibro(nuevoLibro);
             JOptionPane.showMessageDialog(this, "libro registado correctamente");
 
-            if (categoriasGUI != null) {
-                categoriasGUI.agregarNuevoLibroo(nuevoLibros);
-            }
+//            if (categoriasGUI != null) {
+//                categoriasGUI.agregarNuevoLibroo(nuevoLibro);
+//            }
             txtTitulo.setText("");
             txtAutor.setText("");
             txtISBN.setText("");
