@@ -16,7 +16,7 @@ public class BoProductos {
     private static List<LibroDTO> listaDelibros = new ArrayList<>();
     
     public static boolean agregarLibro(LibroDTO libro){
-        if(libro != null && !libro.getTitulo().isEmpty() && libro.getIsbn().isEmpty()){
+        if(libro != null && !libro.getTitulo().isEmpty() && !libro.getIsbn().isEmpty()){
             listaDelibros.add(libro);
             System.out.println("libro agregado correctamente "+ libro);
             return true;

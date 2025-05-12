@@ -2,6 +2,7 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.LibroDTO;
+import Negocio.BoProductos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -11,12 +12,15 @@ import javax.swing.JOptionPane;
 public class GUICategorias extends javax.swing.JFrame {
 
     private List<LibroDTO> librosDisponibles;
+    private List<LibroDTO> carrito;
 
-    public GUICategorias() {
+    public GUICategorias(List<LibroDTO> libros , List<LibroDTO> carrito) {
         initComponents();
+        this.librosDisponibles = libros;
         setLocationRelativeTo(null);
-        librosDisponibles = obtenerLibros();
+       
         configurarNavegacionYCategorias();
+        mostrarLibrosPorCategoria((String)CMBCategorias.getSelectedItem()) ;
     }
 
     private void configurarNavegacionYCategorias() {
@@ -75,7 +79,7 @@ public class GUICategorias extends javax.swing.JFrame {
     }
     
 
-    private List<LibroDTO> obtenerLibros() {
+    public List<LibroDTO> obtenerLibros() {
         List<LibroDTO> libros = new ArrayList<>();
         Date fecha1 = new GregorianCalendar(2023, 10, 15).getTime();
         Date fecha2 = new GregorianCalendar(2022, 5, 20).getTime();
@@ -171,18 +175,15 @@ public class GUICategorias extends javax.swing.JFrame {
         return librosFiltrados;
     }
     public void agregarNuevoLibroo(LibroDTO nuevoLibro){
-        if(librosDisponibles != null){
-            librosDisponibles.add(nuevoLibro);
-            
-            String categoriaActual = (String) CMBCategorias.getSelectedItem();
-            if(categoriaActual != null){
-                mostrarLibrosPorCategoria(categoriaActual);
-            }else if(!librosDisponibles.isEmpty()){
-                mostrarLibrosPorCategoria(librosDisponibles.get(0).getCategoria());
-            }
-            
-        }
+       librosDisponibles.add(nuevoLibro);
+       PanelLibro nuevoPanelLibro = new PanelLibro(nuevoLibro, carrito);
+       PanelDinamico.add(nuevoPanelLibro);
+       PanelDinamico.revalidate();
+       PanelDinamico.repaint();
+        mostrarLibrosPorCategoria((String)CMBCategorias.getSelectedItem());
+       
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -443,8 +444,10 @@ public class GUICategorias extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
-            public void run() {
-                new GUICategorias().setVisible(true);
+            public   void run() {
+           List<LibroDTO> listaInicialLibros = new ArrayList<>();
+           List<LibroDTO> carritoInicial = new ArrayList<>();
+                new GUICategorias(listaInicialLibros, carritoInicial).setVisible(true);
             }
         });
     }

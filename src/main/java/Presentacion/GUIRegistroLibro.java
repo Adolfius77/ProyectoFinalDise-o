@@ -4,11 +4,15 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
 import DTOS.LibroDTO;
 import Negocio.BoProductos;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -20,11 +24,57 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
      * Creates new form GUIRegistroLibro
      */
     private GUICategorias categoriasGUI;
+    private String rutaImagenSeleccionada = "";
 
     public GUIRegistroLibro() {
         initComponents();
         setLocationRelativeTo(null);
-      
+        configurarNavegacion();
+
+    }
+
+    private void configurarNavegacion() {
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+
+        // Asegúrate que estos botones existan en tu initComponents
+        if (BtnInicio1 != null) {
+            BtnInicio1.addActionListener(evt -> navegador.navegarAdminGui(this));
+        }
+        if (btnCategorias1 != null) {
+            btnCategorias1.addActionListener(evt -> navegador.navegarCategorias(this));
+        }
+        if (BtnPerfil1 != null) {
+            BtnPerfil1.addActionListener(evt -> navegador.navegarPerfil(this));
+        }
+        if (BtnCarrito1 != null) {
+            BtnCarrito1.addActionListener(evt -> navegador.navegarCarrito(this));
+        }
+        if (CMBOpciones1 != null) {
+            CMBOpciones1.addActionListener(evt -> manejarAccionOpciones());
+        }
+
+    }
+
+    private void manejarAccionOpciones() {
+        String seleccion = (String) CMBOpciones1.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones1.getSelectedIndex() == 0) {
+            return;
+        }
+
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        switch (seleccion) {
+            case "Cambiar Contraseña":
+                navegador.navegarCambioPasssword(this); // Usa tu nombre de método
+                break;
+            case "Cerrar Sesion":
+                navegador.cerrarSesion(this);
+                break;
+            case "Registrar libro":
+                navegador.navegarRegistroLibro(this);
+
+                break;
+        }
+        CMBOpciones1.setSelectedIndex(0); // Resetear
     }
 
     public GUIRegistroLibro(GUICategorias categoriasGUI) {
@@ -33,8 +83,6 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     }
 
     //para despues
-   
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +101,7 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         btnCategorias = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         BtnInicio1 = new javax.swing.JButton();
@@ -83,6 +132,9 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         agregarPortada = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         BtnRegistrar = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        cmbCategorias = new javax.swing.JComboBox<>();
+        jPanel7 = new javax.swing.JPanel();
 
         jPanel1.setBackground(new java.awt.Color(101, 85, 143));
 
@@ -346,7 +398,7 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
                 .addComponent(jLabel10)
                 .addGap(18, 18, 18)
                 .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -368,6 +420,11 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
                 agregarPortadaMouseClicked(evt);
             }
         });
+        agregarPortada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarPortadaActionPerformed(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel11.setText("Provedor");
@@ -379,28 +436,64 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
             }
         });
 
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel12.setText("Categoria");
+
+        cmbCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FANTASIA", "EDUACION", "COCINA", "TERROR" }));
+        cmbCategorias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbCategoriasActionPerformed(evt);
+            }
+        });
+
+        jPanel7.setBackground(new java.awt.Color(204, 204, 204));
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 239, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 388, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnRegistrar)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel12))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbProvedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cmbCategorias, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(BtnRegistrar)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(jLabel9)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(agregarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(10, 10, 10)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14))
                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel8)
-                        .addComponent(jLabel7)
                         .addComponent(txtCantidad, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
                         .addComponent(txtPrecio)
                         .addGroup(jPanel6Layout.createSequentialGroup()
                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel9)
-                                .addComponent(jLabel11))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(agregarPortada)))))
-                .addContainerGap(43, Short.MAX_VALUE))
+                                .addComponent(jLabel8)
+                                .addComponent(jLabel7))
+                            .addGap(145, 145, 145))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -413,17 +506,24 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
                 .addComponent(jLabel8)
                 .addGap(18, 18, 18)
                 .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addGap(29, 29, 29)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(agregarPortada))
-                .addGap(87, 87, 87)
-                .addComponent(BtnRegistrar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(64, 64, 64)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel12)
+                            .addComponent(cmbCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel11)
+                            .addComponent(cmbProvedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(37, 37, 37)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(agregarPortada))
+                        .addGap(47, 47, 47)
+                        .addComponent(BtnRegistrar))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -436,7 +536,7 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -444,8 +544,8 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -464,9 +564,9 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-        GUIINICIO inicio = new GUIINICIO();
-        inicio.setVisible(true);
-        this.dispose();
+//        GUIINICIO inicio = new GUIINICIO();
+//        inicio.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
@@ -492,9 +592,9 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void BtnInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicio1ActionPerformed
-        GUIINICIO inicio = new GUIINICIO();
-        inicio.setVisible(true);
-        this.dispose();
+//        GUIINICIO inicio = new GUIINICIO();
+//        inicio.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_BtnInicio1ActionPerformed
 
     private void BtnPerfil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfil1ActionPerformed
@@ -514,9 +614,8 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBOpciones1ActionPerformed
 
     private void btnCategorias1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategorias1ActionPerformed
-        //        GUICategorias categorias = new GUICategorias();
-        //        categorias.setVisible(true);
-        //        this.dispose();
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        navegador.navegarCategorias(this);
     }//GEN-LAST:event_btnCategorias1ActionPerformed
 
     private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
@@ -533,48 +632,63 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
         String isbn = txtISBN.getText().trim();
         String fechaStr = txtFecha.getText().trim();
         String ubicacion = txtUbicacion.getText().trim();
-        String cantidadStr = txtCantidad.getText().trim();
-        String precioStr = txtPrecio.getText().trim();
         String proveedor = (String) cmbProvedor.getSelectedItem();
+        String categoria = (String) cmbCategorias.getSelectedItem();
+        int cantidad = 0;
+        double precio = 0.0;
 
         if (titulo.isEmpty() || isbn.isEmpty()) {
             JOptionPane.showMessageDialog(this, " el titulo y el isbn son obligatorias carnal");
             return;
         }
         try {
-            int cantidadint = Integer.parseInt(cantidadStr);
-            double precioDouble = Double.parseDouble(precioStr);
+            cantidad = Integer.parseInt(txtCantidad.getText());
+            precio = Double.parseDouble(txtPrecio.getText());
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date fechaLanzamiento = sdf.parse(fechaStr);
 
-            LibroDTO nuevoLibros = new LibroDTO(titulo, autor, isbn, fechaLanzamiento, autor, precioDouble, cantidadint, ubicacion);
-            boolean agregado = BoProductos.agregarLibro(nuevoLibros);
+            LibroDTO nuevoLibros = new LibroDTO(titulo, autor, isbn, fechaLanzamiento, categoria, precio, cantidad, rutaImagenSeleccionada); 
+            BoProductos boProductos = new BoProductos();
+            boProductos.agregarLibro(nuevoLibros);
+            JOptionPane.showMessageDialog(this, "libro registado correctamente");
 
-            if (agregado) {
-                JOptionPane.showMessageDialog(this, "li8bro registrado correctamente");
-                //aqui actualizo la lista de libros :p
-                if (categoriasGUI != null) {
-                    categoriasGUI.agregarNuevoLibroo(nuevoLibros);
-                }
-                //esto limpia los campos
-                txtTitulo.setText("");
-                txtAutor.setText("");
-                txtISBN.setText("");
-                txtFecha.setText("");
-                txtUbicacion.setText("");
-                txtCantidad.setText("");
-                txtPrecio.setText("");
-                cmbProvedor.setSelectedIndex(0);
-            } else {
-                JOptionPane.showMessageDialog(this, "error al registrar el libro");
+            if (categoriasGUI != null) {
+                categoriasGUI.agregarNuevoLibroo(nuevoLibros);
             }
+            txtTitulo.setText("");
+            txtAutor.setText("");
+            txtISBN.setText("");
+            txtCantidad.setText("");
+            txtPrecio.setText("");
+            txtFecha.setText("");
+            txtUbicacion.setText("");
+            rutaImagenSeleccionada = "";
+
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, " la cantidad y el precio deben ser numeros validos");
-        } catch (java.text.ParseException e) {
-            JOptionPane.showConfirmDialog(this, " el formato de la fecha de lanzamiento es invalido debe ser: mm/dd/aaaa ");
-        }
+            JOptionPane.showMessageDialog(this, "Cantidad y Precio deben ser números válidos", "Error de formato", JOptionPane.ERROR_MESSAGE);
+        }catch(java.text.ParseException e){
+              JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto (yyyy-MM-dd)", "Error de formato", JOptionPane.ERROR_MESSAGE);
+
+        }    
     }//GEN-LAST:event_BtnRegistrarActionPerformed
+    
+    private void agregarPortadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarPortadaActionPerformed
+      JFileChooser fileChooser = new JFileChooser();
+      FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "png", "gif");
+      fileChooser.setFileFilter(filter);
+      
+      int result = fileChooser.showOpenDialog(this);
+      if(result == JFileChooser.APPROVE_OPTION){
+          File selectedFile = fileChooser.getSelectedFile();
+          rutaImagenSeleccionada = selectedFile.getAbsolutePath();
+          
+      }
+    }//GEN-LAST:event_agregarPortadaActionPerformed
+
+    private void cmbCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbCategoriasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -624,10 +738,13 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     private javax.swing.JButton agregarPortada;
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnCategorias1;
+    private javax.swing.JComboBox<String> cmbCategorias;
     private javax.swing.JComboBox<String> cmbProvedor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -644,6 +761,7 @@ public class GUIRegistroLibro extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JTextField txtAutor;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtFecha;

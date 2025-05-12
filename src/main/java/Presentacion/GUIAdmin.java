@@ -38,7 +38,7 @@ public class GUIAdmin extends javax.swing.JFrame {
 
         // Asegúrate que estos botones existan en tu initComponents
         if (BtnInicio != null) {
-             BtnInicio.addActionListener(evt -> navegador.navegarInicio(this)); // Navegar a inicio desde inicio?
+             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this)); // Navegar a inicio desde inicio?
         }
         if (btnCategorias != null) {
             btnCategorias.addActionListener(evt -> navegador.navegarCategorias(this));

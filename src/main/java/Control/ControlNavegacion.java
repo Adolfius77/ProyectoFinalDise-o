@@ -68,7 +68,7 @@ public class ControlNavegacion {
     }
 
     public int getCantidadTotalArticulos() {
-        
+
         return (this.carrito != null) ? this.carrito.size() : 0;
     }
 
@@ -78,20 +78,23 @@ public class ControlNavegacion {
         }
         System.out.println("Todos los artículos del carrito han sido eliminados.");
     }
- public void navegarRegistro(JFrame frameActual){
+
+    public void navegarRegistro(JFrame frameActual) {
         Registro regi = new Registro();
         regi.setVisible(true);
-        if(frameActual != null){
+        if (frameActual != null) {
             frameActual.dispose();
         }
     }
- public void navegarInicioSesion(JFrame frameActual){
+
+    public void navegarInicioSesion(JFrame frameActual) {
         InicioSesion ini = new InicioSesion();
         ini.setVisible(true);
-        if(frameActual != null){
+        if (frameActual != null) {
             frameActual.dispose();
         }
     }
+
     public void navegarInicio(JFrame frameActual) {
         GUIINICIO inicio = new GUIINICIO();
         inicio.setVisible(true);
@@ -101,11 +104,13 @@ public class ControlNavegacion {
     }
 
     public void navegarCategorias(JFrame frameActual) {
-        GUICategorias categorias = new GUICategorias();
-        categorias.setVisible(true);
-        if (frameActual != null) {
-            frameActual.dispose();
-        }
+        frameActual.dispose();
+        GUICategorias categoriasGUI = new GUICategorias(new ArrayList<>(), carrito); // Inicializa con una lista vacía y el carrito
+        List<LibroDTO> listaDeLibros = categoriasGUI.obtenerLibros(); // Llama al método para obtener los libros
+
+        // Crea una nueva instancia de GUICategorias con la lista de libros real
+        GUICategorias categoriasFinalGUI = new GUICategorias(listaDeLibros, carrito);
+        categoriasFinalGUI.setVisible(true);
     }
 
     public void navegarPerfil(JFrame frameActual) {
@@ -207,20 +212,22 @@ public class ControlNavegacion {
 
         }
     }
-   public void navegarRegistroLibro(JFrame frameActual){
-       GUIRegistroLibro registroLibro = new GUIRegistroLibro();
-       registroLibro.setVisible(true);
-       if(frameActual != null){
-           frameActual.dispose();
-       }
-   }
-   public void navegarAdminGui(JFrame frameActual){
-       GUIAdmin admin = new GUIAdmin();
-       admin.setVisible(true);
-       if(frameActual != null){
-           frameActual.dispose();
-       }
-   }
+
+    public void navegarRegistroLibro(JFrame frameActual) {
+        GUIRegistroLibro registroLibro = new GUIRegistroLibro();
+        registroLibro.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+    }
+
+    public void navegarAdminGui(JFrame frameActual) {
+        GUIAdmin admin = new GUIAdmin();
+        admin.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+    }
 
     public void cerrarSesion(JFrame frameActual) {
         limpiarCarrito();
