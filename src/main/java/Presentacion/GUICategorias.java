@@ -73,6 +73,7 @@ public class GUICategorias extends javax.swing.JFrame {
         CMBOpciones.setSelectedIndex(0);
 
     }
+    
 
     private List<LibroDTO> obtenerLibros() {
         List<LibroDTO> libros = new ArrayList<>();
@@ -169,7 +170,19 @@ public class GUICategorias extends javax.swing.JFrame {
         }
         return librosFiltrados;
     }
-
+    public void agregarNuevoLibroo(LibroDTO nuevoLibro){
+        if(librosDisponibles != null){
+            librosDisponibles.add(nuevoLibro);
+            
+            String categoriaActual = (String) CMBCategorias.getSelectedItem();
+            if(categoriaActual != null){
+                mostrarLibrosPorCategoria(categoriaActual);
+            }else if(!librosDisponibles.isEmpty()){
+                mostrarLibrosPorCategoria(librosDisponibles.get(0).getCategoria());
+            }
+            
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

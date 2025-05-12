@@ -124,5 +124,10 @@
             <artifactId>infraestructura</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.5</version>
+        </dependency>
     </dependencies>
 </project>

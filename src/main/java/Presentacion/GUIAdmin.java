@@ -15,14 +15,14 @@ import javax.swing.JOptionPane;
  *
  * @author USER
  */
-public class GUIINICIO extends javax.swing.JFrame {
+public class GUIAdmin extends javax.swing.JFrame {
 
     private List<LibroDTO> carrito = new ArrayList<>();
 
     /**
      * Creates new form GUIINICIO
      */
-    public GUIINICIO() {
+    public GUIAdmin() {
 
         initComponents();
        
@@ -38,7 +38,7 @@ public class GUIINICIO extends javax.swing.JFrame {
 
         // Asegúrate que estos botones existan en tu initComponents
         if (BtnInicio != null) {
-            // BtnInicio.addActionListener(evt -> navegador.navegarInicio(this)); // Navegar a inicio desde inicio?
+             BtnInicio.addActionListener(evt -> navegador.navegarInicio(this)); // Navegar a inicio desde inicio?
         }
         if (btnCategorias != null) {
             btnCategorias.addActionListener(evt -> navegador.navegarCategorias(this));
@@ -52,6 +52,7 @@ public class GUIINICIO extends javax.swing.JFrame {
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
+        
     }
 
     private void manejarAccionOpciones() {
@@ -68,9 +69,9 @@ public class GUIINICIO extends javax.swing.JFrame {
             case "Cerrar Sesion":
                 navegador.cerrarSesion(this);
                 break;
-            // ... otros casos ...
-            default:
-                JOptionPane.showMessageDialog(this, "'" + seleccion + "' no implementado.");
+            case "Registrar libro":
+                navegador.navegarRegistroLibro(this);
+       
                 break;
         }
         CMBOpciones.setSelectedIndex(0); // Resetear
@@ -443,7 +444,7 @@ public class GUIINICIO extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial compras", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Registrar libro", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
@@ -876,9 +877,9 @@ public class GUIINICIO extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-        GUIINICIO inicio = new GUIINICIO();
-        inicio.setVisible(true);
-        this.dispose();
+//        GUIINICIO inicio = new GUIINICIO();
+//        inicio.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
@@ -923,7 +924,7 @@ public class GUIINICIO extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new GUIINICIO().setVisible(true);
+                new GUIAdmin().setVisible(true);
             }
         });
     }

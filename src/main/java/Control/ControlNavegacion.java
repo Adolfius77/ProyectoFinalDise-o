@@ -6,6 +6,7 @@ package Control;
 
 import DTOS.LibroDTO;
 import Negocio.ManejoPagos;
+import Presentacion.GUIAdmin;
 import Presentacion.GUICambioContraseña;
 import Presentacion.GUICarrito;
 import Presentacion.GUICategorias;
@@ -16,7 +17,10 @@ import Presentacion.GUIPaginaPagos;
 import Presentacion.GUIPagoMastercard;
 import Presentacion.GUIPagoPaypal;
 import Presentacion.GUIPerfil;
+import Presentacion.GUIRegistroLibro;
 import Presentacion.GUISeleccionMetodoEnvio;
+import Presentacion.InicioSesion;
+import Presentacion.Registro;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -74,7 +78,20 @@ public class ControlNavegacion {
         }
         System.out.println("Todos los artículos del carrito han sido eliminados.");
     }
-
+ public void navegarRegistro(JFrame frameActual){
+        Registro regi = new Registro();
+        regi.setVisible(true);
+        if(frameActual != null){
+            frameActual.dispose();
+        }
+    }
+ public void navegarInicioSesion(JFrame frameActual){
+        InicioSesion ini = new InicioSesion();
+        ini.setVisible(true);
+        if(frameActual != null){
+            frameActual.dispose();
+        }
+    }
     public void navegarInicio(JFrame frameActual) {
         GUIINICIO inicio = new GUIINICIO();
         inicio.setVisible(true);
@@ -190,6 +207,20 @@ public class ControlNavegacion {
 
         }
     }
+   public void navegarRegistroLibro(JFrame frameActual){
+       GUIRegistroLibro registroLibro = new GUIRegistroLibro();
+       registroLibro.setVisible(true);
+       if(frameActual != null){
+           frameActual.dispose();
+       }
+   }
+   public void navegarAdminGui(JFrame frameActual){
+       GUIAdmin admin = new GUIAdmin();
+       admin.setVisible(true);
+       if(frameActual != null){
+           frameActual.dispose();
+       }
+   }
 
     public void cerrarSesion(JFrame frameActual) {
         limpiarCarrito();
