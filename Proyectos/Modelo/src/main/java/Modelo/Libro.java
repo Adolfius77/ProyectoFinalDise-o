@@ -25,6 +25,7 @@ public class Libro {
     private String editorial;
     private int numPaginas;
 
+
     public Libro() {
     }
 
@@ -115,6 +116,7 @@ public class Libro {
     public void setNumPaginas(int numPaginas) {
         this.numPaginas = numPaginas;
     }
+
 
     @Override
     public boolean equals(Object o) {
