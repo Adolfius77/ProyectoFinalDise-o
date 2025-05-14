@@ -7,17 +7,18 @@ package Control;
 import DTOS.LibroDTO;
 import Negocio.ManejoPagos;
 import Presentacion.GUIAdmin;
+import Presentacion.GUIAgregarLibro;
 import Presentacion.GUICambioContraseña;
 import Presentacion.GUICarrito;
 import Presentacion.GUICategorias;
 import Presentacion.GUIEnvioDHL;
 import Presentacion.GUIEnvioEstafeta;
 import Presentacion.GUIINICIO;
+import Presentacion.GUIPagInicioGestionLibros;
 import Presentacion.GUIPaginaPagos;
 import Presentacion.GUIPagoMastercard;
 import Presentacion.GUIPagoPaypal;
 import Presentacion.GUIPerfil;
-import Presentacion.GUIRegistroLibro;
 import Presentacion.GUISeleccionMetodoEnvio;
 import Presentacion.InicioSesion;
 import Presentacion.Registro;
@@ -211,9 +212,17 @@ public class ControlNavegacion {
         }
     }
 
-    public void navegarRegistroLibro(JFrame frameActual) {
-        GUIRegistroLibro registroLibro = new GUIRegistroLibro();
-        registroLibro.setVisible(true);
+    public void navegarGestionLibro(JFrame frameActual) {
+        GUIPagInicioGestionLibros gestionLibro = new GUIPagInicioGestionLibros();
+        gestionLibro.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+    }
+    
+    public void navegarAgregarLibro (JFrame frameActual) {
+        GUIAgregarLibro agregarLibro = new GUIAgregarLibro();
+        agregarLibro.setVisible(true);
         if (frameActual != null) {
             frameActual.dispose();
         }

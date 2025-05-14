@@ -11,19 +11,25 @@ public class LibroDTO {
     private Date fechaLanzamiento;
     private String categoria;
     private double precio;
+    private String editorial;
+    private int numPaginas;
     private int cantidad; // Stock disponible
     private String rutaImagen;
 
-    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, int cantidad, String rutaImagen) {
+    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
         this.fechaLanzamiento = fechaLanzamiento;
         this.categoria = categoria;
         this.precio = precio;
+        this.editorial = editorial;
+        this.numPaginas = numPaginas;
         this.cantidad = cantidad;
         this.rutaImagen = rutaImagen;
     }
+
+    
 
     // --- Getters y Setters (sin cambios) ---
     public String getTitulo() { return titulo; }
@@ -42,6 +48,23 @@ public class LibroDTO {
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }
     public String getRutaImagen() { return rutaImagen; }
     public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+
+    public String getEditorial() {
+        return editorial;
+    }
+
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
+    }
+
+    public int getNumPaginas() {
+        return numPaginas;
+    }
+
+    public void setNumPaginas(int numPaginas) {
+        this.numPaginas = numPaginas;
+    }
+    
 
     // --- Métodos adicionales (sin cambios) ---
     public String getFechaLanzamientoFormateada(String formato) {

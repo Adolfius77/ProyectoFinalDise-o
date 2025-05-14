@@ -25,9 +25,8 @@ public class GUIAdmin extends javax.swing.JFrame {
     public GUIAdmin() {
 
         initComponents();
-       
-        configurarNavegacion();
         setLocationRelativeTo(null);
+        configurarNavegacion();
     }
 
 
@@ -38,7 +37,7 @@ public class GUIAdmin extends javax.swing.JFrame {
 
         // Asegúrate que estos botones existan en tu initComponents
         if (BtnInicio != null) {
-             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this)); // Navegar a inicio desde inicio?
+             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this)); 
         }
         if (btnCategorias != null) {
             btnCategorias.addActionListener(evt -> navegador.navegarCategorias(this));
@@ -64,13 +63,13 @@ public class GUIAdmin extends javax.swing.JFrame {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         switch (seleccion) {
             case "Cambiar Contraseña":
-                navegador.navegarCambioPasssword(this); // Usa tu nombre de método
+                navegador.navegarCambioPasssword(this); 
                 break;
             case "Cerrar Sesion":
                 navegador.cerrarSesion(this);
                 break;
-            case "Registrar libro":
-                navegador.navegarRegistroLibro(this);
+            case "Gestion de Libros":
+                navegador.navegarGestionLibro(this);
        
                 break;
         }
@@ -444,7 +443,7 @@ public class GUIAdmin extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Registrar libro", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
