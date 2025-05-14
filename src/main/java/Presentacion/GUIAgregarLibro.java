@@ -476,27 +476,44 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         int cantidad = 0;
         double precio = 0.0;
 
-        if (titulo.isEmpty() || isbn.isEmpty()) {
-            JOptionPane.showMessageDialog(this, " el titulo y el isbn son obligatorias carnal");
+        if (titulo.isEmpty() || autor.isEmpty() || isbn.isEmpty() || fechaStr.isEmpty()
+                || editorial.isEmpty() || txtFldNumPaginas.getText().trim().isEmpty()
+                || txtFldStock.getText().trim().isEmpty() || txtFldPrecio.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         try {
-            numPaginas = Integer.parseInt(txtFldNumPaginas.getText());
-            cantidad = Integer.parseInt(txtFldStock.getText());
-            precio = Double.parseDouble(txtFldPrecio.getText());
+
+            try {
+                numPaginas = Integer.parseInt(txtFldNumPaginas.getText().trim());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Número de páginas debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                cantidad = Integer.parseInt(txtFldStock.getText().trim());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Stock (Cantidad) debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            try {
+                precio = Double.parseDouble(txtFldPrecio.getText().trim());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Precio debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             if (cantidad < 0) {
-                JOptionPane.showMessageDialog(this, "El stock no puede ser negativo.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El stock no puede ser negativo.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             if (precio < 0) {
-                JOptionPane.showMessageDialog(this, "El precio no puede ser negativo.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "El precio no puede ser negativo.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
-            if (numPaginas < 0) {
-                JOptionPane.showMessageDialog(this, "El numero de paginas no puede ser negativo.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            if (numPaginas <= 0) {
+                JOptionPane.showMessageDialog(this, "El número de páginas debe ser mayor que cero.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -504,37 +521,59 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
             sdf.setLenient(false);
             Date fechaLanzamiento = sdf.parse(fechaStr);
 
-            LibroDTO nuevoLibro = new LibroDTO(titulo, autor, isbn, fechaLanzamiento, categoria, precio, editorial, numPaginas, cantidad, rutaImagenSeleccionada);
-            BoProductos boProductos = new BoProductos();
-            boProductos.agregarLibro(nuevoLibro);
+            LibroDTO nuevoLibro = new LibroDTO(
+                    titulo,
+                    autor,
+                    isbn,
+                    fechaLanzamiento,
+                    categoria,
+                    precio,
+                    editorial,
+                    numPaginas,
+                    cantidad,
+                    rutaImagenSeleccionada
+            );
 
-            int resultado = JOptionPane.showConfirmDialog(null, "Esta seguro de querer agregar el producto?", "Confirmacion Agregar Libro", JOptionPane.YES_NO_OPTION);
-            if (resultado == JOptionPane.YES_OPTION) {
-                System.out.println("Se agrego el libro con exito.");
-                final ControlNavegacion navegador = ControlNavegacion.getInstase();
-                navegador.navegarGestionLibro(this);
-            } else if (resultado == JOptionPane.NO_OPTION) {
-                return;
+            BoProductos boProductos = new BoProductos();
+            boolean agregadoExitosamente = boProductos.agregarLibro(nuevoLibro);
+
+            if (agregadoExitosamente) {
+                int resultado = JOptionPane.showConfirmDialog(this,
+                        "¿Está seguro de querer agregar el producto \"" + titulo + "\"?",
+                        "Confirmación Agregar Libro",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (resultado == JOptionPane.YES_OPTION) {
+                    System.out.println("Se agregó el libro con éxito: " + titulo);
+                    JOptionPane.showMessageDialog(this, "Libro \"" + titulo + "\" agregado con éxito.");
+
+                    // Limpiar campos
+                    txtFldNombreProducto.setText("");
+                    txtFldAutor.setText("");
+                    txtFldISBN.setText("");
+                    txtFldFechaLanzamiento.setText("");
+                    cmbBoxCategoria.setSelectedIndex(0);
+                    txtFldEditorial.setText("");
+                    txtFldNumPaginas.setText("");
+                    txtFldStock.setText("");
+                    txtFldPrecio.setText("");
+                    rutaImagenSeleccionada = "";
+                    lblImagen.setIcon(null);
+                    lblImagen.setText("Portada aquí...");
+
+                } else {
+                    System.out.println("Adición del libro \"" + titulo + "\" cancelada por el usuario.");
+
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al agregar el libro. El ISBN podría ya existir.", "Error de Registro", JOptionPane.ERROR_MESSAGE);
             }
 
-        
-
-//            if (categoriasGUI != null) {
-//                categoriasGUI.agregarNuevoLibroo(nuevoLibro);
-//            }
-            txtFldNombreProducto.setText("");
-            txtFldAutor.setText("");
-            txtFldISBN.setText("");
-            txtFldStock.setText("");
-            txtFldPrecio.setText("");
-            txtFldFechaLanzamiento.setText("");
-            txtFldEditorial.setText("");
-            rutaImagenSeleccionada = "";
-
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Cantidad y Precio deben ser números válidos", "Error de formato", JOptionPane.ERROR_MESSAGE);
+
+            JOptionPane.showMessageDialog(this, "Asegúrese de que los campos numéricos (Precio, Stock, Páginas) sean válidos.", "Error de Formato General", JOptionPane.ERROR_MESSAGE);
         } catch (java.text.ParseException e) {
-            JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto (yyyy-MM-dd)", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto. Por favor, use dd/MM/yyyy.", "Error de Formato de Fecha", JOptionPane.ERROR_MESSAGE);
         }
 
 

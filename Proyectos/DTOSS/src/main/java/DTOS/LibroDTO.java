@@ -2,7 +2,7 @@ package DTOS;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Objects; // Importar Objects para equals/hashCode
+import java.util.Objects; 
 
 public class LibroDTO {
     private String titulo;

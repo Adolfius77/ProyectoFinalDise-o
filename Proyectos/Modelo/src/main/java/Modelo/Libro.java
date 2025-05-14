@@ -12,6 +12,7 @@ import java.util.Objects;
  * @author emiim
  */
 public class Libro {
+
     private Long id;
     private String titulo;
     private String autor;
@@ -21,8 +22,11 @@ public class Libro {
     private double precio;
     private int cantidadStock;
     private String rutaImagen;
+    private String editorial;
+    private int numPaginas;
 
-    public Libro() {}
+    public Libro() {
+    }
 
     public Long getId() {
         return id;
@@ -96,15 +100,42 @@ public class Libro {
         this.rutaImagen = rutaImagen;
     }
 
+    public String getEditorial() {
+        return editorial;
+    }
+
+    public void setEditorial(String editorial) {
+        this.editorial = editorial;
+    }
+
+    public int getNumPaginas() {
+        return numPaginas;
+    }
+
+    public void setNumPaginas(int numPaginas) {
+        this.numPaginas = numPaginas;
+    }
+
     @Override
-    public boolean equals(Object o) { /* Basado en id o isbn */
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o) {
+        /* Basado en id o isbn */
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Libro libro = (Libro) o;
         return Objects.equals(id, libro.id) || (id == null && Objects.equals(isbn, libro.isbn));
     }
+
     @Override
-    public int hashCode() { return Objects.hash(id != null ? id : isbn); }
-     @Override
-    public String toString() { /* ... */ return "Libro{id=" + id + ", isbn='" + isbn + '\'' + '}'; }
+    public int hashCode() {
+        return Objects.hash(id != null ? id : isbn);
+    }
+
+    @Override
+    public String toString() {
+        /* ... */ return "Libro{id=" + id + ", isbn='" + isbn + '\'' + '}';
+    }
 }

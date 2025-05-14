@@ -69,7 +69,6 @@ public class LibroDAOImplMemoria implements IlibroDAO {
         listaGlobalDeLibros.add(new LibroDTO("El arte de educar jugando", "Silvia Álava", "978-8412334296", fecha5, "EDUCACION", 706.00, "Editorial", 240, 28, "/img/elArteDeEducar.jpg"));
         listaGlobalDeLibros.add(new LibroDTO("Aprendiendo a aprender", "Hector Ruiz Martin", "978-8418045301", fecha6, "EDUCACION", 547.00, "Editorial", 208, 4, "/img/aprendiendoAprender.jpg"));
     }
-
     
     @Override
     public List<LibroDTO> obtenerTodosLosLibros() throws PersistenciaException {
