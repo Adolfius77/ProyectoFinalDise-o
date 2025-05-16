@@ -11,6 +11,7 @@ import Presentacion.GUIAgregarLibro;
 import Presentacion.GUICambioContraseña;
 import Presentacion.GUICarrito;
 import Presentacion.GUICategorias;
+import Presentacion.GUIEditarLibro;
 import Presentacion.GUIEnvioDHL;
 import Presentacion.GUIEnvioEstafeta;
 import Presentacion.GUIINICIO;
@@ -105,11 +106,11 @@ public class ControlNavegacion {
     }
 
     public void navegarCategorias(JFrame frameActual) {
-    if(frameActual != null){
-        frameActual.dispose();
-    }
-    GUICategorias categorias = new GUICategorias(this.carrito);
-    categorias.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+        GUICategorias categorias = new GUICategorias(this.carrito);
+        categorias.setVisible(true);
     }
 
     public void navegarPerfil(JFrame frameActual) {
@@ -219,10 +220,18 @@ public class ControlNavegacion {
             frameActual.dispose();
         }
     }
-    
-    public void navegarAgregarLibro (JFrame frameActual) {
+
+    public void navegarAgregarLibro(JFrame frameActual) {
         GUIAgregarLibro agregarLibro = new GUIAgregarLibro();
         agregarLibro.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+    }
+
+    public void navegarEditarLibro(JFrame frameActual, LibroDTO libroAEditar) {
+        GUIEditarLibro guiEdicion = new GUIEditarLibro(libroAEditar);
+        guiEdicion.setVisible(true);
         if (frameActual != null) {
             frameActual.dispose();
         }

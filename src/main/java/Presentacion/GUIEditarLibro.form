@@ -51,7 +51,7 @@
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jPanelAgregarPortada" min="-2" max="-2" attributes="0"/>
+                  <Component id="jPanelEditarPortada" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -66,7 +66,7 @@
                           <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="29" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="jPanelAgregarPortada" max="32767" attributes="0"/>
+                      <Component id="jPanelEditarPortada" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               </Group>
@@ -230,26 +230,25 @@
                                           <Component id="lblEditorial" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="txtFldEditorial" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
                                           <Component id="cmbBoxCategoria" min="-2" pref="300" max="-2" attributes="0"/>
-                                          <Component id="lblStock" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="txtFldStock" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace pref="60" max="32767" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="lblFechaLanzamiento" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtFldFechaLanzamiento" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
-                                              <Component id="lblISBN" min="-2" max="-2" attributes="0"/>
-                                              <Component id="txtFldISBN" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
-                                              <Component id="txtFldNumPaginas" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
-                                              <Component id="lblNumPaginas" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Component id="btnAgregarPortada" alignment="1" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="lblFechaLanzamiento" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFldFechaLanzamiento" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                                          <Component id="lblISBN" min="-2" max="-2" attributes="0"/>
+                                          <Component id="txtFldISBN" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                                          <Component id="txtFldNumPaginas" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                                          <Component id="lblNumPaginas" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <Group type="102" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
                                       <Component id="btnRegresar" min="-2" pref="161" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="btnAgregar" min="-2" pref="161" max="-2" attributes="0"/>
+                                      <Component id="btnEditar" min="-2" pref="161" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="btnEditarPortada" min="-2" pref="140" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
@@ -310,21 +309,16 @@
                                       <Component id="txtFldNumPaginas" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblStock" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtFldStock" min="-2" pref="39" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="btnAgregarPortada" min="-2" pref="51" max="-2" attributes="0"/>
+                          <Component id="btnEditarPortada" min="-2" pref="51" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="18" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <Component id="btnAgregar" min="-2" pref="58" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="btnRegresar" alignment="1" min="-2" pref="58" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="btnEditar" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
+                          <Component id="btnRegresar" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -466,22 +460,7 @@
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JTextField" name="txtFldStock">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="18" style="0"/>
-                </Property>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblStock">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Segoe UI" size="24" style="1"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Stock:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnAgregar">
+            <Component class="javax.swing.JButton" name="btnEditar">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="8f" green="55" red="65" type="rgb"/>
@@ -492,13 +471,13 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Agregar"/>
+                <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnAgregarPortada">
+            <Component class="javax.swing.JButton" name="btnEditarPortada">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="8f" green="55" red="65" type="rgb"/>
@@ -509,10 +488,10 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Agregar Portada"/>
+                <Property name="text" type="java.lang.String" value="Editar Portada"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarPortadaActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarPortadaActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnRegresar">
@@ -534,7 +513,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanelAgregarPortada">
+        <Container class="javax.swing.JPanel" name="jPanelEditarPortada">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="de" green="bc" red="de" type="rgb"/>

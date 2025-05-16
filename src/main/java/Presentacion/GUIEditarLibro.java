@@ -26,15 +26,18 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author garfi
  */
-public class GUIAgregarLibro extends javax.swing.JFrame {
+public class GUIEditarLibro extends javax.swing.JFrame {
 
     /**
      * Creates new form GUIPagPrincipal
      */
+    private LibroDTO libroOriginal;
     private String rutaImagenSeleccionada = "";
 
-    public GUIAgregarLibro() {
+    public GUIEditarLibro(LibroDTO libroAEditar) {
         initComponents();
+        this.libroOriginal = libroAEditar;
+        cargarDatosLibro();
         setLocationRelativeTo(null);
         configurarNavegacion();
     }
@@ -90,6 +93,61 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         CmbOpciones.setSelectedIndex(0);
     }
 
+    private void cargarDatosLibro() {
+        if (libroOriginal == null) {
+            JOptionPane.showMessageDialog(this, "Error: No existe libro para cargar datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (btnEditar != null) {
+                btnEditar.setEnabled(false);
+            }
+            return;
+        }
+
+        txtFldNombreProducto.setText(libroOriginal.getTitulo());
+        txtFldAutor.setText(libroOriginal.getAutor());
+        txtFldISBN.setText(libroOriginal.getIsbn());
+        txtFldISBN.setEditable(false);
+
+        if (libroOriginal.getFechaLanzamiento() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            txtFldFechaLanzamiento.setText(sdf.format(libroOriginal.getFechaLanzamiento()));
+        }
+        cmbBoxCategoria.setSelectedItem(libroOriginal.getCategoria());
+        txtFldPrecio.setText(String.valueOf(libroOriginal.getPrecio()));
+        txtFldEditorial.setText(libroOriginal.getEditorial());
+        txtFldNumPaginas.setText(String.valueOf(libroOriginal.getNumPaginas()));
+
+        this.rutaImagenSeleccionada = libroOriginal.getRutaImagen();
+        if (this.rutaImagenSeleccionada != null && !this.rutaImagenSeleccionada.isEmpty() && lblImagen != null) {
+            try {
+                java.net.URL imgUrl = getClass().getResource(this.rutaImagenSeleccionada);
+                if (imgUrl != null) {
+                    ImageIcon icon = new ImageIcon(imgUrl);
+                    int lblWidth = lblImagen.getWidth() > 0 ? lblImagen.getWidth() : (lblImagen.getPreferredSize() != null ? lblImagen.getPreferredSize().width : 100);
+                    int lblHeight = lblImagen.getHeight() > 0 ? lblImagen.getHeight() : (lblImagen.getPreferredSize() != null ? lblImagen.getPreferredSize().height : 120);
+
+                    if (lblWidth > 0 && lblHeight > 0) {
+                        Image img = icon.getImage().getScaledInstance(lblWidth, lblHeight, Image.SCALE_SMOOTH);
+                        lblImagen.setIcon(new ImageIcon(img));
+                    } else {
+                        lblImagen.setIcon(icon);
+                    }
+                    lblImagen.setText("");
+                } else {
+                    lblImagen.setText("Portada no encontrada");
+                    lblImagen.setIcon(null);
+                    System.err.println("Edición: Recurso de imagen no encontrado: " + this.rutaImagenSeleccionada);
+                }
+            } catch (Exception e) {
+                lblImagen.setText("Error al cargar portada");
+                lblImagen.setIcon(null);
+                System.err.println("Edición: Excepción al cargar imagen '" + this.rutaImagenSeleccionada + "': " + e.getMessage());
+            }
+        } else if (lblImagen != null) {
+            lblImagen.setText("Sin portada o error. Puede cargar una nueva.");
+            lblImagen.setIcon(null);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -123,12 +181,10 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         txtFldEditorial = new javax.swing.JTextField();
         lblNumPaginas = new javax.swing.JLabel();
         cmbBoxCategoria = new javax.swing.JComboBox<>();
-        txtFldStock = new javax.swing.JTextField();
-        lblStock = new javax.swing.JLabel();
-        btnAgregar = new javax.swing.JButton();
-        btnAgregarPortada = new javax.swing.JButton();
+        btnEditar = new javax.swing.JButton();
+        btnEditarPortada = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
-        jPanelAgregarPortada = new javax.swing.JPanel();
+        jPanelEditarPortada = new javax.swing.JPanel();
         lblImagen = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
@@ -259,28 +315,23 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
             }
         });
 
-        txtFldStock.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        lblStock.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblStock.setText("Stock:");
-
-        btnAgregar.setBackground(new java.awt.Color(101, 85, 143));
-        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregar.setText("Agregar");
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+        btnEditar.setBackground(new java.awt.Color(101, 85, 143));
+        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
+                btnEditarActionPerformed(evt);
             }
         });
 
-        btnAgregarPortada.setBackground(new java.awt.Color(101, 85, 143));
-        btnAgregarPortada.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAgregarPortada.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarPortada.setText("Agregar Portada");
-        btnAgregarPortada.addActionListener(new java.awt.event.ActionListener() {
+        btnEditarPortada.setBackground(new java.awt.Color(101, 85, 143));
+        btnEditarPortada.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEditarPortada.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarPortada.setText("Editar Portada");
+        btnEditarPortada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarPortadaActionPerformed(evt);
+                btnEditarPortadaActionPerformed(evt);
             }
         });
 
@@ -314,23 +365,22 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                                     .addComponent(lblCategoria)
                                     .addComponent(lblEditorial)
                                     .addComponent(txtFldEditorial, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cmbBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblStock)
-                                    .addComponent(txtFldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cmbBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(lblFechaLanzamiento)
-                                        .addComponent(txtFldFechaLanzamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblISBN)
-                                        .addComponent(txtFldISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtFldNumPaginas, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblNumPaginas))
-                                    .addComponent(btnAgregarPortada, javax.swing.GroupLayout.Alignment.TRAILING)))
+                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblFechaLanzamiento)
+                                    .addComponent(txtFldFechaLanzamiento, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblISBN)
+                                    .addComponent(txtFldISBN, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFldNumPaginas, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblNumPaginas)))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnEditarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(12, 12, 12)))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
@@ -376,40 +426,36 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                                 .addComponent(lblNumPaginas)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtFldNumPaginas)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblStock)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFldStock, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnAgregarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(89, 89, 89))
+                    .addComponent(btnEditarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(btnRegresar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        jPanelAgregarPortada.setBackground(new java.awt.Color(222, 188, 222));
+        jPanelEditarPortada.setBackground(new java.awt.Color(222, 188, 222));
 
         jLabel1.setToolTipText("");
 
-        javax.swing.GroupLayout jPanelAgregarPortadaLayout = new javax.swing.GroupLayout(jPanelAgregarPortada);
-        jPanelAgregarPortada.setLayout(jPanelAgregarPortadaLayout);
-        jPanelAgregarPortadaLayout.setHorizontalGroup(
-            jPanelAgregarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
+        javax.swing.GroupLayout jPanelEditarPortadaLayout = new javax.swing.GroupLayout(jPanelEditarPortada);
+        jPanelEditarPortada.setLayout(jPanelEditarPortadaLayout);
+        jPanelEditarPortadaLayout.setHorizontalGroup(
+            jPanelEditarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEditarPortadaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1))
         );
-        jPanelAgregarPortadaLayout.setVerticalGroup(
-            jPanelAgregarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
+        jPanelEditarPortadaLayout.setVerticalGroup(
+            jPanelEditarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelEditarPortadaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
+            .addGroup(jPanelEditarPortadaLayout.createSequentialGroup()
                 .addGap(314, 314, 314)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -424,7 +470,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelAgregarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanelEditarPortada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -436,7 +482,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 29, Short.MAX_VALUE))
-                    .addComponent(jPanelAgregarPortada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanelEditarPortada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12))
         );
 
@@ -472,160 +518,73 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbBoxCategoriaActionPerformed
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if (libroOriginal == null) {
+            JOptionPane.showMessageDialog(this, "Error: No hay información original del libro para guardar cambios.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 1. Recolectar datos de los campos
         String titulo = txtFldNombreProducto.getText().trim();
         String autor = txtFldAutor.getText().trim();
-        String isbn = txtFldISBN.getText().trim();
+        String isbnDelLibro = libroOriginal.getIsbn(); // Usar el ISBN original, no del campo
         String fechaStr = txtFldFechaLanzamiento.getText().trim();
         String categoria = (String) cmbBoxCategoria.getSelectedItem();
         String editorial = txtFldEditorial.getText().trim();
+        String numPaginasStr = txtFldNumPaginas.getText().trim();
+        // El campo de Stock fue removido, así que usaremos la cantidad original
+        int cantidadOriginal = libroOriginal.getCantidad();
+        String precioStr = txtFldPrecio.getText().trim();
+        // this.rutaImagenSeleccionada se actualiza si el usuario usa btnAgregarPortadaActionPerformed
 
+        // 2. VALIDACIONES (similares a GUIAgregarLibro, pero sin validar ISBN si no es editable)
+        if (titulo.isEmpty() || autor.isEmpty() || fechaStr.isEmpty() || editorial.isEmpty()
+                || numPaginasStr.isEmpty() || precioStr.isEmpty()
+                || (this.rutaImagenSeleccionada == null || this.rutaImagenSeleccionada.trim().isEmpty())) { // Portada sigue siendo requerida
+            JOptionPane.showMessageDialog(this, "Todos los campos (incluida la portada) son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Date fechaLanzamiento = null;
         int numPaginas = 0;
-        int cantidad = 0;
         double precio = 0.0;
-
-        if (titulo.isEmpty() || autor.isEmpty() || isbn.isEmpty() || fechaStr.isEmpty()
-                || editorial.isEmpty() || txtFldNumPaginas.getText().trim().isEmpty()
-                || txtFldStock.getText().trim().isEmpty() || txtFldPrecio.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (this.rutaImagenSeleccionada == null || this.rutaImagenSeleccionada.trim().isEmpty()) {
-
-            JOptionPane.showMessageDialog(this,
-                    "Debe seleccionar una imagen de portada para el libro.",
-                    "Portada Requerida",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-
-        }
-
-        String isbnLimpio = isbn.replaceAll("[\\s-]+", ""); // Limpiar guiones y espacios
-        boolean formatoIsbnCorrecto = false;
-        if (isbnLimpio.length() == 10) {
-            if (isbnLimpio.substring(0, 9).matches("\\d{9}")) { // Primeros 9 son dígitos
-                char ultimoCaracter = isbnLimpio.charAt(9);
-                if (Character.isDigit(ultimoCaracter) || Character.toUpperCase(ultimoCaracter) == 'X') {
-                    formatoIsbnCorrecto = true;
-                }
-            }
-        } else if (isbnLimpio.length() == 13) {
-            if (isbnLimpio.matches("\\d{13}")) { // Todos son dígitos
-                formatoIsbnCorrecto = true;
-            }
-        }
-
-        if (!formatoIsbnCorrecto) {
-            JOptionPane.showMessageDialog(this,
-                    "El formato del ISBN no es válido.\n"
-                    + "Debe ser de 10 dígitos (el último puede ser 'X') o 13 dígitos numéricos.\n"
-                    + "Los guiones y espacios son opcionales y se ignorarán para la validación.",
-                    "ISBN Inválido",
-                    JOptionPane.ERROR_MESSAGE);
-            txtFldISBN.requestFocus();
-            return;
-        }
-
         try {
-
-            try {
-                numPaginas = Integer.parseInt(txtFldNumPaginas.getText().trim());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Número de páginas debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            try {
-                cantidad = Integer.parseInt(txtFldStock.getText().trim());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Stock (Cantidad) debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            try {
-                precio = Double.parseDouble(txtFldPrecio.getText().trim());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "Precio debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            if (cantidad < 0) {
-                JOptionPane.showMessageDialog(this, "El stock no puede ser negativo.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (precio < 0) {
-                JOptionPane.showMessageDialog(this, "El precio no puede ser negativo.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            if (numPaginas <= 0) {
-                JOptionPane.showMessageDialog(this, "El número de páginas debe ser mayor que cero.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             sdf.setLenient(false);
-            Date fechaLanzamiento = sdf.parse(fechaStr);
-
-            LibroDTO nuevoLibro = new LibroDTO(
-                    titulo,
-                    autor,
-                    isbnLimpio,
-                    fechaLanzamiento,
-                    categoria,
-                    precio,
-                    editorial,
-                    numPaginas,
-                    cantidad,
-                    rutaImagenSeleccionada
-            );
-
-            BoProductos boProductos = new BoProductos();
-            boolean agregadoExitosamente = boProductos.agregarLibro(nuevoLibro);
-
-            if (agregadoExitosamente) {
-                int resultado = JOptionPane.showConfirmDialog(this,
-                        "¿Está seguro de querer agregar el producto \"" + titulo + "\"?",
-                        "Confirmación Agregar Libro",
-                        JOptionPane.YES_NO_OPTION);
-
-                if (resultado == JOptionPane.YES_OPTION) {
-                    System.out.println("Se agregó el libro con éxito: " + titulo);
-                    JOptionPane.showMessageDialog(this, "Libro \"" + titulo + "\" agregado con éxito.");
-
-                    ControlNavegacion.getInstase().navegarGestionLibro(this);
-
-                    // Limpiar campos
-                    txtFldNombreProducto.setText("");
-                    txtFldAutor.setText("");
-                    txtFldISBN.setText("");
-                    txtFldFechaLanzamiento.setText("");
-                    cmbBoxCategoria.setSelectedIndex(0);
-                    txtFldEditorial.setText("");
-                    txtFldNumPaginas.setText("");
-                    txtFldStock.setText("");
-                    txtFldPrecio.setText("");
-                    rutaImagenSeleccionada = "";
-                    lblImagen.setIcon(null);
-                    lblImagen.setText("Portada aquí...");
-
-                } else {
-                    System.out.println("Adición del libro \"" + titulo + "\" cancelada por el usuario.");
-
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar el libro. El ISBN podría ya existir.", "Error de Registro", JOptionPane.ERROR_MESSAGE);
+            fechaLanzamiento = sdf.parse(fechaStr);
+            numPaginas = Integer.parseInt(numPaginasStr);
+            precio = Double.parseDouble(precioStr);
+            if (numPaginas <= 0 || precio < 0) {
+                throw new NumberFormatException("Valores no permitidos");
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error en el formato de los campos numéricos o de fecha.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        } catch (NumberFormatException e) {
+        // 3. Crear el LibroDTO actualizado
+        LibroDTO libroActualizado = new LibroDTO(
+                titulo, autor, isbnDelLibro, fechaLanzamiento, categoria, precio,
+                editorial, numPaginas,
+                cantidadOriginal, // Usar la cantidad original ya que no hay campo de stock
+                this.rutaImagenSeleccionada // Esta puede haber sido actualizada por btnAgregarPortadaActionPerformed
+        );
 
-            JOptionPane.showMessageDialog(this, "Asegúrese de que los campos numéricos (Precio, Stock, Páginas) sean válidos.", "Error de Formato General", JOptionPane.ERROR_MESSAGE);
-        } catch (java.text.ParseException e) {
-            JOptionPane.showMessageDialog(this, "Formato de fecha incorrecto. Por favor, use dd/MM/yyyy.", "Error de Formato de Fecha", JOptionPane.ERROR_MESSAGE);
+        // 4. Llamar a la lógica de negocio para actualizar
+        BoProductos boProductos = new BoProductos();
+        boolean actualizadoExitosamente = boProductos.actualizarLibro(libroActualizado);
+
+        if (actualizadoExitosamente) {
+            JOptionPane.showMessageDialog(this, "Libro \"" + titulo + "\" actualizado con éxito.");
+            ControlNavegacion.getInstase().navegarGestionLibro(this); // Vuelve y refresca
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al actualizar el libro. Verifique los datos o contacte al administrador.", "Error de Actualización", JOptionPane.ERROR_MESSAGE);
         }
 
 
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void btnAgregarPortadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarPortadaActionPerformed
+    private void btnEditarPortadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarPortadaActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "png", "gif");
         fileChooser.setFileFilter(filter);
@@ -678,7 +637,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                 this.rutaImagenSeleccionada = "";
             }
         }
-    }//GEN-LAST:event_btnAgregarPortadaActionPerformed
+    }//GEN-LAST:event_btnEditarPortadaActionPerformed
 
     private void CmbOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CmbOpcionesActionPerformed
         // TODO add your handling code here:
@@ -705,14 +664,18 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIAgregarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIEditarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIAgregarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIEditarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIAgregarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIEditarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIAgregarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUIEditarLibro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -721,7 +684,13 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GUIAgregarLibro().setVisible(true);
+                Date fechaEjemplo = new Date();
+                LibroDTO libroDePrueba = new LibroDTO(
+                        "Título de Prueba", "Autor de Prueba", "1234567890123",
+                        fechaEjemplo, "FANTASIA", 29.99,
+                        "Editorial Prueba", 300, 10, "/img/balatroLibro.jpg"
+                );
+                new GUIEditarLibro(libroDePrueba).setVisible(true);
             }
         });
     }
@@ -729,8 +698,8 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> CmbOpciones;
     private javax.swing.JLabel LblLogo;
-    private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAgregarPortada;
+    private javax.swing.JButton btnEditar;
+    private javax.swing.JButton btnEditarPortada;
     private javax.swing.JButton btnInicio;
     private javax.swing.JButton btnPerfil;
     private javax.swing.JButton btnRegresar;
@@ -739,7 +708,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanelAgregarPortada;
+    private javax.swing.JPanel jPanelEditarPortada;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblCategoria;
     private javax.swing.JLabel lblEditorial;
@@ -750,7 +719,6 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
     private javax.swing.JLabel lblNombreProducto;
     private javax.swing.JLabel lblNumPaginas;
     private javax.swing.JLabel lblPrecio;
-    private javax.swing.JLabel lblStock;
     private javax.swing.JTextField txtFldAutor;
     private javax.swing.JTextField txtFldEditorial;
     private javax.swing.JTextField txtFldFechaLanzamiento;
@@ -758,6 +726,5 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
     private javax.swing.JTextField txtFldNombreProducto;
     private javax.swing.JTextField txtFldNumPaginas;
     private javax.swing.JTextField txtFldPrecio;
-    private javax.swing.JTextField txtFldStock;
     // End of variables declaration//GEN-END:variables
 }

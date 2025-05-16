@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoProductos {
+
     // Usar la interfaz DAO para la persistencia de libros
     private IlibroDAO libroDAO;
 
@@ -34,6 +35,27 @@ public class BoProductos {
             }
         } else {
             System.out.println("Error: el libro no puede ser nulo o debe tener un título o ISBN.");
+            return false;
+        }
+    }
+
+    public boolean actualizarLibro(LibroDTO libro) {
+        if (libro != null && libro.getIsbn() != null && !libro.getIsbn().trim().isEmpty()
+                && libro.getTitulo() != null && !libro.getTitulo().isEmpty()) {
+            try {
+                boolean actualizado = libroDAO.actualizarLibro(libro);
+                if (actualizado) {
+                    System.out.println("Libro actualizado correctamente a través de BoProductos -> DAO: " + libro.getTitulo());
+                } else {
+                    System.out.println("BoProductos: No se encontró el libro con ISBN " + libro.getIsbn() + " para actualizar, o error en DAO.");
+                }
+                return actualizado;
+            } catch (PersistenciaException e) {
+                System.err.println("Error de persistencia al actualizar libro (BoProductos): " + e.getMessage());
+                return false;
+            }
+        } else {
+            System.err.println("BoProductos Error: El libro a actualizar no puede ser nulo o le faltan datos esenciales (ISBN, Título).");
             return false;
         }
     }
