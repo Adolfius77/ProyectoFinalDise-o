@@ -13,16 +13,41 @@ import expciones.PersistenciaException;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javax.xml.crypto.Data;
+import com.lowagie.text.Document; 
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.awt.Font;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author USER
@@ -37,8 +62,61 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         cargarTodosLosLibros();
         cargarHistorialEnPanel(ControlNavegacion.getInstase().obtenerHistorialDeEntradas());
         setLocationRelativeTo(null);
+        
+        
+    }
+ private void configurarNavegacion() {
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+
+       
+        if (BtnInicio != null) {
+            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+        }
+       
+        if (BtnPerfil != null) {
+            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        }
+       
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        }
+        if (btnGenerarReporte != null) { 
+            btnGenerarReporte.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    btnGenerarReporteActionPerformed(e);
+                }
+            });
+        }
     }
 
+    private void manejarAccionOpciones() {
+        String seleccion = (String) CMBOpciones.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
+            return;
+        }
+
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        switch (seleccion) {
+            case "Cambiar Contraseña":
+                navegador.navegarCambioPasssword(this);
+                break;
+            case "Cerrar Sesion":
+                navegador.cerrarSesion(this);
+                break;
+            case "Gestion de Libros":
+                navegador.navegarGestionLibro(this);
+                break;
+            case "Registrar Entrada":
+                navegador.navegarRegistroEntrada(this);
+                break;
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
+                break;
+        }
+        CMBOpciones.setSelectedIndex(0); // Resetear
+    }
+    
     private void cargarTodosLosLibros() {
         BoProductos bo = new BoProductos();
         try {
@@ -107,6 +185,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         PanelActualizable = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        btnGenerarReporte = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(101, 85, 143));
 
@@ -380,7 +459,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones1.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial compras", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CMBOpciones1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Cerrar Sesion" }));
         CMBOpciones1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones1.addActionListener(new java.awt.event.ActionListener() {
@@ -468,18 +547,30 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
 
+        btnGenerarReporte.setText("Generar Reporte en PDF");
+        btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 1154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel7Layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 1154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addGap(519, 519, 519)
+                        .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
@@ -490,8 +581,10 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                     .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
                 .addGap(23, 23, 23)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -560,7 +653,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             return;
         }
 
-        // Usando las estrategias desde el paquete Persistencia
+        
         IBuscadorHistorial buscadorTitulo = new Persistencia.BuscarHistorialPorTitulo();
         IBuscadorHistorial buscadorIsbn = new Persistencia.BuscarHistorialPorISBN();
         IBuscadorHistorial buscadorCategoria = new Persistencia.BuscarHistorialPorCategoria();
@@ -658,6 +751,116 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_agregarPortadaMouseClicked
 
+    private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
+     List<EntradaHistorialDTO> historial = ControlNavegacion.getInstase().obtenerHistorialDeEntradas();
+     if(historial == null || historial.isEmpty()){
+            JOptionPane.showMessageDialog(this, "No hay entradas en el historial para generar un reporte.", "Historial Vacío", JOptionPane.INFORMATION_MESSAGE);
+            return;
+     }
+     List<EntradaHistorialDTO> historialParaReporte = new ArrayList<>(historial);
+        Collections.reverse(historialParaReporte);
+        
+        try {
+            generarReportePDFEntradas(historialParaReporte);
+        } catch (IOException ex) {
+            Logger.getLogger(GUIHistorialEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGenerarReporteActionPerformed
+    
+    private void generarReportePDFEntradas(List<EntradaHistorialDTO> entradasParaReporte) throws IOException{
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("guardar reporte de entradas de libros: ");
+        SimpleDateFormat sdfNombreArchivo = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String nombreArchivoSugerido = "ReporteEntradaLibros_" + sdfNombreArchivo.format(new Date()) + ".pdf";
+        fileChooser.setSelectedFile(new File(nombreArchivoSugerido));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF(*.pdf)","pdf"));
+        
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            if (!fileToSave.getAbsolutePath().toLowerCase().endsWith(".pdf")) {
+                fileToSave = new File(fileToSave.getAbsolutePath() + ".pdf");
+            }
+          Document document = new Document(PageSize.A4.rotate()); 
+          
+            try {
+                    com.lowagie.text.Font fontTituloDoc = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, java.awt.Color.BLACK); // <--- AQUÍ SE DECLARA E INICIALIZA
+
+                PdfWriter.getInstance(document, new FileOutputStream(fileToSave));
+                document.open();
+                 Paragraph tituloDoc = new Paragraph("Reporte de Entradas de Libros", fontTituloDoc);
+                 tituloDoc.setAlignment(Element.ALIGN_CENTER);
+            tituloDoc.setSpacingBefore(10);
+            tituloDoc.setSpacingAfter(20);
+            document.add(tituloDoc);
+
+            // Fecha de Generación
+            SimpleDateFormat sdfFechaHoraReporte = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Paragraph fechaGen = new Paragraph("Generado el: " + sdfFechaHoraReporte.format(new Date()), FontFactory.getFont(FontFactory.HELVETICA, 10));
+            fechaGen.setAlignment(Element.ALIGN_RIGHT);
+            fechaGen.setSpacingAfter(15);
+            document.add(fechaGen);
+            
+            // Creación de la tabla
+            PdfPTable table = new PdfPTable(5); 
+            table.setWidthPercentage(100);
+            float[] columnWidths = {2.5f, 4f, 1.5f, 2f, 1.5f};
+            try {
+                table.setWidths(columnWidths);
+            } catch (DocumentException ex) {
+                System.err.println("Error al establecer anchos de columna: " + ex.getMessage());
+            }
+
+            // Encabezados de la tabla
+                com.lowagie.text.Font fontEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, java.awt.Color.WHITE);
+            String[] headers = {"ISBN", "Título del Libro", "Cantidad Entrada", "Fecha Entrada", "Hora Entrada"};
+            
+            for (String header : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(header, fontEncabezado));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                cell.setBackgroundColor(new java.awt.Color(101, 85, 143)); 
+                cell.setPadding(5);
+                table.addCell(cell);
+            }
+            table.setHeaderRows(1);
+
+            // Contenido de la tabla
+                com.lowagie.text.Font fontCelda = FontFactory.getFont(FontFactory.HELVETICA, 9, java.awt.Color.BLACK);
+            for (EntradaHistorialDTO entrada : entradasParaReporte) {
+                table.addCell(new PdfPCell(new Phrase(entrada.getIsbn(), fontCelda)));
+                table.addCell(new PdfPCell(new Phrase(entrada.getTituloLibro(), fontCelda)));
+                
+                PdfPCell cellCantidad = new PdfPCell(new Phrase(String.valueOf(entrada.getCantidadEntrada()), fontCelda));
+                cellCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cellCantidad);
+                
+                table.addCell(new PdfPCell(new Phrase(entrada.getFechaFormateada(), fontCelda)));
+                table.addCell(new PdfPCell(new Phrase(entrada.getHoraFormateada(), fontCelda)));
+            }
+
+            document.add(table);
+            document.close();
+
+            JOptionPane.showMessageDialog(this, "Reporte PDF generado exitosamente en:\n" + fileToSave.getAbsolutePath(), "PDF Generado", JOptionPane.INFORMATION_MESSAGE);
+
+          
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().open(fileToSave);
+                } catch (IOException ex) {
+                    System.err.println("No se pudo abrir el PDF automáticamente: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF automáticamente.\nPor favor, búsquelo en: " + fileToSave.getAbsolutePath(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+
+        } catch (DocumentException | FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage(), "Error de PDF", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+                
+    }
     /**
      * @param args the command line arguments
      */
@@ -688,6 +891,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIHistorialEntradas().setVisible(true);
             }
@@ -707,6 +911,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JButton agregarPortada;
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnCategorias1;
+    private javax.swing.JButton btnGenerarReporte;
     private javax.swing.JComboBox<String> cmbProvedor;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
