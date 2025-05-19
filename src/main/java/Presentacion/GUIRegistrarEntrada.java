@@ -13,6 +13,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,7 +44,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         configurarNavegacion();
         habilitarCamposRegistroEntrada(false);
-        habilitarCamposRegistroEntrada(false);
+
         habilitarCamposInfoLibro(false);
     }
 
@@ -53,9 +54,11 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         if (btnInicio != null) {
             btnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
+
         if (btnPerfil != null) {
             btnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
         }
+
         if (CmbOpciones != null) {
             CmbOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -78,20 +81,28 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 break;
             case "Gestion de Libros":
                 navegador.navegarGestionLibro(this);
+                break;
             case "Registrar Entrada":
                 navegador.navegarRegistroEntrada(this);
                 break;
-
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
+                break;
         }
-        CmbOpciones.setSelectedIndex(0);
+        CmbOpciones.setSelectedIndex(0); // Resetear
     }
 
     private void inicializarCamposEntrada() {
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
         Date now = new Date();
-        txtFechaEntrada.setText(sdfDate.format(now));
-        txtHoraEntrada.setText(sdfDate.format(now));
+        if (txtFechaEntrada != null) {
+            txtFechaEntrada.setText(sdfDate.format(now));
+        }
+        if (txtHoraEntrada != null) {
+            txtHoraEntrada.setText(sdfTime.format(now));
+        }
+
     }
 
     private void habilitarCamposInfoLibro(boolean habilitar) {
@@ -131,11 +142,21 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
 
     private void limpiarCamposParaNuevaBusqueda() {
         txtIsbn.setText("");
+        txtIsbn.setEditable(true);
+        BtnBuscarIsbn.setEnabled(true);
+
         libroEcontrado = null;
+
         limpiarCamposInfoLibro();
         habilitarCamposInfoLibro(false);
+
         limpiarCamposRegistroEntrada();
         habilitarCamposRegistroEntrada(false);
+
+        if (lblImagen != null && jPanelAgregarPortada != null) {
+            lblImagen.setText("Portada del Libro");
+            lblImagen.setIcon(null);
+        }
         txtIsbn.requestFocus();
     }
 
@@ -914,9 +935,10 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
     private void BtnBuscarIsbnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBuscarIsbnActionPerformed
         String isbnBuscado = txtIsbn.getText().trim();
         if (isbnBuscado.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "porfavor ingrese un isbn para buscar el libro");
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un ISBN para buscar.", "ISBN Vacío", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         BoProductos boProductos = new BoProductos();
         try {
             libroEcontrado = boProductos.obtenerLibrosPorIsbn(isbnBuscado);
@@ -926,45 +948,50 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 txtAutor.setText(libroEcontrado.getAutor());
                 txtStockActual.setText(String.valueOf(libroEcontrado.getCantidad()));
 
-                if (libroEcontrado.getRutaImagen() != null && !libroEcontrado.getRutaImagen().isEmpty()) {
-                    try {
-                        ImageIcon iconOriginal = new ImageIcon(getClass().getResource(libroEcontrado.getRutaImagen()));
-                        if (iconOriginal.getImageLoadStatus() == java.awt.MediaTracker.ERRORED || iconOriginal.getIconWidth() == -1) {
-                            lblImagen.setText("portada no encontrada");
-                            lblImagen.setText(null);
-                        } else {
-                            Image img = iconOriginal.getImage().getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH);
-                            lblImagen.setIcon(new ImageIcon(img));
-                            lblImagen.setText("");
-                        }
-                    } catch (Exception e) {
-                        lblImagen.setText("error al cargar la protada");
-                        lblImagen.setIcon(null);
-                        System.err.println("error al cargar la imagen" + libroEcontrado.getRutaImagen() + " - " + e.getMessage());
+                txtIsbn.setEditable(false);
+                BtnBuscarIsbn.setEnabled(false);
 
+                if (lblImagen != null && libroEcontrado.getRutaImagen() != null && !libroEcontrado.getRutaImagen().isEmpty()) {
+                    URL imgUrl = getClass().getResource(libroEcontrado.getRutaImagen());
+                    if (imgUrl != null) {
+                        ImageIcon icon = new ImageIcon(imgUrl);
+                        Dimension prefSize = lblImagen.getPreferredSize();
+                        int anchoImg = prefSize.width > 0 ? prefSize.width : (jPanelAgregarPortada != null && jPanelAgregarPortada.getWidth() > 0 ? jPanelAgregarPortada.getWidth() - 10 : 200);
+                        int altoImg = prefSize.height > 0 ? prefSize.height : (jPanelAgregarPortada != null && jPanelAgregarPortada.getHeight() > 0 ? jPanelAgregarPortada.getHeight() - 10 : 280);
+                        if (anchoImg <= 0) {
+                            anchoImg = 200; //Fallback
+                        }
+                        if (altoImg <= 0) {
+                            altoImg = 280; //Fallback
+                        }
+                        Image img = icon.getImage().getScaledInstance(anchoImg, altoImg, Image.SCALE_SMOOTH);
+                        lblImagen.setIcon(new ImageIcon(img));
+                        lblImagen.setText("");
+                    } else {
+                        lblImagen.setText("Portada no encontrada");
+                        lblImagen.setIcon(null);
                     }
-                } else {
-                    lblImagen.setText("sin portada");
+                } else if (lblImagen != null) {
+                    lblImagen.setText("Sin portada");
                     lblImagen.setIcon(null);
                 }
+
                 habilitarCamposInfoLibro(true);
                 habilitarCamposRegistroEntrada(true);
                 txtCantidadEntrada.requestFocus();
             } else {
-                JOptionPane.showMessageDialog(this, "libro con isbn: " + isbnBuscado + " no econtrado" + JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Libro con ISBN '" + isbnBuscado + "' no encontrado.", "No Encontrado", JOptionPane.INFORMATION_MESSAGE);
                 limpiarCamposInfoLibro();
                 habilitarCamposInfoLibro(false);
-                limpiarCamposRegistroEntrada();
                 habilitarCamposRegistroEntrada(false);
                 libroEcontrado = null;
+                txtIsbn.setEditable(true);
+                BtnBuscarIsbn.setEnabled(true);
             }
         } catch (PersistenciaException e) {
             JOptionPane.showMessageDialog(this, "Error al buscar el libro: " + e.getMessage(), "Error de Búsqueda", JOptionPane.ERROR_MESSAGE);
-            libroEcontrado = null;
-            limpiarCamposInfoLibro();
-            habilitarCamposInfoLibro(false);
-            limpiarCamposRegistroEntrada();
-            habilitarCamposRegistroEntrada(false);
+
+            limpiarCamposParaNuevaBusqueda();
         }
     }//GEN-LAST:event_BtnBuscarIsbnActionPerformed
 
@@ -1005,7 +1032,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
             txtFechaEntrada.requestFocus();
             return;
         }
-        Date fechaHoraActual = Calendar.getInstance().getTime(); 
+        Date fechaHoraActual = Calendar.getInstance().getTime();
 
         int stockActual = libroEcontrado.getCantidad();
         int nuevoStock = stockActual + cantidadEntrada;
@@ -1031,15 +1058,14 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                         cantidadEntrada,
                         fechaHoraActual
                 );
-              ControlNavegacion.getInstase().agregarEntradaAlHistorial(entradaHistorialDTO);
-              JOptionPane.showMessageDialog(this, 
-                    "Entrada de " + cantidadEntrada + " unidades registrada para el libro: '" + libroEcontrado.getTitulo() + "'.\n" +
-                    "Nuevo stock: " + nuevoStock, 
-                    "Entrada Registrada", 
-                    JOptionPane.INFORMATION_MESSAGE);
-                
+                ControlNavegacion.getInstase().agregarEntradaAlHistorial(entradaHistorialDTO);
+                JOptionPane.showMessageDialog(this,
+                        "Entrada de " + cantidadEntrada + " unidades registrada para el libro: '" + libroEcontrado.getTitulo() + "'.\n"
+                        + "Nuevo stock: " + nuevoStock,
+                        "Entrada Registrada",
+                        JOptionPane.INFORMATION_MESSAGE);
+
                 limpiarCamposParaNuevaBusqueda();
-              
 
             }
 

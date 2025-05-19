@@ -5,6 +5,7 @@ import DTOS.LibroDTO;
 import Negocio.BoProductos;
 import com.lowagie.text.pdf.PdfWriter;
 import expciones.PersistenciaException;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +46,6 @@ public class RegistroHistorial extends javax.swing.JPanel {
             lblFechaEntrada.setText(entrada.getFechaFormateada());
             lblHoraEntrada.setText(entrada.getHoraFormateada());
 
-            // Cargar la portada del libro (esto requiere acceso al LibroDTO original)
             BoProductos bo = new BoProductos();
             try {
                 LibroDTO libroOriginal = bo.obtenerLibrosPorIsbn(entrada.getIsbn());
@@ -53,24 +53,43 @@ public class RegistroHistorial extends javax.swing.JPanel {
                     URL imgUrl = getClass().getResource(libroOriginal.getRutaImagen());
                     if (imgUrl != null) {
                         ImageIcon icon = new ImageIcon(imgUrl);
-                        Image img = icon.getImage().getScaledInstance(lblPortada.getPreferredSize().width, lblPortada.getPreferredSize().height, Image.SCALE_SMOOTH);
+
+                        Dimension prefSize = lblPortada.getPreferredSize();
+                        int anchoImg = prefSize.width;
+                        int altoImg = prefSize.height;
+
+                        if (lblPortada.getWidth() > 0 && lblPortada.getHeight() > 0) {
+                            anchoImg = lblPortada.getWidth();
+                            altoImg = lblPortada.getHeight();
+                        }
+
+                        if (anchoImg <= 0) {
+                            anchoImg = 60;
+                        }
+                        if (altoImg <= 0) {
+                            altoImg = 80;
+                        }
+
+                        Image img = icon.getImage().getScaledInstance(anchoImg, altoImg, Image.SCALE_SMOOTH);
                         lblPortada.setIcon(new ImageIcon(img));
                         lblPortada.setText("");
                     } else {
-                        lblPortada.setText("S/P"); // Sin Portada
+                        lblPortada.setText("S/P");
                         lblPortada.setIcon(null);
+                        System.err.println("URL de imagen no encontrada para: " + libroOriginal.getRutaImagen());
                     }
                 } else {
                     lblPortada.setText("S/P");
                     lblPortada.setIcon(null);
                 }
             } catch (PersistenciaException e) {
-                lblPortada.setText("Err"); // Error al cargar
+                lblPortada.setText("Err");
                 lblPortada.setIcon(null);
                 System.err.println("Error cargando portada para historial: " + e.getMessage());
             }
 
         } else {
+            // ... (código para cuando entrada es null) ...
             lblIsbn.setText("ISBN no disponible");
             lblTitulo.setText("Título no disponible");
             lblCantidadEntrada.setText("N/A");
@@ -354,17 +373,90 @@ public class RegistroHistorial extends javax.swing.JPanel {
     }//GEN-LAST:event_bntDellesActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       int confirmacion = JOptionPane.showConfirmDialog(
-            this,
-            "¿Está seguro de que desea eliminar esta entrada del historial?\n" +
-            "ISBN: " + entrada.getIsbn() + "\n" +
-            "Título: " + entrada.getTituloLibro() + "\n" +
-            "Cantidad: " + entrada.getCantidadEntrada() + "\n" +
-            "Esto NO afectará el stock actual del libro, solo borrará este registro de entrada.",
-            "Confirmar Eliminación de Entrada",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE);
-               
+        if (entrada == null) {
+            JOptionPane.showMessageDialog(this, "no hay informacion de entrada para borrar", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        BoProductos boProductos = new BoProductos();
+        LibroDTO libroActual;
+        try {
+            libroActual = boProductos.obtenerLibrosPorIsbn(entrada.getIsbn());
+            if (libroActual == null) {
+                JOptionPane.showMessageDialog(this, "No se pudo encontrar el libro en el inventario (ISBN: " + entrada.getIsbn() + ").", "Error de Libro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (PersistenciaException e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener datos del libro: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String cantidadStr = JOptionPane.showInputDialog(
+                this,
+                "Libro: " + libroActual.getTitulo() + "\n"
+                + "Stock Actual: " + libroActual.getCantidad() + "\n\n"
+                + "¿Cuántas unidades desea 'borrar' (reducir) del stock actual de este libro?",
+                "Reducir Stock por Entrada Histórica",
+                JOptionPane.QUESTION_MESSAGE
+        );
+        if (cantidadStr == null) {
+            return;
+        }
+        try {
+            int cantidadAReducir = Integer.parseInt(cantidadStr);
+
+            if (cantidadAReducir <= 0) {
+                JOptionPane.showMessageDialog(this, "La cantidad a reducir debe ser un número positivo.", "Cantidad Inválida", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (cantidadAReducir > libroActual.getCantidad()) {
+                JOptionPane.showMessageDialog(this,
+                        "No puede reducir más unidades de las que hay en stock.\n"
+                        + "Stock actual: " + libroActual.getCantidad() + ", Desea reducir: " + cantidadAReducir,
+                        "Stock Insuficiente",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "Se reducirá el stock de '" + libroActual.getTitulo() + "' en " + cantidadAReducir + " unidades.\n"
+                    + "Nuevo stock será: " + (libroActual.getCantidad() - cantidadAReducir) + ".\n\n"
+                    + "¿Desea continuar?",
+                    "Confirmar Reducción de Stock",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion == JOptionPane.YES_OPTION) {
+
+                int nuevoStock = libroActual.getCantidad() - cantidadAReducir;
+                libroActual.setCantidad(nuevoStock);
+
+                boolean actualizado = boProductos.actualizarLibro(libroActual);
+
+                if (actualizado) {
+                    JOptionPane.showMessageDialog(this,
+                            "Stock actualizado con éxito para el libro: '" + libroActual.getTitulo() + "'.\n"
+                            + "Stock anterior: " + (nuevoStock + cantidadAReducir) + "\n"
+                            + "Cantidad reducida: " + cantidadAReducir + "\n"
+                            + "Nuevo stock: " + nuevoStock,
+                            "Stock Actualizado",
+                            JOptionPane.INFORMATION_MESSAGE);
+
+                    if (pantallaHistorial != null) {
+
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar el stock del libro.", "Error de Actualización", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido para la cantidad a reducir.", "Entrada Inválida", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error de persistencia al actualizar el libro: " + e.getMessage(), "Error de Base de Datos", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
 

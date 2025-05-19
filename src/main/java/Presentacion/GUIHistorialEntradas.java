@@ -91,15 +91,17 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel13 = new javax.swing.JLabel();
+        BtnCarrito1 = new javax.swing.JButton();
+        btnCategorias1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         BtnInicio1 = new javax.swing.JButton();
         BtnPerfil1 = new javax.swing.JButton();
-        BtnCarrito1 = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         CMBOpciones1 = new javax.swing.JComboBox<>();
+        jPanel24 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        btnCategorias1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         txtBuscador = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -337,6 +339,22 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
 
+        BtnCarrito1.setBackground(new java.awt.Color(101, 85, 143));
+        BtnCarrito1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carrito.png"))); // NOI18N
+        BtnCarrito1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCarrito1ActionPerformed(evt);
+            }
+        });
+
+        btnCategorias1.setFont(new java.awt.Font("Segoe UI Black", 0, 20)); // NOI18N
+        btnCategorias1.setText("CATEGORIAS");
+        btnCategorias1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCategorias1ActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(217, 202, 218));
@@ -359,14 +377,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             }
         });
 
-        BtnCarrito1.setBackground(new java.awt.Color(101, 85, 143));
-        BtnCarrito1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carrito.png"))); // NOI18N
-        BtnCarrito1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCarrito1ActionPerformed(evt);
-            }
-        });
-
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones1.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
@@ -379,15 +389,27 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
+        jLabel14.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        jLabel14.setText("Historial de entradas");
 
-        btnCategorias1.setFont(new java.awt.Font("Segoe UI Black", 0, 20)); // NOI18N
-        btnCategorias1.setText("CATEGORIAS");
-        btnCategorias1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCategorias1ActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
+        jPanel24.setLayout(jPanel24Layout);
+        jPanel24Layout.setHorizontalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel24Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jLabel14)
+                .addContainerGap(48, Short.MAX_VALUE))
+        );
+        jPanel24Layout.setVerticalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel24Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel14)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -396,18 +418,16 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
                 .addComponent(BtnInicio1)
-                .addGap(46, 46, 46)
-                .addComponent(btnCategorias1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111)
+                .addGap(29, 29, 29)
+                .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(37, 37, 37)
                 .addComponent(BtnPerfil1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BtnCarrito1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CMBOpciones1, 0, 253, Short.MAX_VALUE)
+                .addComponent(CMBOpciones1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -416,20 +436,16 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 9, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(25, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnCategorias1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BtnInicio1)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel22)
-                                .addComponent(BtnCarrito1)
-                                .addComponent(CMBOpciones1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(BtnPerfil1)))
-                        .addGap(19, 19, 19))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BtnInicio1)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel22)
+                            .addComponent(CMBOpciones1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnPerfil1))))
+                .addGap(19, 19, 19))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
@@ -572,16 +588,18 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             PanelActualizable.add(lblVacio);
             PanelActualizable.add(Box.createVerticalGlue());
         } else {
-                for (EntradaHistorialDTO entrada : listaParaMostrar) {
-                    RegistroHistorial panelEntrada = new RegistroHistorial(entrada, this); // 'this' es la instancia de GUIHistorialEntradas
-                    PanelActualizable.add(panelEntrada);
-                    PanelActualizable.add(Box.createRigidArea(new Dimension(0, 5)));
-                }
+            for (EntradaHistorialDTO entrada : listaParaMostrar) {
+                RegistroHistorial panelEntrada = new RegistroHistorial(entrada, this);
+                panelEntrada.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelEntrada.getPreferredSize().height + 5)); // un poco más que su altura preferida
+                PanelActualizable.add(panelEntrada);
+                PanelActualizable.add(Box.createRigidArea(new Dimension(0, 5)));
             }
-            PanelActualizable.revalidate();
-            PanelActualizable.repaint();
-           
         }
+        PanelActualizable.revalidate();
+        PanelActualizable.repaint();
+        jScrollPane1.revalidate();
+        jScrollPane1.repaint();
+    }
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
         //        GUIPerfil perfil = new GUIPerfil();
         //        perfil.setVisible(true);
@@ -696,6 +714,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -708,6 +727,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
