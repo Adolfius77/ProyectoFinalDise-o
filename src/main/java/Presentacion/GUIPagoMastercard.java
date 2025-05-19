@@ -7,7 +7,7 @@ package Presentacion;
 import Control.ControlNavegacion;
 import DTOS.DTOTarjetaMastercard;
 import DTOS.LibroDTO;
-import Infraestructura.IMetodoPago;
+
 import Negocio.ManejoPagos;
 import Negocio.PagoMastercard;
 import Negocio.ResultadoPago;
@@ -413,7 +413,7 @@ public class GUIPagoMastercard extends javax.swing.JFrame {
      // 3. Procesar el pago
      ControlNavegacion nav = ControlNavegacion.getInstase();
      ManejoPagos mp = nav.getManejoPagos();
-     ResultadoPago resultado = mp.ejecutarPago(this.montoAPagar, detallesDto);
+        DTOS.ResultadoPago resultado = mp.ejecutarPago(this.montoAPagar, detallesDto);
 
      // 4. Manejar resultado y navegar
      if (resultado != null && resultado.isExito()) {

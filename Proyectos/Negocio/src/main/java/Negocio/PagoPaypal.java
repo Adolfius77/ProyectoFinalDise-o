@@ -4,18 +4,24 @@
  */
 package Negocio;
 
+
 import DTOS.DTOPayPal;
-import Infraestructura.IMetodoPago;
+
+import DTOS.servicios.IMetodoPago;
+
+import DTOS.ResultadoPago;
 
 /**
  *
  * @author garfi
  */
-public class PagoPaypal implements IMetodoPago{
+public class PagoPaypal implements IMetodoPago {
 
     @Override
+ 
     public ResultadoPago procesarPago(double monto, Object detallesPago) {
         if (!(detallesPago instanceof DTOPayPal)) {
+           
             return new ResultadoPago(false, "Detalles de pago inválidos para PayPal.");
         }
 
@@ -29,8 +35,9 @@ public class PagoPaypal implements IMetodoPago{
         System.out.println("Usuario PayPal: " + correo);
 
         // Validaciones
-        if (correo == null || contrasena == null || !correo.contains("@")) {
+        if (correo == null || contrasena == null || correo.trim().isEmpty() || contrasena.trim().isEmpty() || !correo.contains("@")) {
             System.err.println("Error: Datos incompletos o inválidos en DTO PayPal.");
+            // 6. Aquí también 'new ResultadoPago(...)' se referirá a DTOS.ResultadoPago
             return new ResultadoPago(false, "Credenciales PayPal inválidas o incompletas.");
         }
 

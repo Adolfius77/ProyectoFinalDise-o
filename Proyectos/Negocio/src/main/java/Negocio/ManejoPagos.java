@@ -4,7 +4,10 @@
  */
 package Negocio;
 
-import Infraestructura.IMetodoPago;
+// Importa la INTERFAZ desde su nueva ubicación
+import DTOS.servicios.IMetodoPago; 
+// Importa la CLASE ResultadoPago desde DTOS
+import DTOS.ResultadoPago; 
 
 /**
  *
@@ -27,18 +30,21 @@ public class ManejoPagos {
         System.out.println("Metodo de pago establecido: " + (metodoPago != null ? metodoPago.getClass().getSimpleName() : "ninguno"));
     }
 
-    public ResultadoPago ejecutarPago(double monto, Object detalles) {
+   
+    public ResultadoPago ejecutarPago(double monto, Object detalles) { // El tipo de retorno ahora es DTOS.ResultadoPago
         if (metodoPagoActual == null) {
             System.err.println("No se ha establecido un metodo de pago.");
+           
             return new ResultadoPago(false, "No se selecciono un metodo de pago.");
         }
         try {
+         
             return metodoPagoActual.procesarPago(monto, detalles);
         } catch (Exception e) {
             System.err.println("Error al procesar el pago en ManejoPagos: " + e.getMessage());
             e.printStackTrace();
+            
             return new ResultadoPago(false, "Error al procesar el pago: " + e.getMessage());
         }
     }
-
 }

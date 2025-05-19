@@ -3,7 +3,7 @@ package Presentacion;
 import Control.ControlNavegacion;
 import DTOS.DTOPayPal;
 import DTOS.LibroDTO;
-import Infraestructura.IMetodoPago;
+
 import Negocio.ManejoPagos;
 import Negocio.ResultadoPago;
 import Presentacion.GUICarrito;
@@ -364,7 +364,7 @@ public class GUIPagoPaypal extends javax.swing.JFrame {
 
         ControlNavegacion nav = ControlNavegacion.getInstase();
         ManejoPagos mp = nav.getManejoPagos();
-        ResultadoPago resultado = mp.ejecutarPago(this.montoAPagar, detallesDto);
+        DTOS.ResultadoPago resultado = mp.ejecutarPago(this.montoAPagar, detallesDto);
 
         if (resultado != null && resultado.isExito()) {
             JOptionPane.showMessageDialog(this, resultado.getMensaje(), "Pago Exitoso", JOptionPane.INFORMATION_MESSAGE);

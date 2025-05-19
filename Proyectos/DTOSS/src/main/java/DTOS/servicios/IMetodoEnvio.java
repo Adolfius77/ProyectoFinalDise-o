@@ -1,9 +1,11 @@
-// Archivo: Proyectos/DTOSS/src/main/java/DTOS/servicios/IMetodoEnvio.java
-package DTOS.servicios; // O el paquete que elijas dentro de DTOSS
+
+package DTOS.servicios; 
 
 import DTOS.DTODireccion;
 import DTOS.ResultadoEnvio; 
 
 public interface IMetodoEnvio {
+  
+
     ResultadoEnvio procesarDireccion(DTODireccion direccion);
 }
