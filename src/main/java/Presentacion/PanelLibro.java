@@ -4,18 +4,23 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
 import DTOS.LibroDTO;
+import Presentacion.GUIDetallesLibro;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import java.util.List;
 import javax.swing.ImageIcon;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
- * @author adoil
+ * @author adoili
  */
 public class PanelLibro extends javax.swing.JPanel {
 
@@ -26,23 +31,25 @@ public class PanelLibro extends javax.swing.JPanel {
      */
     private LibroDTO libro;
     private List<LibroDTO> carrito;
-
-    public PanelLibro(LibroDTO libro, List<LibroDTO> carrito) {
+    private JFrame frameDetalles;
+    
+    public PanelLibro(LibroDTO libro, List<LibroDTO> carrito, JFrame frameDetalles) {  
         initComponents();
+        
         this.libro = libro;
         this.carrito = carrito;
+        this.frameDetalles = frameDetalles;
         if (libro != null) {
             this.LblNombreLibro.setText(libro.getTitulo());
             this.LblPrecio.setText(String.format("$"+"%.2f", libro.getPrecio()));
             this.LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
             cargarImagen(libro.getRutaImagen());
-        }else{
+        } else {
             LblNombreLibro.setText("libros no disponible");
             LblPrecio.setText("N/A");
             LblDisponibildiad.setText("N/A");
             LblImagenSol.setText("error");
         }
-
     }
 
     private void cargarImagen(String rutaImagen) {
@@ -73,6 +80,25 @@ public class PanelLibro extends javax.swing.JPanel {
         }
     }
 
+    private void configurarBotonDetallesLibro() {
+    if (BtnDetallesLibro != null) {
+        BtnDetallesLibro.addActionListener(evt -> {
+            if (this.libro != null) {
+                JFrame frameActual = (JFrame) SwingUtilities.getWindowAncestor(this);
+                String categoriaActualDelLibro = this.libro.getCategoria(); // O la categoría seleccionada en GUICategorias
+                
+                // Si el panel está dentro de GUICategorias, puedes obtener la categoría seleccionada del JComboBox
+                String categoriaSeleccionadaEnGUI = null;
+                if (frameActual instanceof GUICategorias) {
+                    categoriaSeleccionadaEnGUI = ((GUICategorias) frameActual).getCategoriaSeleccionadaActual();
+                }
+                
+                ControlNavegacion.getInstase().navegarDetallesLibro(frameActual, this.libro, categoriaSeleccionadaEnGUI != null ? categoriaSeleccionadaEnGUI : categoriaActualDelLibro);
+            } // ...
+        });
+    } // ...
+}
+    
     public void setAsAddedToCart() {
         if (BtnAgregarCarrito != null) {
             BtnAgregarCarrito.setEnabled(false); // Deshabilita el botón
@@ -97,6 +123,7 @@ public class PanelLibro extends javax.swing.JPanel {
         LblPrecio = new javax.swing.JLabel();
         LblDisponibildiad = new javax.swing.JLabel();
         BtnAgregarCarrito = new javax.swing.JButton();
+        BtnDetallesLibro = new javax.swing.JButton();
 
         PanelLasPruebasDelSol.setBackground(new java.awt.Color(217, 202, 218));
         PanelLasPruebasDelSol.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(202, 196, 208), 2));
@@ -164,25 +191,39 @@ public class PanelLibro extends javax.swing.JPanel {
             }
         });
 
+        BtnDetallesLibro.setBackground(new java.awt.Color(101, 85, 143));
+        BtnDetallesLibro.setFont(new java.awt.Font("Segoe UI Black", 0, 20)); // NOI18N
+        BtnDetallesLibro.setForeground(new java.awt.Color(255, 255, 255));
+        BtnDetallesLibro.setText("DETALLES DEL LIBRO");
+        BtnDetallesLibro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDetallesLibroActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout PanelLasPruebasDelSolLayout = new javax.swing.GroupLayout(PanelLasPruebasDelSol);
         PanelLasPruebasDelSol.setLayout(PanelLasPruebasDelSolLayout);
         PanelLasPruebasDelSolLayout.setHorizontalGroup(
             PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
-                        .addGap(14, 14, 14)
                         .addGroup(PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LblDisponibildiad, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(LblNombreLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(13, Short.MAX_VALUE))
                     .addGroup(PanelLasPruebasDelSolLayout.createSequentialGroup()
-                        .addGap(72, 72, 72)
-                        .addComponent(BtnAgregarCarrito)))
-                .addContainerGap(13, Short.MAX_VALUE))
+                        .addGap(6, 6, 6)
+                        .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelLasPruebasDelSolLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BtnAgregarCarrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BtnDetallesLibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(83, 83, 83))
         );
         PanelLasPruebasDelSolLayout.setVerticalGroup(
             PanelLasPruebasDelSolLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,9 +236,11 @@ public class PanelLibro extends javax.swing.JPanel {
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(LblDisponibildiad, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnAgregarCarrito)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnDetallesLibro)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -213,7 +256,7 @@ public class PanelLibro extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 476, Short.MAX_VALUE)
+            .addGap(0, 541, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -237,11 +280,22 @@ public class PanelLibro extends javax.swing.JPanel {
             LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
         } else {
             JOptionPane.showMessageDialog(this, "Error: El carrito no está inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }    
     }//GEN-LAST:event_BtnAgregarCarritoActionPerformed
-    }
 
+    private void BtnDetallesLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDetallesLibroActionPerformed
+        if (this.frameDetalles != null) {
+            System.out.println("Navegando a GUIINICIO desde PanelLibro (botón 'Ir a Inicio')...");
+            ControlNavegacion.getInstase().navegarDetallesLibro(this.frameDetalles, this.libro);
+        } else {
+            System.err.println("Error en PanelLibro: framePadre es null. No se puede navegar correctamente.");
+            JOptionPane.showMessageDialog(this, "Error de configuración: No se puede determinar la ventana actual para cerrar.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_BtnDetallesLibroActionPerformed
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregarCarrito;
+    private javax.swing.JButton BtnDetallesLibro;
     private javax.swing.JLabel LblDisponibildiad;
     private javax.swing.JLabel LblImagenSol;
     private javax.swing.JLabel LblNombreLibro;
@@ -251,3 +305,4 @@ public class PanelLibro extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel24;
     // End of variables declaration//GEN-END:variables
 }
+

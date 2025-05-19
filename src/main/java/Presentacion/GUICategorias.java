@@ -22,9 +22,15 @@ public class GUICategorias extends javax.swing.JFrame {
         this.librosDisponibles = boProductos.obtenerTodosLosLibros();
         setLocationRelativeTo(null);
         configurarNavegacionYCategorias();
-
     }
 
+    public String getCategoriaSeleccionadaActual() {
+        if (CMBCategorias != null) {
+            return (String) CMBCategorias.getSelectedItem();
+        }
+        return null;
+    }
+    
     private void configurarNavegacionYCategorias() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         if (BtnInicio != null) {
@@ -44,17 +50,38 @@ public class GUICategorias extends javax.swing.JFrame {
                 if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
                     String seleccion = (String) CMBCategorias.getSelectedItem();
                     if (seleccion != null) {
+                        ControlNavegacion.getInstase().setUltimaCategoriaSeleccionada(seleccion); // Guarda la selección
                         mostrarLibrosPorCategoria(seleccion);
                     }
                 }
             });
         }
         // Carga inicial
+        
+        String categoriaGuardada = ControlNavegacion.getInstase().getUltimaCategoriaSeleccionada();
+        if (categoriaGuardada != null) {
+            CMBCategorias.setSelectedItem(categoriaGuardada); // Intenta seleccionar la guardada
+            mostrarLibrosPorCategoria(categoriaGuardada);
+        } else {
+            String categoriaInicial = (String) CMBCategorias.getSelectedItem();
+            if (categoriaInicial != null) {
+                 ControlNavegacion.getInstase().setUltimaCategoriaSeleccionada(categoriaInicial);
+                mostrarLibrosPorCategoria(categoriaInicial);
+            } 
+        }
+        
         String categoriaInicial = (String) CMBCategorias.getSelectedItem();
         if (categoriaInicial != null) {
             mostrarLibrosPorCategoria(categoriaInicial);
         } else if (librosDisponibles != null && !librosDisponibles.isEmpty()) {
             mostrarLibrosPorCategoria(librosDisponibles.get(0).getCategoria());
+        }
+    }
+    
+    public void seleccionarCategoria(String categoriaNombre) {
+        if (CMBCategorias != null && categoriaNombre != null) {
+            CMBCategorias.setSelectedItem(categoriaNombre);
+            // El ItemListener de CMBCategorias debería llamar a mostrarLibrosPorCategoria
         }
     }
 
@@ -144,7 +171,7 @@ public class GUICategorias extends javax.swing.JFrame {
         } else {
             for (LibroDTO libro : librosFiltrados) {
                 // Crea el panel para este libro, pasando el carrito compartido
-                PanelLibro panelito = new PanelLibro(libro, carritoCompartido);
+                PanelLibro panelito = new PanelLibro(libro, carritoCompartido, this);
 
                 // *** VERIFICACIÓN SI ESTÁ EN CARRITO ***
                 if (carritoCompartido.contains(libro)) {
@@ -189,12 +216,11 @@ public class GUICategorias extends javax.swing.JFrame {
 
     public void agregarNuevoLibroo(LibroDTO nuevoLibro) {
         librosDisponibles.add(nuevoLibro);
-        PanelLibro nuevoPanelLibro = new PanelLibro(nuevoLibro, carrito);
+        PanelLibro nuevoPanelLibro = new PanelLibro(nuevoLibro, carrito, this);
         PanelDinamico.add(nuevoPanelLibro);
         PanelDinamico.revalidate();
         PanelDinamico.repaint();
         mostrarLibrosPorCategoria((String) CMBCategorias.getSelectedItem());
-
     }
 
     /**

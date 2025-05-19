@@ -15,8 +15,9 @@ public class LibroDTO {
     private int numPaginas;
     private int cantidad; // Stock disponible
     private String rutaImagen;
+    private String sinopsis;
 
-    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen) {
+    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen, String sinopsis) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
@@ -27,10 +28,13 @@ public class LibroDTO {
         this.numPaginas = numPaginas;
         this.cantidad = cantidad;
         this.rutaImagen = rutaImagen;
+        this.sinopsis = sinopsis;
     }
 
-    
-
+     public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen) {
+        this(titulo, autor, isbn, fechaLanzamiento, categoria, precio, editorial, numPaginas, cantidad, rutaImagen, "Sinopsis no disponible.");
+    }
+     
     // --- Getters y Setters (sin cambios) ---
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
@@ -65,13 +69,20 @@ public class LibroDTO {
         this.numPaginas = numPaginas;
     }
     
+    public String getSinopsis() {
+        return sinopsis;
+    }
 
+    public void setSinopsis(String sinopsis) {
+        this.sinopsis = sinopsis;
+    }
+    
     // --- Métodos adicionales (sin cambios) ---
     public String getFechaLanzamientoFormateada(String formato) {
         SimpleDateFormat sdf = new SimpleDateFormat(formato);
         return sdf.format(fechaLanzamiento);
     }
-
+    
     @Override
     public String toString() {
         return "LibroDTO{" +
