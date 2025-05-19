@@ -68,4 +68,20 @@ public class BoProductos {
             return new ArrayList<>(); // Devolver lista vacía en caso de error
         }
     }
+
+    public LibroDTO obtenerLibrosPorIsbn(String isbn) throws PersistenciaException {
+        if (isbn == null || isbn.trim().isEmpty()) {
+
+            System.out.println("BoProductos: Intento de búsqueda con ISBN nulo o vacío.");
+            return null;
+        }
+        try {
+            return libroDAO.obtenerLibrosPorIsbn(isbn);
+        } catch (PersistenciaException e) {
+
+            System.err.println("BoProductos: Error de persistencia al buscar libro por ISBN '" + isbn + "': " + e.getMessage());
+            throw e;
+        }
+    }
+
 }

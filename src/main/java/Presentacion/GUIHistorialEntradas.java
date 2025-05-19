@@ -4,17 +4,50 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
+import DTOS.EntradaHistorialDTO;
+import DTOS.LibroDTO;
+import Negocio.BoProductos;
+import Persistencia.IBuscadorHistorial;
+import expciones.PersistenciaException;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+
 /**
  *
  * @author USER
  */
 public class GUIHistorialEntradas extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUIRegistroLibro
-     */
+    private List<LibroDTO> todosLosLibrosDelSistema;
+
     public GUIHistorialEntradas() {
         initComponents();
+        configurarNavegacionAdicional();
+        cargarTodosLosLibros();
+        cargarHistorialEnPanel(ControlNavegacion.getInstase().obtenerHistorialDeEntradas());
+        setLocationRelativeTo(null);
+    }
+
+    private void cargarTodosLosLibros() {
+        BoProductos bo = new BoProductos();
+        try {
+
+            this.todosLosLibrosDelSistema = bo.obtenerTodosLosLibros();
+        } catch (Exception e) {
+            this.todosLosLibrosDelSistema = new ArrayList<>();
+            JOptionPane.showMessageDialog(this, "Error al cargar catálogo de libros para filtros de categoría: " + e.getMessage(), "Error de Carga", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -57,6 +90,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         txtUbicacion = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel13 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         BtnInicio1 = new javax.swing.JButton();
@@ -67,10 +101,10 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         btnCategorias1 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        txtBuscador = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel8 = new javax.swing.JPanel();
+        PanelActualizable = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(101, 85, 143));
 
@@ -301,6 +335,8 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         jLabel12.setText("jLabel12");
 
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(217, 202, 218));
@@ -398,23 +434,23 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
+        PanelActualizable.setBackground(new java.awt.Color(204, 184, 205));
+        PanelActualizable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jPanel8.setBackground(new java.awt.Color(204, 184, 205));
-        jPanel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout PanelActualizableLayout = new javax.swing.GroupLayout(PanelActualizable);
+        PanelActualizable.setLayout(PanelActualizableLayout);
+        PanelActualizableLayout.setHorizontalGroup(
+            PanelActualizableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1230, Short.MAX_VALUE)
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        PanelActualizableLayout.setVerticalGroup(
+            PanelActualizableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 454, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jPanel8);
+        jScrollPane1.setViewportView(PanelActualizable);
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -422,11 +458,11 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 1154, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
@@ -434,12 +470,12 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(23, 23, 23)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -480,7 +516,72 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         inicio.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_BtnInicioActionPerformed
+    private void configurarNavegacionAdicional() {
+        if (jButton1 != null && txtBuscador != null) { // jButton1 es tu botón de lupa/buscar
+            jButton1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ejecutarBusquedaHistorial();
+                }
+            });
+        }
+        if (txtBuscador != null) {
+            txtBuscador.addActionListener(new ActionListener() { // Para buscar al presionar Enter
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ejecutarBusquedaHistorial();
+                }
+            });
+        }
+    }
 
+    private void ejecutarBusquedaHistorial() {
+        String criterio = txtBuscador.getText().trim();
+        List<EntradaHistorialDTO> historialCompleto = ControlNavegacion.getInstase().obtenerHistorialDeEntradas();
+
+        if (criterio.isEmpty()) {
+            cargarHistorialEnPanel(historialCompleto);
+            return;
+        }
+
+        // Usando las estrategias desde el paquete Persistencia
+        IBuscadorHistorial buscadorTitulo = new Persistencia.BuscarHistorialPorTitulo();
+        IBuscadorHistorial buscadorIsbn = new Persistencia.BuscarHistorialPorISBN();
+        IBuscadorHistorial buscadorCategoria = new Persistencia.BuscarHistorialPorCategoria();
+
+        List<EntradaHistorialDTO> resultadosPorTitulo = buscadorTitulo.buscar(criterio, historialCompleto, this.todosLosLibrosDelSistema);
+        List<EntradaHistorialDTO> resultadosPorISBN = buscadorIsbn.buscar(criterio, historialCompleto, this.todosLosLibrosDelSistema);
+        List<EntradaHistorialDTO> resultadosPorCategoria = buscadorCategoria.buscar(criterio, historialCompleto, this.todosLosLibrosDelSistema);
+
+        Set<EntradaHistorialDTO> resultadosCombinados = new LinkedHashSet<>();
+        resultadosCombinados.addAll(resultadosPorTitulo);
+        resultadosCombinados.addAll(resultadosPorISBN);
+        resultadosCombinados.addAll(resultadosPorCategoria);
+
+        cargarHistorialEnPanel(new ArrayList<>(resultadosCombinados));
+    }
+
+    private void cargarHistorialEnPanel(List<EntradaHistorialDTO> listaParaMostrar) {
+        PanelActualizable.removeAll();
+        PanelActualizable.setLayout(new BoxLayout(PanelActualizable, BoxLayout.Y_AXIS));
+
+        if (listaParaMostrar == null || listaParaMostrar.isEmpty()) {
+            JLabel lblVacio = new JLabel("No hay entradas en el historial o no se encontraron resultados para su búsqueda.");
+            lblVacio.setHorizontalAlignment(SwingConstants.CENTER);
+            PanelActualizable.add(Box.createVerticalGlue());
+            PanelActualizable.add(lblVacio);
+            PanelActualizable.add(Box.createVerticalGlue());
+        } else {
+                for (EntradaHistorialDTO entrada : listaParaMostrar) {
+                    RegistroHistorial panelEntrada = new RegistroHistorial(entrada, this); // 'this' es la instancia de GUIHistorialEntradas
+                    PanelActualizable.add(panelEntrada);
+                    PanelActualizable.add(Box.createRigidArea(new Dimension(0, 5)));
+                }
+            }
+            PanelActualizable.revalidate();
+            PanelActualizable.repaint();
+           
+        }
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
         //        GUIPerfil perfil = new GUIPerfil();
         //        perfil.setVisible(true);
@@ -584,10 +685,12 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JButton BtnPerfil1;
     private javax.swing.JComboBox<String> CMBOpciones;
     private javax.swing.JComboBox<String> CMBOpciones1;
+    private javax.swing.JPanel PanelActualizable;
     private javax.swing.JButton agregarPortada;
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnCategorias1;
     private javax.swing.JComboBox<String> cmbProvedor;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -610,11 +713,10 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField txtAutor;
+    private javax.swing.JTextField txtBuscador;
     private javax.swing.JTextField txtCantidad;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtISBN;

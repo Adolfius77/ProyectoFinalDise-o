@@ -39,7 +39,7 @@ public class LibroDAOImplMemoria implements IlibroDAO {
         
      
 
-        listaGlobalDeLibros.add(new LibroDTO("Las pruebas del sol", "Aiden Thomas", "978-6078828463", fecha1, "FANTASIA", 389.00, "Editorial", 47, 47, "/img/LasPruebasDelSol1.jpg"));
+        listaGlobalDeLibros.add(new LibroDTO("Las pruebas del sol", "Aiden Thomas", "c", fecha1, "FANTASIA", 389.00, "Editorial", 47, 47, "/img/LasPruebasDelSol1.jpg"));
         listaGlobalDeLibros.add(new LibroDTO("Los juegos del hambre", "Suzanne Collins", "978-6074001907", fecha2, "FANTASIA", 379.00, "Editorial", 67, 67, "/img/losJuegosDelHambre1.jpg"));
         listaGlobalDeLibros.add(new LibroDTO("Harry Potter y la piedra filosofal", "J. K. Rowling", "978-6073193009", fecha3, "FANTASIA", 3229.00, "Editorial", 223, 23, "/img/harryPotter.jpg"));
         listaGlobalDeLibros.add(new LibroDTO("Splatoon Ikasu Artbook", "FAMITSU", "978-4047336551", fecha4, "FANTASIA", 229.00, "Editorial", 128, 23, "/img/SplatoonArtbook1.jpg"));

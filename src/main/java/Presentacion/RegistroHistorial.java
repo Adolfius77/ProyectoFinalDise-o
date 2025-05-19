@@ -1,17 +1,23 @@
 package Presentacion;
 
+import DTOS.EntradaHistorialDTO;
 import DTOS.LibroDTO;
+import Negocio.BoProductos;
 import com.lowagie.text.pdf.PdfWriter;
+import expciones.PersistenciaException;
+import java.awt.Image;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URL;
 import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.text.Document;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-
 /**
  *
  * @author USER
@@ -21,8 +27,58 @@ public class RegistroHistorial extends javax.swing.JPanel {
     /**
      * Creates new form RegistroHistorial
      */
-    public RegistroHistorial() {
+    private EntradaHistorialDTO entrada;
+    private GUIHistorialEntradas pantallaHistorial;
+
+    public RegistroHistorial(EntradaHistorialDTO entradaHistorial, GUIHistorialEntradas pantallaHistorial) {
+        this.entrada = entradaHistorial;
+        this.pantallaHistorial = pantallaHistorial;
         initComponents();
+        cargarDatosEntrada();
+    }
+
+    private void cargarDatosEntrada() {
+        if (entrada != null) {
+            lblIsbn.setText(entrada.getIsbn());
+            lblTitulo.setText(entrada.getTituloLibro());
+            lblCantidadEntrada.setText(String.valueOf(entrada.getCantidadEntrada()));
+            lblFechaEntrada.setText(entrada.getFechaFormateada());
+            lblHoraEntrada.setText(entrada.getHoraFormateada());
+
+            // Cargar la portada del libro (esto requiere acceso al LibroDTO original)
+            BoProductos bo = new BoProductos();
+            try {
+                LibroDTO libroOriginal = bo.obtenerLibrosPorIsbn(entrada.getIsbn());
+                if (libroOriginal != null && libroOriginal.getRutaImagen() != null && !libroOriginal.getRutaImagen().isEmpty()) {
+                    URL imgUrl = getClass().getResource(libroOriginal.getRutaImagen());
+                    if (imgUrl != null) {
+                        ImageIcon icon = new ImageIcon(imgUrl);
+                        Image img = icon.getImage().getScaledInstance(lblPortada.getPreferredSize().width, lblPortada.getPreferredSize().height, Image.SCALE_SMOOTH);
+                        lblPortada.setIcon(new ImageIcon(img));
+                        lblPortada.setText("");
+                    } else {
+                        lblPortada.setText("S/P"); // Sin Portada
+                        lblPortada.setIcon(null);
+                    }
+                } else {
+                    lblPortada.setText("S/P");
+                    lblPortada.setIcon(null);
+                }
+            } catch (PersistenciaException e) {
+                lblPortada.setText("Err"); // Error al cargar
+                lblPortada.setIcon(null);
+                System.err.println("Error cargando portada para historial: " + e.getMessage());
+            }
+
+        } else {
+            lblIsbn.setText("ISBN no disponible");
+            lblTitulo.setText("Título no disponible");
+            lblCantidadEntrada.setText("N/A");
+            lblFechaEntrada.setText("N/A");
+            lblHoraEntrada.setText("N/A");
+            lblPortada.setText("S/P");
+            lblPortada.setIcon(null);
+        }
     }
 
     /**
@@ -35,17 +91,32 @@ public class RegistroHistorial extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        txtISBN = new javax.swing.JLabel();
-        txtTitulo = new javax.swing.JLabel();
         btnPdf = new javax.swing.JButton();
         bntDelles = new javax.swing.JButton();
+        txtISBN = new javax.swing.JLabel();
+        txtTitulo = new javax.swing.JLabel();
+        lblStock = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        panelPortada = new javax.swing.JPanel();
+        lblPortada = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        btnEliminar = new javax.swing.JButton();
+        lblIsbn = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        BtnVerDetalles = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        lblCantidadEntrada = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        lblFechaEntrada = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        lblHoraEntrada = new javax.swing.JLabel();
 
         jLabel3.setText("ver detalles");
-
-        txtISBN.setText("jLabel1");
-
-        txtTitulo.setText("jLabel2");
 
         btnPdf.setText("Generar PDF");
         btnPdf.addActionListener(new java.awt.event.ActionListener() {
@@ -61,36 +132,204 @@ public class RegistroHistorial extends javax.swing.JPanel {
             }
         });
 
+        txtISBN.setText("jLabel1");
+
+        txtTitulo.setText("jLabel2");
+
+        lblStock.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblStock.setText("45");
+
+        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        jLabel1.setText("Ver Detalles");
+
+        jPanel2.setBackground(new java.awt.Color(217, 202, 218));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+        jPanel2.setMaximumSize(new java.awt.Dimension(1300, 120));
+
+        panelPortada.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout panelPortadaLayout = new javax.swing.GroupLayout(panelPortada);
+        panelPortada.setLayout(panelPortadaLayout);
+        panelPortadaLayout.setHorizontalGroup(
+            panelPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPortadaLayout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(lblPortada, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(48, Short.MAX_VALUE))
+        );
+        panelPortadaLayout.setVerticalGroup(
+            panelPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelPortadaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblPortada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lblTitulo.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        lblTitulo.setText("Titulo");
+
+        btnEliminar.setBackground(new java.awt.Color(101, 85, 143));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/button_cancel.png"))); // NOI18N
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        lblIsbn.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        lblIsbn.setText("jLabel2");
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
+
+        BtnVerDetalles.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        BtnVerDetalles.setText("Ver Detalles");
+
+        jLabel2.setText("Cantidad entrada");
+
+        lblCantidadEntrada.setText("jLabel5");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(lblCantidadEntrada)
+                .addContainerGap(71, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCantidadEntrada)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel6.setText("Fecha Entrada");
+
+        lblFechaEntrada.setText("jLabel7");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblFechaEntrada)
+                .addContainerGap(98, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblFechaEntrada)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jLabel8.setText("Hora entrada");
+
+        lblHoraEntrada.setText("jLabel9");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(lblHoraEntrada)
+                .addContainerGap(107, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHoraEntrada)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(panelPortada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(BtnVerDetalles))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(40, 40, 40)
+                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(40, 40, 40))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblIsbn)
+                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(22, 22, 22)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(BtnVerDetalles)
+                                .addGap(10, 10, 10))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelPortada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtISBN)
-                        .addGap(91, 91, 91)
-                        .addComponent(txtTitulo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(bntDelles)
-                        .addGap(36, 36, 36)
-                        .addComponent(btnPdf)))
-                .addContainerGap(454, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtISBN)
-                    .addComponent(txtTitulo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPdf)
-                    .addComponent(bntDelles))
-                .addContainerGap())
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -106,20 +345,53 @@ public class RegistroHistorial extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
-  
-       
+
+
     }//GEN-LAST:event_btnPdfActionPerformed
 
     private void bntDellesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntDellesActionPerformed
-    
+
     }//GEN-LAST:event_bntDellesActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+       int confirmacion = JOptionPane.showConfirmDialog(
+            this,
+            "¿Está seguro de que desea eliminar esta entrada del historial?\n" +
+            "ISBN: " + entrada.getIsbn() + "\n" +
+            "Título: " + entrada.getTituloLibro() + "\n" +
+            "Cantidad: " + entrada.getCantidadEntrada() + "\n" +
+            "Esto NO afectará el stock actual del libro, solo borrará este registro de entrada.",
+            "Confirmar Eliminación de Entrada",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE);
+               
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnVerDetalles;
     private javax.swing.JButton bntDelles;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnPdf;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel lblCantidadEntrada;
+    private javax.swing.JLabel lblFechaEntrada;
+    private javax.swing.JLabel lblHoraEntrada;
+    private javax.swing.JLabel lblIsbn;
+    private javax.swing.JLabel lblPortada;
+    private javax.swing.JLabel lblStock;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel panelPortada;
     private javax.swing.JLabel txtISBN;
     private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables

@@ -106,6 +106,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         LblLogo = new javax.swing.JLabel();
         lblGestionLibros = new javax.swing.JLabel();
         CmbOpciones = new javax.swing.JComboBox<>();
+        lblImagen = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         lblNombreProducto = new javax.swing.JLabel();
         txtFldNombreProducto = new javax.swing.JTextField();
@@ -129,7 +130,6 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         btnAgregarPortada = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
         jPanelAgregarPortada = new javax.swing.JPanel();
-        lblImagen = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -161,7 +161,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         lblGestionLibros.setText("Gestion de Libros");
 
         CmbOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CmbOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial compras", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CmbOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Cerrar Sesion" }));
         CmbOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CmbOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CmbOpciones.addActionListener(new java.awt.event.ActionListener() {
@@ -186,6 +186,10 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(CmbOpciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,7 +208,9 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(CmbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(19, 19, 19))))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         jPanel4.setBackground(new java.awt.Color(217, 202, 218));
@@ -398,21 +404,15 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         jPanelAgregarPortadaLayout.setHorizontalGroup(
             jPanelAgregarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(556, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
         jPanelAgregarPortadaLayout.setVerticalGroup(
             jPanelAgregarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
                 .addGap(314, 314, 314)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(365, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

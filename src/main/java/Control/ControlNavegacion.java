@@ -4,6 +4,7 @@
  */
 package Control;
 
+import DTOS.EntradaHistorialDTO;
 import DTOS.LibroDTO;
 import Negocio.ManejoPagos;
 import Presentacion.GUIAdmin;
@@ -14,18 +15,22 @@ import Presentacion.GUICategorias;
 import Presentacion.GUIEditarLibro;
 import Presentacion.GUIEnvioDHL;
 import Presentacion.GUIEnvioEstafeta;
+import Presentacion.GUIHistorialEntradas;
 import Presentacion.GUIINICIO;
 import Presentacion.GUIPagInicioGestionLibros;
 import Presentacion.GUIPaginaPagos;
 import Presentacion.GUIPagoMastercard;
 import Presentacion.GUIPagoPaypal;
 import Presentacion.GUIPerfil;
+import Presentacion.GUIRegistrarEntrada;
 import Presentacion.GUISeleccionMetodoEnvio;
 import Presentacion.InicioSesion;
 import Presentacion.Registro;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -42,6 +47,8 @@ public class ControlNavegacion {
     private ControlNavegacion() {
         this.carrito = new ArrayList<>();
         this.manejoPagos = new ManejoPagos();
+        this.historialDeEntradas = Collections.synchronizedList(new ArrayList<>()); 
+
     }
 
     public static synchronized ControlNavegacion getInstase() {
@@ -51,6 +58,7 @@ public class ControlNavegacion {
         return instancia;
     }
     private List<LibroDTO> carrito;
+    private List<EntradaHistorialDTO> historialDeEntradas;
 
     public List<LibroDTO> getCarrito() {
         return this.carrito;
@@ -255,6 +263,14 @@ public class ControlNavegacion {
         }
     }
 
+    public void navegarRegistroEntrada(JFrame frameActual) {
+        GUIRegistrarEntrada registraEntrada = new GUIRegistrarEntrada();
+        registraEntrada.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+    }
+
     public void agregarLibroCarrito(LibroDTO libro) {
         if (libro != null && this.carrito != null) {
             this.carrito.add(libro);
@@ -284,5 +300,20 @@ public class ControlNavegacion {
     public void setManejoPagos(ManejoPagos manejoPagos) {
         this.manejoPagos = manejoPagos;
     }
-
+    public void agregarEntradaAlHistorial(EntradaHistorialDTO entrada){
+        if(entrada != null){
+            this.historialDeEntradas.add(entrada);
+            System.out.println("entrada de stock para ISBN " + entrada.getIsbn()+ "agregada al historial");
+        }
+    }
+    public List<EntradaHistorialDTO> obtenerHistorialDeEntradas(){
+        return new ArrayList<>(this.historialDeEntradas);
+    }
+    public void navegarHistorialEntradas(JFrame frameActual){
+        GUIHistorialEntradas entradas = new GUIHistorialEntradas();
+        entradas.setVisible(true);
+        if(frameActual !=null){
+            frameActual.dispose();
+        }
+    }
 }
