@@ -7,10 +7,10 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.LibroDTO;
-import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import java.net.URL;
-import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -55,17 +55,25 @@ private LibroDTO libroActual;
         if (CMBOpciones != null) {
 //            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
-        if (BtnRegresar != null) { // Si renombraste CMBCategorias a btnCategorias (JButton)
-        BtnRegresar.addActionListener(evt -> {
-             int confirm = JOptionPane.showConfirmDialog(this, 
-                              "¿Regresar a categorías?", 
-                              "Confirmar", JOptionPane.YES_NO_OPTION);
-             if (confirm == JOptionPane.YES_OPTION) {
-            navegador.navegarCategorias(this);
-            }
-        });
-    }
+        if (BtnRegresar != null) {
+       BtnRegresar.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent evt) {
+               ControlNavegacion navegador = ControlNavegacion.getInstase();
+               navegador.navegarCategorias(GUIDetallesLibro.this, navegador.getUltimaCategoriaSeleccionada());
+           }
+       });
+      }
+        if (BtnVerReseñas != null) {
+            BtnVerReseñas.addActionListener(evt -> {
+                if (libroActual != null) {
+                    navegador.navegarAReseñas(this, libroActual);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No hay un libro seleccionado para ver reseñas.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
         }
+    }
  
     private void manejarAccionOpciones(ControlNavegacion navegador) {
         String seleccion = (String) CMBOpciones.getSelectedItem();
@@ -96,6 +104,7 @@ private LibroDTO libroActual;
     private void cargarDetallesLibro() {
         if (libroActual != null) {
             if (lblTituloLibro != null) lblTituloLibro.setText(libroActual.getTitulo());
+            if (lblTituloLibro1 != null) lblTituloLibro1.setText(libroActual.getTitulo());
             if (lblAutorLibro != null) lblAutorLibro.setText("Autor: " + libroActual.getAutor());
             if (lblIsbnLibro != null) lblIsbnLibro.setText("ISBN: " + libroActual.getIsbn());
 //            if (lblEditorialLibro != null) lblEditorialLibro.setText("Editorial: " + libroActual.getEditorial());
@@ -148,6 +157,7 @@ private LibroDTO libroActual;
 
         } else {
             if (lblTituloLibro != null) lblTituloLibro.setText("Detalles del Libro no disponibles");
+            if (lblTituloLibro1 != null) lblTituloLibro1.setText("Detalles del Libro no disponibles");
             if (lblAutorLibro != null) lblAutorLibro.setText("");
             if (lblIsbnLibro != null) lblIsbnLibro.setText("");
 //            if (lblEditorialLibro != null) lblEditorialLibro.setText("");
@@ -195,6 +205,9 @@ private LibroDTO libroActual;
         lblIsbnLibro = new javax.swing.JLabel();
         lblFechaLanzamientoLibro = new javax.swing.JLabel();
         BtnRegresar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        lblTituloLibro1 = new javax.swing.JLabel();
+        BtnVerReseñas = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -389,23 +402,50 @@ private LibroDTO libroActual;
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
+        jLabel1.setText("Detalles del libro:");
+
+        lblTituloLibro1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblTituloLibro1.setText("Nombre Libro");
+
+        BtnVerReseñas.setBackground(new java.awt.Color(101, 85, 143));
+        BtnVerReseñas.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
+        BtnVerReseñas.setForeground(new java.awt.Color(255, 255, 255));
+        BtnVerReseñas.setText("Ver Reseñas");
+        BtnVerReseñas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnVerReseñasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTituloLibro1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1043, 1043, 1043)
+                        .addComponent(BtnVerReseñas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(135, 135, 135))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
-                .addGap(181, 181, 181))
+                .addGap(200, 200, 200))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(69, 69, 69)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BtnRegresar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(BtnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(lblPortadaLibro)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 605, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
@@ -421,11 +461,17 @@ private LibroDTO libroActual;
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(227, 227, 227)
+                        .addGap(19, 19, 19)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblTituloLibro1))
+                        .addGap(166, 166, 166)
                         .addComponent(lblPortadaLibro)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
-                .addComponent(BtnRegresar)
-                .addGap(29, 29, 29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnVerReseñas)
+                    .addComponent(BtnRegresar))
+                .addGap(44, 44, 44))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -478,9 +524,12 @@ private LibroDTO libroActual;
 
     // Función que hace que te regreses a la categoría en la que estabas
     private void BtnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegresarActionPerformed
-        ControlNavegacion navegador = ControlNavegacion.getInstase(); // Asumiendo que corregiste el typo
-        navegador.navegarCategorias(this, navegador.getUltimaCategoriaSeleccionada()); 
+
     }//GEN-LAST:event_BtnRegresarActionPerformed
+
+    private void BtnVerReseñasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVerReseñasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnVerReseñasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -522,8 +571,10 @@ private LibroDTO libroActual;
     private javax.swing.JButton BtnInicio;
     private javax.swing.JButton BtnPerfil;
     private javax.swing.JButton BtnRegresar;
+    private javax.swing.JButton BtnVerReseñas;
     private javax.swing.JComboBox<String> CMBCategorias;
     private javax.swing.JComboBox<String> CMBOpciones;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
@@ -541,6 +592,7 @@ private LibroDTO libroActual;
     private javax.swing.JLabel lblPrecioLibro;
     private javax.swing.JLabel lblStockLibro;
     private javax.swing.JLabel lblTituloLibro;
+    private javax.swing.JLabel lblTituloLibro1;
     private javax.swing.JTextArea txtAreaSinopsis;
     // End of variables declaration//GEN-END:variables
 }

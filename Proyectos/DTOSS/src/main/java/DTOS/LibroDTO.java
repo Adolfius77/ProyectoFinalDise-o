@@ -2,6 +2,8 @@ package DTOS;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects; 
 
 public class LibroDTO {
@@ -16,8 +18,10 @@ public class LibroDTO {
     private int cantidad; // Stock disponible
     private String rutaImagen;
     private String sinopsis;
+    private List<String> reseñas;
 
-    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen, String sinopsis) {
+    // CONSTRUCTOR CON LOS DATOS ACTUALIZADOS
+    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen, String sinopsis, List<String> reseñas) {
         this.titulo = titulo;
         this.autor = autor;
         this.isbn = isbn;
@@ -29,10 +33,16 @@ public class LibroDTO {
         this.cantidad = cantidad;
         this.rutaImagen = rutaImagen;
         this.sinopsis = sinopsis;
+        this.reseñas = (reseñas != null) ? new ArrayList<>(reseñas) : new ArrayList<>();
     }
 
-     public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen) {
-        this(titulo, autor, isbn, fechaLanzamiento, categoria, precio, editorial, numPaginas, cantidad, rutaImagen, "Sinopsis no disponible.");
+     public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen, String sinopsis) {
+        this(titulo, autor, isbn, fechaLanzamiento, categoria, precio, editorial, numPaginas, cantidad, rutaImagen, sinopsis, new ArrayList<>()); 
+    }
+    
+    // CONSTRUCTOR CON LOS DATOS ORIGINALES
+    public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen) {
+        this(titulo, autor, isbn, fechaLanzamiento, categoria, precio, editorial, numPaginas, cantidad, rutaImagen, "Sinopsis no disponible.", new ArrayList<>());
     }
      
     // --- Getters y Setters (sin cambios) ---
@@ -53,6 +63,14 @@ public class LibroDTO {
     public String getRutaImagen() { return rutaImagen; }
     public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
 
+    public List<String> getReseñas() {
+        return reseñas;
+    }
+
+    public void setReseñas(List<String> reseñas) {
+        this.reseñas = reseñas;
+    }
+ 
     public String getEditorial() {
         return editorial;
     }
@@ -75,6 +93,13 @@ public class LibroDTO {
 
     public void setSinopsis(String sinopsis) {
         this.sinopsis = sinopsis;
+    }
+    
+    public void agregarReseña(String reseña) {
+    if (this.reseñas == null) {
+        this.reseñas = new ArrayList<>();
+    }
+    this.reseñas.add(reseña);
     }
     
     // --- Métodos adicionales (sin cambios) ---

@@ -6,9 +6,20 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.LibroDTO;
+import DTOS.ReseñaUsuarioDTO;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -24,6 +35,7 @@ public class GUIPerfil extends javax.swing.JFrame {
     public GUIPerfil() {
         initComponents();
         configurarNavegacionPerfil();
+        cargarMisReseñas(); 
         setLocationRelativeTo(null);
     }
 
@@ -67,7 +79,75 @@ public class GUIPerfil extends javax.swing.JFrame {
         }
         CMBOpciones.setSelectedIndex(0); // Resetear
     }
-    
+
+    private void cargarMisReseñas() {
+        if (panelReseñas == null) { 
+            System.err.println("Error: panelContenedorMisResenas no está inicializado en GUIPerfil.");
+            panelReseñas = new JPanel();
+            panelReseñas.setLayout(new BoxLayout(panelReseñas, BoxLayout.Y_AXIS));
+            if (jScrollMisReseñas != null) {
+                jScrollMisReseñas.setViewportView(panelReseñas);
+            } else {
+                jPanel4.add(panelReseñas);
+            }
+        }
+
+        panelReseñas.removeAll();
+        panelReseñas.setLayout(new BoxLayout(panelReseñas, BoxLayout.Y_AXIS));
+        panelReseñas.setBackground(new Color(240, 230, 240));
+
+        List<ReseñaUsuarioDTO> misResenas = ControlNavegacion.getInstase().getMisResenasDelUsuario();
+
+        if (misResenas.isEmpty()) {
+            JLabel noResenasLabel = new JLabel("Aún no has escrito ninguna reseña.");
+            noResenasLabel.setFont(new Font("Segoe UI", Font.ITALIC, 16));
+            noResenasLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            noResenasLabel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
+            panelReseñas.add(noResenasLabel);
+        } else {
+            JLabel tituloSeccion = new JLabel("Mis Reseñas");
+            tituloSeccion.setFont(new Font("Segoe UI", Font.BOLD, 20));
+            tituloSeccion.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tituloSeccion.setBorder(BorderFactory.createEmptyBorder(10,0,15,0));
+            panelReseñas.add(tituloSeccion);
+
+            for (ReseñaUsuarioDTO resena : misResenas) {
+                JPanel panelResenaIndividual = new JPanel();
+                panelResenaIndividual.setLayout(new BoxLayout(panelResenaIndividual, BoxLayout.Y_AXIS));
+                panelResenaIndividual.setBackground(Color.WHITE);
+                panelResenaIndividual.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                ));
+                panelResenaIndividual.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+                JLabel lblTituloLibroResena = new JLabel("Libro: " + resena.getTituloLibro());
+                lblTituloLibroResena.setFont(new Font("Segoe UI", Font.BOLD, 16));
+                panelResenaIndividual.add(lblTituloLibroResena);
+
+                JTextArea txtTextoResena = new JTextArea(resena.getTextoResena());
+                txtTextoResena.setWrapStyleWord(true);
+                txtTextoResena.setLineWrap(true);
+                txtTextoResena.setEditable(false);
+                txtTextoResena.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                txtTextoResena.setOpaque(false); 
+                txtTextoResena.setFocusable(false);
+                panelResenaIndividual.add(txtTextoResena);
+                
+                panelResenaIndividual.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelResenaIndividual.getPreferredSize().height));
+
+                panelReseñas.add(panelResenaIndividual);
+                panelReseñas.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+        }
+
+        panelReseñas.revalidate();
+        panelReseñas.repaint();
+        if (jScrollMisReseñas != null) {
+            jScrollMisReseñas.revalidate();
+            jScrollMisReseñas.repaint();
+        }
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -98,6 +178,8 @@ public class GUIPerfil extends javax.swing.JFrame {
         BTNCambioContraseña = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jScrollMisReseñas = new javax.swing.JScrollPane();
+        panelReseñas = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(217, 202, 218));
@@ -189,7 +271,7 @@ public class GUIPerfil extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(217, 202, 218));
@@ -307,6 +389,23 @@ public class GUIPerfil extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI Semibold", 0, 36)); // NOI18N
         jLabel8.setText("¡Disfruta del libro del Balatro con un 10% de descuento!");
 
+        jScrollMisReseñas.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
+
+        panelReseñas.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout panelReseñasLayout = new javax.swing.GroupLayout(panelReseñas);
+        panelReseñas.setLayout(panelReseñasLayout);
+        panelReseñasLayout.setHorizontalGroup(
+            panelReseñasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1018, Short.MAX_VALUE)
+        );
+        panelReseñasLayout.setVerticalGroup(
+            panelReseñasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 402, Short.MAX_VALUE)
+        );
+
+        jScrollMisReseñas.setViewportView(panelReseñas);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -314,27 +413,34 @@ public class GUIPerfil extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 290, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(221, 221, 221)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel8)))
-                .addContainerGap(114, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(255, 255, 255))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addComponent(jScrollMisReseñas, javax.swing.GroupLayout.PREFERRED_SIZE, 891, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(143, 143, 143)
-                .addComponent(jLabel8)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(45, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(63, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollMisReseñas, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -445,5 +551,7 @@ public class GUIPerfil extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JScrollPane jScrollMisReseñas;
+    private javax.swing.JPanel panelReseñas;
     // End of variables declaration//GEN-END:variables
 }

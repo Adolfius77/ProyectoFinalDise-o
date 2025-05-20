@@ -24,6 +24,7 @@ import Presentacion.GUIPagoMastercard;
 import Presentacion.GUIPagoPaypal;
 import Presentacion.GUIPerfil;
 import Presentacion.GUIRegistrarEntrada;
+import Presentacion.GUIReseñas;
 import Presentacion.GUISeleccionMetodoEnvio;
 import Presentacion.InicioSesion;
 import Presentacion.Registro;
@@ -36,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import DTOS.ReseñaUsuarioDTO;
 
 /**
  *
@@ -47,14 +49,27 @@ public class ControlNavegacion {
     private ManejoPagos manejoPagos;
     private List<LibroDTO> carrito;
     private List<EntradaHistorialDTO> historialDeEntradas;
-    private String ultimaCategoriaSeleccionada = null; // Para recordar la última categoría
-
+    private String ultimaCategoriaSeleccionada = null; 
+    private List<ReseñaUsuarioDTO> reseñaUsuario;
+    
     private ControlNavegacion() {
         this.carrito = new ArrayList<>();
         this.manejoPagos = new ManejoPagos();
         this.historialDeEntradas = Collections.synchronizedList(new ArrayList<>());
+        this.reseñaUsuario = new ArrayList<>();
     }
 
+     public void agregarResenaDelUsuario(ReseñaUsuarioDTO resena) {
+        if (resena != null) {
+            this.reseñaUsuario.add(resena);
+            System.out.println("Reseña para '" + resena.getTituloLibro() + "' agregada a 'Mis Reseñas'.");
+        }
+    }
+
+    public List<ReseñaUsuarioDTO> getMisResenasDelUsuario() {
+        return new ArrayList<>(this.reseñaUsuario);
+    }
+    
     public static synchronized ControlNavegacion getInstase() {
         if (instancia == null) {
             instancia = new ControlNavegacion();
@@ -148,7 +163,6 @@ public class ControlNavegacion {
         inicio.setVisible(true);
     }
 
-    // Sobrecarga para navegar a categorías recordando la última seleccionada
     public void navegarCategorias(JFrame frameActual, String categoriaARestaurar) {
         cerrarFrameActual(frameActual);
         GUICategorias categoriasScreen = new GUICategorias(this.getCarrito());
@@ -158,7 +172,6 @@ public class ControlNavegacion {
         categoriasScreen.setVisible(true);
     }
 
-    // Versión original de navegarCategorias (ahora llama a la sobrecargada)
     public void navegarCategorias(JFrame frameActual) {
         navegarCategorias(frameActual, this.ultimaCategoriaSeleccionada);
     }
@@ -169,6 +182,23 @@ public class ControlNavegacion {
         perfil.setVisible(true);
     }
 
+    public void navegarReseñas(JFrame frameActual) {
+        cerrarFrameActual(frameActual);
+        GUIReseñas reseñas = new GUIReseñas();
+        reseñas.setVisible(true);
+    }
+    
+    public void navegarAReseñas(JFrame frameActual, LibroDTO libroConReseñas) {
+        cerrarFrameActual(frameActual);
+        if (libroConReseñas == null) {
+            System.err.println("Error: No se puede mostrar reseñas sin un libro.");
+            navegarCategorias(frameActual);
+            return;
+        }
+        GUIReseñas reseñas = new GUIReseñas(libroConReseñas);
+        reseñas.setVisible(true);
+    }
+  
     public void navegarCarrito(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUICarrito carritoGUI = new GUICarrito(this.carrito); // Usa this.carrito
