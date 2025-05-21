@@ -4,9 +4,9 @@
  */
 package Negocio;
 
-// Importa la INTERFAZ desde su nueva ubicación
+
 import DTOS.servicios.IMetodoPago; 
-// Importa la CLASE ResultadoPago desde DTOS
+
 import DTOS.ResultadoPago; 
 
 /**
@@ -31,7 +31,7 @@ public class ManejoPagos {
     }
 
    
-    public ResultadoPago ejecutarPago(double monto, Object detalles) { // El tipo de retorno ahora es DTOS.ResultadoPago
+    public ResultadoPago ejecutarPago(double monto, Object detalles) { 
         if (metodoPagoActual == null) {
             System.err.println("No se ha establecido un metodo de pago.");
            

@@ -1,8 +1,8 @@
-// Archivo: Persistencia/LibroDAOImplMemoria.java
+
 package Persistencia;
 
 import DTOS.LibroDTO;
-import expciones.PersistenciaException; // Si la usas
+import expciones.PersistenciaException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -227,7 +227,7 @@ public class LibroDAOImplMemoria implements IlibroDAO {
                         "¡Estudiar de forma inteligente, no solo dura! - EstrategaDelSaber"
                 )));
     }
-    
+
     // ... (resto de tus métodos DAO: obtenerTodosLosLibros, etc.)
     @Override
     public List<LibroDTO> obtenerTodosLosLibros() throws PersistenciaException {
@@ -295,7 +295,7 @@ public class LibroDAOImplMemoria implements IlibroDAO {
 
     @Override
     public boolean eliminarLibro(String isbn) throws PersistenciaException {
-         if (isbn == null || isbn.trim().isEmpty()) {
+        if (isbn == null || isbn.trim().isEmpty()) {
             throw new PersistenciaException("El ISBN a eliminar no puede ser nulo o vacío.");
         }
         boolean eliminado;

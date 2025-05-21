@@ -13,6 +13,7 @@ public class usuarioDTO {
     private String apellidos;
     private String correoElectronico;
     private String contrasena;
+    
 
     public usuarioDTO(String nombres, String apellidos, String correoElectronico, String contrasena) {
         this.nombres = nombres;

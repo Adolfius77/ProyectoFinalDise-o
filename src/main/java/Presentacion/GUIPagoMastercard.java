@@ -397,35 +397,57 @@ public class GUIPagoMastercard extends javax.swing.JFrame {
 
     private void BTNPagarMastercardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNPagarMastercardActionPerformed
         String numTarjeta = TxtFldNumTarjeta.getText().trim();
-     String fechaVencimiento = TxtFldFechaVencim.getText().trim();
-     String cvv = TxtFldCVV.getText().trim();
-     String nombre = TxtFldNombreComp.getText().trim();
-     String correo = TxtFldCorreo.getText().trim();
+        String fechaVencimientoStr = TxtFldFechaVencim.getText().trim(); 
+        String cvv = TxtFldCVV.getText().trim();
+        String nombre = TxtFldNombreComp.getText().trim();
+        String correo = TxtFldCorreo.getText().trim();
 
-     // 1. Validación de campos vacíos
-     if (numTarjeta.isEmpty() || fechaVencimiento.isEmpty() || cvv.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {
-         JOptionPane.showMessageDialog(this, "Favor de llenar todos los campos requeridos.", "Datos Incompletos", JOptionPane.WARNING_MESSAGE);
-         return; 
-     }
-      DTOTarjetaMastercard detallesDto = new DTOTarjetaMastercard(numTarjeta, nombre, cvv, LocalDate.MIN, correo); // Temporal
+        if (numTarjeta.isEmpty() || fechaVencimientoStr.isEmpty() || cvv.isEmpty() || nombre.isEmpty() || correo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Favor de llenar todos los campos requeridos.", "Datos Incompletos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
+        LocalDate fechaVencimientoParseada;
+        try {
+            DateTimeFormatter formatterMesAnioCorto = DateTimeFormatter.ofPattern("MM/yy");
+            DateTimeFormatter formatterMesAnioLargo = DateTimeFormatter.ofPattern("MM/yyyy");
+            YearMonth ym;
 
-     // 3. Procesar el pago
-     ControlNavegacion nav = ControlNavegacion.getInstase();
-     ManejoPagos mp = nav.getManejoPagos();
+            if (fechaVencimientoStr.matches("\\d{2}/\\d{2}")) {
+                ym = YearMonth.parse(fechaVencimientoStr, formatterMesAnioCorto);
+            } else if (fechaVencimientoStr.matches("\\d{2}/\\d{4}")) {
+                ym = YearMonth.parse(fechaVencimientoStr, formatterMesAnioLargo);
+            } else {
+
+                JOptionPane.showMessageDialog(this, "Formato de fecha de vencimiento inválido. Use MM/YY o MM/YYYY.", "Error de Formato de Fecha", JOptionPane.ERROR_MESSAGE);
+                TxtFldFechaVencim.requestFocus();
+                return;
+            }
+
+            fechaVencimientoParseada = ym.atEndOfMonth();
+
+            System.out.println("Fecha de vencimiento parseada (GUI): " + fechaVencimientoParseada); // Para depuración
+
+        } catch (DateTimeParseException e) {
+            JOptionPane.showMessageDialog(this, "Fecha de vencimiento '" + fechaVencimientoStr + "' es inválida. Use el formato MM/YY o MM/YYYY.", "Error de Parseo de Fecha", JOptionPane.ERROR_MESSAGE);
+            TxtFldFechaVencim.requestFocus();
+            return;
+        }
+
+        DTOTarjetaMastercard detallesDto = new DTOTarjetaMastercard(numTarjeta, nombre, cvv, fechaVencimientoParseada, correo);
+
+        ControlNavegacion nav = ControlNavegacion.getInstase();
+        ManejoPagos mp = nav.getManejoPagos();
+
         DTOS.ResultadoPago resultado = mp.ejecutarPago(this.montoAPagar, detallesDto);
-
-     // 4. Manejar resultado y navegar
-     if (resultado != null && resultado.isExito()) {
-         JOptionPane.showMessageDialog(this, resultado.getMensaje(), "Pago Exitoso", JOptionPane.INFORMATION_MESSAGE);
-         nav.navegarPaginaSeleccionEnvio(this); 
+        if (resultado != null && resultado.isExito()) {
+            JOptionPane.showMessageDialog(this, resultado.getMensaje(), "Pago Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            nav.navegarPaginaSeleccionEnvio(this);
             nav.limpiarCarrito();
-     } else {
-         String mensajeError = (resultado != null) ? resultado.getMensaje() : "Error desconocido durante el pago.";
-         JOptionPane.showMessageDialog(this, mensajeError, "Pago Fallido", JOptionPane.ERROR_MESSAGE);
-         
-     }
-
+        } else {
+            String mensajeError = (resultado != null) ? resultado.getMensaje() : "Error desconocido durante el pago.";
+            JOptionPane.showMessageDialog(this, mensajeError, "Pago Fallido", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BTNPagarMastercardActionPerformed
 
     private void TxtFldFechaVencimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFldFechaVencimActionPerformed

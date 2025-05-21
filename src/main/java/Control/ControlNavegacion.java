@@ -28,9 +28,6 @@ import Presentacion.GUIReseñas;
 import Presentacion.GUISeleccionMetodoEnvio;
 import Presentacion.InicioSesion;
 import Presentacion.Registro;
-// import java.awt.event.ActionEvent; // No se usan directamente aquí
-// import java.awt.event.ActionListener; // No se usan directamente aquí
-// import java.lang.reflect.Array; // No se usa
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -38,6 +35,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import DTOS.ReseñaUsuarioDTO;
+import DTOS.usuarioDTO;
 
 /**
  *
@@ -49,9 +47,10 @@ public class ControlNavegacion {
     private ManejoPagos manejoPagos;
     private List<LibroDTO> carrito;
     private List<EntradaHistorialDTO> historialDeEntradas;
-    private String ultimaCategoriaSeleccionada = null; 
+    private String ultimaCategoriaSeleccionada = null;
     private List<ReseñaUsuarioDTO> reseñaUsuario;
-    
+    private usuarioDTO usuarioActual = null;
+
     private ControlNavegacion() {
         this.carrito = new ArrayList<>();
         this.manejoPagos = new ManejoPagos();
@@ -59,7 +58,23 @@ public class ControlNavegacion {
         this.reseñaUsuario = new ArrayList<>();
     }
 
-     public void agregarResenaDelUsuario(ReseñaUsuarioDTO resena) {
+    public void setUsuarioActual(usuarioDTO usuario) {
+        this.usuarioActual = usuario;
+        System.out.println("Usuario actual establecido: " + (usuario != null ? usuario.getCorreoElectronico() : "null"));
+    }
+
+    public usuarioDTO getUsuarioActual() {
+        return this.usuarioActual;
+    }
+
+    public boolean esAdminLogueado() {
+
+        boolean isAdmin = (usuarioActual != null && Negocio.GestionUsuarios.esAdmin(usuarioActual.getCorreoElectronico()));
+        System.out.println("Verificando si usuario actual (" + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "null") + ") es admin: " + isAdmin);
+        return isAdmin;
+    }
+
+    public void agregarResenaDelUsuario(ReseñaUsuarioDTO resena) {
         if (resena != null) {
             this.reseñaUsuario.add(resena);
             System.out.println("Reseña para '" + resena.getTituloLibro() + "' agregada a 'Mis Reseñas'.");
@@ -69,7 +84,7 @@ public class ControlNavegacion {
     public List<ReseñaUsuarioDTO> getMisResenasDelUsuario() {
         return new ArrayList<>(this.reseñaUsuario);
     }
-    
+
     public static synchronized ControlNavegacion getInstase() {
         if (instancia == null) {
             instancia = new ControlNavegacion();
@@ -77,7 +92,6 @@ public class ControlNavegacion {
         return instancia;
     }
 
-    // --- Getters y Setters ---
     public List<LibroDTO> getCarrito() {
         return this.carrito;
     }
@@ -125,13 +139,12 @@ public class ControlNavegacion {
 
     public void eliminarLibroCarrito(LibroDTO libro) {
         if (libro != null && this.carrito != null) {
-            boolean removido = this.carrito.remove(libro); // remove() usa equals() de LibroDTO
+            boolean removido = this.carrito.remove(libro);
             if (removido) {
                 System.out.println("Se eliminó del carrito el libro: " + libro.getTitulo() + ". Total en la lista: " + this.carrito.size());
             } else {
                 System.out.println("No se encontró el libro '" + libro.getTitulo() + "' para eliminar del carrito (podría ser una instancia diferente con mismo ISBN).");
-                // Si equals se basa solo en ISBN, esto debería funcionar.
-                // Si necesitas remover por referencia exacta o un ID único, ajusta la lógica.
+
             }
         } else {
             System.err.println("Error al intentar eliminar el libro del carrito (libro o carrito nulos).");
@@ -187,7 +200,7 @@ public class ControlNavegacion {
         GUIReseñas reseñas = new GUIReseñas();
         reseñas.setVisible(true);
     }
-    
+
     public void navegarAReseñas(JFrame frameActual, LibroDTO libroConReseñas) {
         cerrarFrameActual(frameActual);
         if (libroConReseñas == null) {
@@ -198,7 +211,7 @@ public class ControlNavegacion {
         GUIReseñas reseñas = new GUIReseñas(libroConReseñas);
         reseñas.setVisible(true);
     }
-  
+
     public void navegarCarrito(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUICarrito carritoGUI = new GUICarrito(this.carrito); // Usa this.carrito
@@ -235,7 +248,7 @@ public class ControlNavegacion {
         paypal.setVisible(true);
     }
 
-    public void navegarPaginaPagoPaypal(JFrame frameActual) { // Usado si se navega sin monto/carrito previo
+    public void navegarPaginaPagoPaypal(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUIPagoPaypal paypal = new GUIPagoPaypal();
         paypal.setVisible(true);
@@ -247,7 +260,7 @@ public class ControlNavegacion {
         metodoEnvio.setVisible(true);
     }
 
-    public void navegarPaginaSeleccionEnvio(JFrame frameActual) { // Usado si se navega sin carrito previo
+    public void navegarPaginaSeleccionEnvio(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUISeleccionMetodoEnvio metodoEnvio = new GUISeleccionMetodoEnvio();
         metodoEnvio.setVisible(true);
@@ -290,10 +303,19 @@ public class ControlNavegacion {
     }
 
     public void cerrarSesion(JFrame frameActual) {
+       cerrarFrameActual(frameActual);
+        System.out.println("Cerrando sesión para: " + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "nadie"));
+        this.usuarioActual = null;
         limpiarCarrito();
-        // Aquí deberías navegar a la pantalla de InicioSesion
-        JOptionPane.showMessageDialog(frameActual, "Sesión cerrada. Volviendo al inicio de sesión.");
-        navegarInicioSesion(frameActual); // Llama al método para ir a la pantalla de login
+
+        InicioSesion pantallaLogin = new InicioSesion();
+        pantallaLogin.setVisible(true);
+        if (frameActual != null) {
+            frameActual.dispose();
+        }
+         
+        JOptionPane.showMessageDialog(pantallaLogin, "Sesion cerrada exitosamente. Por favor, inicie sesion de nuevo.");
+        
     }
 
     public void navegarRegistroEntrada(JFrame frameActual) {
@@ -302,8 +324,6 @@ public class ControlNavegacion {
         registraEntrada.setVisible(true);
     }
 
-    // --- Métodos para Detalles del Libro ---
-    // Sobrecarga para navegar a detalles del libro guardando la categoría de origen
     public void navegarDetallesLibro(JFrame frameActual, LibroDTO libroSeleccionado, String categoriaDeOrigen) {
         if (categoriaDeOrigen != null) {
             setUltimaCategoriaSeleccionada(categoriaDeOrigen);
@@ -312,9 +332,9 @@ public class ControlNavegacion {
         if (libroSeleccionado == null) {
             System.err.println("Error Crítico: Se intentó navegar a detalles SIN un libro seleccionado. Creando DTO de error.");
             libroSeleccionado = new LibroDTO(
-                "Información no Disponible", "N/A", "N/A", new Date(), "N/A",
-                0.0, "N/A", 0, 0, "",
-                "Los detalles para este libro no pudieron ser cargados."
+                    "Información no Disponible", "N/A", "N/A", new Date(), "N/A",
+                    0.0, "N/A", 0, 0, "",
+                    "Los detalles para este libro no pudieron ser cargados."
             );
         }
         GUIDetallesLibro detallesLibro = new GUIDetallesLibro(libroSeleccionado);
@@ -322,13 +342,11 @@ public class ControlNavegacion {
         cerrarFrameActual(frameActual);
     }
 
-    // Versión original de navegarDetallesLibro (ahora llama a la sobrecargada)
     public void navegarDetallesLibro(JFrame frameActual, LibroDTO libroSeleccionado) {
-        // Si se llama esta versión, se usa la ultimaCategoriaSeleccionada si existe, o null
+
         navegarDetallesLibro(frameActual, libroSeleccionado, this.ultimaCategoriaSeleccionada);
     }
 
-    // --- Métodos para Historial de Entradas ---
     public void agregarEntradaAlHistorial(EntradaHistorialDTO entrada) {
         if (entrada != null) {
             this.historialDeEntradas.add(entrada);
@@ -346,7 +364,6 @@ public class ControlNavegacion {
         entradas.setVisible(true);
     }
 
-    // --- Manejo de Pagos ---
     public ManejoPagos getManejoPagos() {
         return this.manejoPagos;
     }
@@ -354,4 +371,5 @@ public class ControlNavegacion {
     public void setManejoPagos(ManejoPagos manejoPagos) {
         this.manejoPagos = manejoPagos;
     }
+
 }

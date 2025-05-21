@@ -54,11 +54,11 @@ public class Registro extends javax.swing.JFrame {
                 }
                 
 
-                // Crea una instancia de usuarioDTO con los datos del formulario
+             
                 usuarioDTO nuevoUsuario = new usuarioDTO(nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada);
 
-                // Llama al método para agregar el usuario en la clase GestionUsuarios
-                boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario); // Asumo que este método devuelve un boolean indicando éxito
+          
+                boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
 
                 if (registroExitoso) {
                     JOptionPane.showMessageDialog(Registro.this, "Registro exitoso. Ahora puede iniciar sesión.");
@@ -303,6 +303,7 @@ public class Registro extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new InicioSesion().setVisible(true);
             }

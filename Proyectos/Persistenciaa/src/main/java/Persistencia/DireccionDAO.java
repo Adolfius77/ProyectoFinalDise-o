@@ -15,8 +15,8 @@ import java.util.Optional;
  */
 public interface DireccionDAO {
     void guardar(Direccion direccion) throws ErrorDatosException;
-    Optional<Direccion> buscarPorId(Long id) throws ErrorDatosException; // Optional es buena práctica
-    List<Direccion> buscarPorUsuarioId(Long usuarioId) throws ErrorDatosException; // Ejemplo de buscador específico
+    Optional<Direccion> buscarPorId(Long id) throws ErrorDatosException; 
+    List<Direccion> buscarPorUsuarioId(Long usuarioId) throws ErrorDatosException;
     List<Direccion> buscarTodas() throws ErrorDatosException;
     void actualizar(Direccion direccion) throws ErrorDatosException;
     void eliminar(Long id) throws ErrorDatosException;

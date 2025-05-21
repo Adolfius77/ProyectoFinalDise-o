@@ -258,7 +258,7 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
         lblNumPaginas.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblNumPaginas.setText("Número de Páginas:");
 
-        cmbBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cocina", "Fantasia", "Terror", "Educacion", " ", " " }));
+        cmbBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cocina", "Fantasia", "Terror", "Educacion" }));
         cmbBoxCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbBoxCategoriaActionPerformed(evt);

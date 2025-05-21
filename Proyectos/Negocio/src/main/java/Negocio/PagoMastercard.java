@@ -16,7 +16,7 @@ import java.time.LocalDate;
  *
  * @author garfi
  */
-public class PagoMastercard implements IMetodoPago { // Asegúrate que implemente la interfaz correcta
+public class PagoMastercard implements IMetodoPago {
 
     @Override
 
@@ -29,7 +29,7 @@ public class PagoMastercard implements IMetodoPago { // Asegúrate que implement
         DTOTarjetaMastercard dto = (DTOTarjetaMastercard) detallesPago;
 
         String numeroTarjeta = dto.getNumeroTarjeta();
-        LocalDate fechaVencimiento = dto.getFechaVencimiento(); // DTOTarjetaMastercard usa LocalDate
+        LocalDate fechaVencimiento = dto.getFechaVencimiento(); 
         String cvv = dto.getCvv();
         String nombreTitular = dto.getNombreTitular();
 
