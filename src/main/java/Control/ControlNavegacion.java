@@ -36,6 +36,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import DTOS.ReseñaUsuarioDTO;
 import DTOS.usuarioDTO;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -45,22 +53,38 @@ public class ControlNavegacion {
 
     private static ControlNavegacion instancia;
     private ManejoPagos manejoPagos;
-    private List<LibroDTO> carrito;
+//    private List<LibroDTO> carrito;
+
+    private Map<String, List<LibroDTO>> carritosPorUsuario;
     private List<EntradaHistorialDTO> historialDeEntradas;
     private String ultimaCategoriaSeleccionada = null;
     private List<ReseñaUsuarioDTO> reseñaUsuario;
     private usuarioDTO usuarioActual = null;
 
+    private static final String NOMBRE_ARCHIVO_CARRITOS = "carritos_usuarios.dat"; // Archivo para persistir carritos
+
     private ControlNavegacion() {
-        this.carrito = new ArrayList<>();
+
         this.manejoPagos = new ManejoPagos();
         this.historialDeEntradas = Collections.synchronizedList(new ArrayList<>());
         this.reseñaUsuario = new ArrayList<>();
+
+        cargarCarritosDesdeArchivo();
+        if (this.carritosPorUsuario == null) {
+            this.carritosPorUsuario = Collections.synchronizedMap(new HashMap<>());
+
+        }
     }
 
     public void setUsuarioActual(usuarioDTO usuario) {
         this.usuarioActual = usuario;
-        System.out.println("Usuario actual establecido: " + (usuario != null ? usuario.getCorreoElectronico() : "null"));
+        if (usuario != null) {
+            System.out.println("Usuario actual establecido: " + usuario.getCorreoElectronico());
+            carritosPorUsuario.putIfAbsent(usuario.getCorreoElectronico().toLowerCase(), new ArrayList<>());
+        } else {
+            System.out.println("Usuario actual establecido a null (cierre de sesión).");
+        }
+
     }
 
     public usuarioDTO getUsuarioActual() {
@@ -93,7 +117,12 @@ public class ControlNavegacion {
     }
 
     public List<LibroDTO> getCarrito() {
-        return this.carrito;
+        if (usuarioActual != null && usuarioActual.getCorreoElectronico() != null) {
+            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+
+            return new ArrayList<>(carritosPorUsuario.getOrDefault(userKey, new ArrayList<>()));
+        }
+        return new ArrayList<>();
     }
 
     public String getUltimaCategoriaSeleccionada() {
@@ -107,47 +136,100 @@ public class ControlNavegacion {
     // --- Métodos del Carrito ---
     public double getMontoTotalCarrito() {
         double total = 0.0;
-        if (this.carrito != null) {
-            for (LibroDTO libro : this.carrito) {
-                if (libro != null && libro.getPrecio() >= 0) {
-                    total += libro.getPrecio();
-                }
+        List<LibroDTO> carritoActualUsuario = getCarrito();
+        for (LibroDTO libro : carritoActualUsuario) {
+            if (libro != null && libro.getPrecio() >= 0) {
+                total += libro.getPrecio();
             }
         }
         return total;
     }
 
     public int getCantidadTotalArticulos() {
-        return (this.carrito != null) ? this.carrito.size() : 0;
+        return getCarrito().size();
     }
 
     public void limpiarCarrito() {
-        if (this.carrito != null) {
-            this.carrito.clear();
+        if (usuarioActual != null && usuarioActual.getCorreoElectronico() != null) {
+            String UserKey = usuarioActual.getCorreoElectronico().toLowerCase();
+            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(UserKey);
+            if (carritoDelUsuario != null) {
+                carritoDelUsuario.clear();
+                System.out.println("carrito limpiado para el usuario " + UserKey);
+                guardarCarritosEnArchivo();
+            }
+
+        } else {
+            System.out.println("No hay usuario logueado, no se puede limpiar ningún carrito específico.");
+
         }
-        System.out.println("Todos los artículos del carrito han sido eliminados.");
     }
 
     public void agregarLibroCarrito(LibroDTO libro) {
-        if (libro != null && this.carrito != null) {
-            this.carrito.add(libro);
-            System.out.println("Se añadió al carrito el libro: " + libro.getTitulo() + ". Libros en el carrito: " + this.carrito.size());
-        } else {
-            System.err.println("Error al intentar añadir el libro al carrito (libro o carrito nulos).");
+        if (usuarioActual == null || usuarioActual.getCorreoElectronico() == null) {
+            JOptionPane.showMessageDialog(null, "Debe iniciar sesión para agregar libros al carrito.", "Usuario no Logueado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (libro != null) {
+            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+
+            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.computeIfAbsent(userKey, k -> Collections.synchronizedList(new ArrayList<>()));
+            carritoDelUsuario.add(libro);
+            System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey);
+            guardarCarritosEnArchivo();
         }
     }
 
     public void eliminarLibroCarrito(LibroDTO libro) {
-        if (libro != null && this.carrito != null) {
-            boolean removido = this.carrito.remove(libro);
-            if (removido) {
-                System.out.println("Se eliminó del carrito el libro: " + libro.getTitulo() + ". Total en la lista: " + this.carrito.size());
-            } else {
-                System.out.println("No se encontró el libro '" + libro.getTitulo() + "' para eliminar del carrito (podría ser una instancia diferente con mismo ISBN).");
-
+        if (usuarioActual == null || usuarioActual.getCorreoElectronico() == null) {
+            System.err.println("No hay usuario logueado para eliminar del carrito.");
+            return;
+        }
+        if (libro != null) {
+            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(userKey);
+            if (carritoDelUsuario != null) {
+                boolean removido = carritoDelUsuario.remove(libro);
+                if (removido) {
+                    System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey);
+                    guardarCarritosEnArchivo();
+                } else {
+                    System.out.println("Libro '" + libro.getTitulo() + "' no encontrado en el carrito de " + userKey);
+                }
             }
         } else {
-            System.err.println("Error al intentar eliminar el libro del carrito (libro o carrito nulos).");
+            System.err.println("Error: Intento de eliminar libro nulo del carrito.");
+        }
+    }
+
+    private void guardarCarritosEnArchivo() {
+         synchronized (carritosPorUsuario) { 
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO_CARRITOS))) {
+            oos.writeObject(new HashMap<>(this.carritosPorUsuario));
+            System.out.println("Mapa de carritos de usuarios guardado en " + NOMBRE_ARCHIVO_CARRITOS);
+        } catch (IOException e) {
+            System.err.println("Error al guardar los carritos en archivo: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    }
+
+    public void cargarCarritosDesdeArchivo() {
+        File archivoCarritos = new File(NOMBRE_ARCHIVO_CARRITOS);
+        if (archivoCarritos.exists()) {
+            try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivoCarritos))) {
+                this.carritosPorUsuario = (Map<String, List<LibroDTO>>) ois.readObject();
+                if (this.carritosPorUsuario == null) {
+                    this.carritosPorUsuario = new HashMap<>();
+                }
+                System.out.println("Carritos de usuarios cargados desde " + NOMBRE_ARCHIVO_CARRITOS);
+            } catch (IOException | ClassNotFoundException e) {
+                System.err.println("Error al cargar los carritos desde archivo: " + e.getMessage() + ". Se creará un mapa nuevo.");
+                this.carritosPorUsuario = new HashMap<>();
+            }
+        } else {
+            System.out.println("Archivo de carritos " + NOMBRE_ARCHIVO_CARRITOS + " no encontrado. Se creará uno nuevo.");
+            this.carritosPorUsuario = new HashMap<>();
         }
     }
 
@@ -178,7 +260,7 @@ public class ControlNavegacion {
 
     public void navegarCategorias(JFrame frameActual, String categoriaARestaurar) {
         cerrarFrameActual(frameActual);
-        GUICategorias categoriasScreen = new GUICategorias(this.getCarrito());
+        GUICategorias categoriasScreen = new GUICategorias(getCarrito());
         if (categoriaARestaurar != null) {
             categoriasScreen.seleccionarCategoria(categoriaARestaurar);
         }
@@ -214,7 +296,7 @@ public class ControlNavegacion {
 
     public void navegarCarrito(JFrame frameActual) {
         cerrarFrameActual(frameActual);
-        GUICarrito carritoGUI = new GUICarrito(this.carrito); // Usa this.carrito
+        GUICarrito carritoGUI = new GUICarrito(getCarrito());
         carritoGUI.setVisible(true);
     }
 
@@ -303,19 +385,19 @@ public class ControlNavegacion {
     }
 
     public void cerrarSesion(JFrame frameActual) {
-       cerrarFrameActual(frameActual);
         System.out.println("Cerrando sesión para: " + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "nadie"));
-        this.usuarioActual = null;
+        setUsuarioActual(null);
         limpiarCarrito();
 
-        InicioSesion pantallaLogin = new InicioSesion();
-        pantallaLogin.setVisible(true);
         if (frameActual != null) {
             frameActual.dispose();
         }
-         
-        JOptionPane.showMessageDialog(pantallaLogin, "Sesion cerrada exitosamente. Por favor, inicie sesion de nuevo.");
-        
+
+        InicioSesion pantallaLogin = new InicioSesion();
+        pantallaLogin.setVisible(true);
+
+        JOptionPane.showMessageDialog(pantallaLogin, "Sesión cerrada exitosamente. Por favor, inicie sesión de nuevo.");
+
     }
 
     public void navegarRegistroEntrada(JFrame frameActual) {

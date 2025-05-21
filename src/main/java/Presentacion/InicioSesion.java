@@ -50,7 +50,6 @@ public class InicioSesion extends javax.swing.JFrame {
                             break;
                         }
                     }
-
                     if (usuarioAutenticado != null) {
 
                         navegador.setUsuarioActual(usuarioAutenticado);
@@ -271,13 +270,6 @@ public class InicioSesion extends javax.swing.JFrame {
                 usuarioAutentificado = usuario;
                 inicioDeSesionExitoso = true;
                 break;
-            }
-        }
-        if (usuarioAutentificado != null) {
-            if (GestionUsuarios.esAdmin(usuarioAutentificado.getCorreoElectronico())) {
-                ControlNavegacion.getInstase().navegarAdminGui(this);
-            } else {
-                ControlNavegacion.getInstase().navegarInicio(this);
             }
         }
     }//GEN-LAST:event_btnInicioSesionActionPerformed

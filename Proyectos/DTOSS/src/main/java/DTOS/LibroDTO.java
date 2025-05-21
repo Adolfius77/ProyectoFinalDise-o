@@ -1,12 +1,14 @@
 package DTOS;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects; 
 
-public class LibroDTO {
+public class LibroDTO implements Serializable{
+    private static  final long serialVersionUID = 123456789L;
     private String titulo;
     private String autor;
     private String isbn;
@@ -20,7 +22,7 @@ public class LibroDTO {
     private String sinopsis;
     private List<String> reseñas;
 
-    // CONSTRUCTOR CON LOS DATOS ACTUALIZADOS
+  
     public LibroDTO(String titulo, String autor, String isbn, Date fechaLanzamiento, String categoria, double precio, String editorial, int numPaginas, int cantidad, String rutaImagen, String sinopsis, List<String> reseñas) {
         this.titulo = titulo;
         this.autor = autor;

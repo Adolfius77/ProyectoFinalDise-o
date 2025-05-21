@@ -276,7 +276,7 @@ public class PanelLibro extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado al carrito.");
             setAsAddedToCart(); // Llama al método para cambiar la apariencia del botón
 
-            libro.setCantidad(libro.getCantidad() - 1); // NO hacer esto directamente en el DTO original
+            libro.setCantidad(libro.getCantidad() - 1); 
             LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
         } else {
             JOptionPane.showMessageDialog(this, "Error: El carrito no está inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
