@@ -129,8 +129,10 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         txtTitulo.setText("");
         txtAutor.setText("");
         txtStockActual.setText("");
-        lblImagen.setIcon(null);
-        lblImagen.setText("portada del libro");
+        if (lblImagen != null) {
+            lblImagen.setIcon(null);
+            lblImagen.setText("Portada del Libro");
+        }
     }
 
     private void limpiarCamposRegistroEntrada() {
@@ -153,10 +155,21 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         limpiarCamposRegistroEntrada();
         habilitarCamposRegistroEntrada(false);
 
-        if (lblImagen != null && jPanelAgregarPortada != null) {
-            lblImagen.setText("Portada del Libro");
-            lblImagen.setIcon(null);
-        }
+        txtIsbn.requestFocus();
+    }
+
+    private void limpiarPrimeraBusqueda() {
+        txtIsbn.setText("");
+        txtIsbn.setEditable(true);
+        BtnBuscarIsbn.setEnabled(true);
+
+        libroEcontrado = null;
+
+        limpiarCamposInfoLibro();
+        habilitarCamposInfoLibro(false);
+
+        habilitarCamposRegistroEntrada(false);
+
         txtIsbn.requestFocus();
     }
 
@@ -215,8 +228,8 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         txtStockActual = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         txtAutor = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
         btnCancelar = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
         btnRegistrar = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -441,9 +454,9 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         jPanelAgregarPortadaLayout.setHorizontalGroup(
             jPanelAgregarPortadaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
+                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
         jPanelAgregarPortadaLayout.setVerticalGroup(
@@ -451,11 +464,11 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
             .addGroup(jPanelAgregarPortadaLayout.createSequentialGroup()
                 .addGap(529, 529, 529)
                 .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAgregarPortadaLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addComponent(lblImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 665, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -526,22 +539,33 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btnCancelar.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(48, 48, 48)
-                                .addComponent(BtnBuscarIsbn))
-                            .addComponent(jLabel2)))
+                                .addComponent(BtnBuscarIsbn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCancelar)
+                                .addGap(22, 22, 22))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -556,7 +580,8 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnBuscarIsbn))
+                    .addComponent(BtnBuscarIsbn)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -564,9 +589,6 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        btnCancelar.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
-        btnCancelar.setText("Cancelar");
 
         btnRegistrar.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
         btnRegistrar.setText("Registrar Entrada");
@@ -603,8 +625,6 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelar)
-                .addGap(28, 28, 28)
                 .addComponent(btnRegistrar)
                 .addGap(29, 29, 29))
             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -619,7 +639,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                     .addComponent(txtFechaEntrada)
                     .addComponent(txtHoraEntrada)
                     .addComponent(txtNotasAdicionales))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(486, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -643,9 +663,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtNotasAdicionales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnRegistrar))
+                .addComponent(btnRegistrar)
                 .addGap(19, 19, 19))
         );
 
@@ -955,21 +973,34 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                     URL imgUrl = getClass().getResource(libroEcontrado.getRutaImagen());
                     if (imgUrl != null) {
                         ImageIcon icon = new ImageIcon(imgUrl);
-                        Dimension prefSize = lblImagen.getPreferredSize();
-                        int anchoImg = prefSize.width > 0 ? prefSize.width : (jPanelAgregarPortada != null && jPanelAgregarPortada.getWidth() > 0 ? jPanelAgregarPortada.getWidth() - 10 : 200);
-                        int altoImg = prefSize.height > 0 ? prefSize.height : (jPanelAgregarPortada != null && jPanelAgregarPortada.getHeight() > 0 ? jPanelAgregarPortada.getHeight() - 10 : 280);
+
+                        int anchoImg = lblImagen.getWidth();
+                        int altoImg = lblImagen.getHeight();
+
+                        if (anchoImg <= 0 || altoImg <= 0) {
+                            if (jPanelAgregarPortada != null && jPanelAgregarPortada.getWidth() > 0 && jPanelAgregarPortada.getHeight() > 0) {
+                                anchoImg = jPanelAgregarPortada.getWidth() - 10;
+                                altoImg = jPanelAgregarPortada.getHeight() - 20;
+                            } else {
+                                anchoImg = 480;
+                                altoImg = 665;
+                            }
+                        }
+
                         if (anchoImg <= 0) {
-                            anchoImg = 200; //Fallback
+                            anchoImg = 480;
                         }
                         if (altoImg <= 0) {
-                            altoImg = 280; //Fallback
+                            altoImg = 665;
                         }
+
                         Image img = icon.getImage().getScaledInstance(anchoImg, altoImg, Image.SCALE_SMOOTH);
                         lblImagen.setIcon(new ImageIcon(img));
                         lblImagen.setText("");
                     } else {
                         lblImagen.setText("Portada no encontrada");
                         lblImagen.setIcon(null);
+                        System.err.println("URL de imagen no encontrada para: " + libroEcontrado.getRutaImagen());
                     }
                 } else if (lblImagen != null) {
                     lblImagen.setText("Sin portada");
@@ -981,16 +1012,10 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
                 txtCantidadEntrada.requestFocus();
             } else {
                 JOptionPane.showMessageDialog(this, "Libro con ISBN '" + isbnBuscado + "' no encontrado.", "No Encontrado", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCamposInfoLibro();
-                habilitarCamposInfoLibro(false);
-                habilitarCamposRegistroEntrada(false);
-                libroEcontrado = null;
-                txtIsbn.setEditable(true);
-                BtnBuscarIsbn.setEnabled(true);
+                limpiarPrimeraBusqueda();
             }
         } catch (PersistenciaException e) {
             JOptionPane.showMessageDialog(this, "Error al buscar el libro: " + e.getMessage(), "Error de Búsqueda", JOptionPane.ERROR_MESSAGE);
-
             limpiarCamposParaNuevaBusqueda();
         }
     }//GEN-LAST:event_BtnBuscarIsbnActionPerformed
@@ -1074,6 +1099,12 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limpiarPrimeraBusqueda();
+
+
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**
      * @param args the command line arguments
