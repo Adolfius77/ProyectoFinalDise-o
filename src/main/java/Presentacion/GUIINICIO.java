@@ -25,20 +25,17 @@ public class GUIINICIO extends javax.swing.JFrame {
     public GUIINICIO() {
 
         initComponents();
-       
+
         configurarNavegacion();
         setLocationRelativeTo(null);
     }
 
-
-
-        
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
         // Asegúrate que estos botones existan en tu initComponents
         if (BtnInicio != null) {
-            // BtnInicio.addActionListener(evt -> navegador.navegarInicio(this)); // Navegar a inicio desde inicio?
+            // BtnInicio.addActionListener(evt -> navegador.navegarInicio(this)); 
         }
         if (btnCategorias != null) {
             btnCategorias.addActionListener(evt -> navegador.navegarCategorias(this));
@@ -63,7 +60,7 @@ public class GUIINICIO extends javax.swing.JFrame {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         switch (seleccion) {
             case "Cambiar Contraseña":
-                navegador.navegarCambioPasssword(this); // Usa tu nombre de método
+                navegador.navegarCambioPasssword(this); 
                 break;
             case "Cerrar Sesion":
                 navegador.cerrarSesion(this);
@@ -882,9 +879,7 @@ public class GUIINICIO extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
@@ -892,15 +887,11 @@ public class GUIINICIO extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBOpcionesActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-//        GUICategorias categorias = new GUICategorias();
-//        categorias.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     /**

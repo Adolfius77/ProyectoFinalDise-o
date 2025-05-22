@@ -31,7 +31,7 @@ public class GUIcarritoDetalle extends javax.swing.JPanel {
         if (BtnEliminar != null) {
             BtnEliminar.setEnabled(cantidad > 0);
         }
-       
+
     }
 
     private void mostrarLibroDetalle(LibroDTO libro, int cantidad) {
@@ -273,15 +273,15 @@ public class GUIcarritoDetalle extends javax.swing.JPanel {
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-       System.out.println("Intento de agregar otra copia del libro: " + (libro != null ? libro.getTitulo() : "LIBRO NULL"));
+        System.out.println("Intento de agregar otra copia del libro: " + (libro != null ? libro.getTitulo() : "LIBRO NULL"));
         if (libro != null && carritoFrame != null) {
-            
+
             boolean exito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
             if (exito) {
                 System.out.println("Libro '" + libro.getTitulo() + "' agregado al carrito, actualizando UI de GUICarrito.");
-               
+
             } else {
-                 System.err.println("No se pudo agregar el libro '" + (libro != null ? libro.getTitulo() : "LIBRO NULL") + "' al carrito (ver consola/mensajes de ControlNavegacion).");
+                System.err.println("No se pudo agregar el libro '" + (libro != null ? libro.getTitulo() : "LIBRO NULL") + "' al carrito (ver consola/mensajes de ControlNavegacion).");
             }
             carritoFrame.actualizarListaCarrito();
         } else {

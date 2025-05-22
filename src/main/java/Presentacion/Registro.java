@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author USER
+ * @author adolfo
  */
 public class Registro extends javax.swing.JFrame {
 
@@ -25,55 +25,54 @@ public class Registro extends javax.swing.JFrame {
         configurarNavegacion();
         setLocationRelativeTo(null);
     }
+
     private void configurarNavegacion() {
-    final ControlNavegacion navegador = ControlNavegacion.getInstase();
-   
-    if (btnRegistrarse != null) {
-        btnRegistrarse.addActionListener(new ActionListener() {
-            
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nombresIngresado = txtNombres.getText().trim();
-                String apellidosIngresado = apellidos.getText().trim();
-                String correoIngresado = txtCorreoElectronico.getText().trim();
-                String contraIngresada = new String(password.getPassword());
-               
-                if (nombresIngresado.isEmpty()) {
-                    JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus nombres.");
-                    return;
-                }
-                if (apellidosIngresado.isEmpty()) {
-                    JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus apellidos.");
-                    return;
-                }
-                if (correoIngresado.isEmpty()) {
-                    JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su correo electrónico.");
-                    return;
-                }
-                if (contraIngresada.isEmpty()) {
-                    JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su contraseña.");
-                    return;
-                }
-                
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-             
-                usuarioDTO nuevoUsuario = new usuarioDTO(nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada);
+        if (btnRegistrarse != null) {
+            btnRegistrarse.addActionListener(new ActionListener() {
 
-          
-                boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    String nombresIngresado = txtNombres.getText().trim();
+                    String apellidosIngresado = apellidos.getText().trim();
+                    String correoIngresado = txtCorreoElectronico.getText().trim();
+                    String contraIngresada = new String(password.getPassword());
 
-                if (registroExitoso) {
-                    JOptionPane.showMessageDialog(Registro.this, "Registro exitoso. Ahora puede iniciar sesión.");
-                    navegador.navegarInicioSesion(Registro.this); 
-                } else {
-                    JOptionPane.showMessageDialog(Registro.this, "Error al registrar el usuario. Inténtelo de nuevo.");
-                  
+                    if (nombresIngresado.isEmpty()) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus nombres.");
+                        return;
+                    }
+                    if (apellidosIngresado.isEmpty()) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus apellidos.");
+                        return;
+                    }
+                    if (correoIngresado.isEmpty()) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su correo electrónico.");
+                        return;
+                    }
+                    if (contraIngresada.isEmpty()) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su contraseña.");
+                        return;
+                    }
+
+                    usuarioDTO nuevoUsuario = new usuarioDTO(nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada);
+
+                    boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
+
+                    if (registroExitoso) {
+                        JOptionPane.showMessageDialog(Registro.this, "Registro exitoso. Ahora puede iniciar sesión.");
+                        navegador.navegarInicioSesion(Registro.this);
+                    } else {
+                        JOptionPane.showMessageDialog(Registro.this, "Error al registrar el usuario. Inténtelo de nuevo.");
+
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
-}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -274,15 +273,15 @@ public class Registro extends javax.swing.JFrame {
         String apellidos = txtApellidos.getText();
         String correo = txtCorreoElectronico.getText();
         String contra = new String(password.getPassword());
-        
-        usuarioDTO nuevoUsuario = new usuarioDTO(nombres,apellidos,contra,correo);
+
+        usuarioDTO nuevoUsuario = new usuarioDTO(nombres, apellidos, contra, correo);
         nuevoUsuario.setNombres(nombres);
         nuevoUsuario.setApellidos(apellidos);
         nuevoUsuario.setCorreoElectronico(correo);
         nuevoUsuario.setContrasena(contra);
-        
+
         GestionUsuarios.agregarUsuario(nuevoUsuario);
-        
+
         txtNombres.setText("");
         txtApellidos.setText("");
         txtCorreoElectronico.setText("");
@@ -294,7 +293,7 @@ public class Registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-       ControlNavegacion.getInstase().navegarInicioSesion(this);
+        ControlNavegacion.getInstase().navegarInicioSesion(this);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     /**

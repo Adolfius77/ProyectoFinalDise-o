@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javax.xml.crypto.Data;
-import com.lowagie.text.Document; 
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.FontFactory;
@@ -48,6 +48,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author USER
@@ -63,25 +64,24 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         cargarHistorialEnPanel(ControlNavegacion.getInstase().obtenerHistorialDeEntradas());
         configurarNavegacion();
         setLocationRelativeTo(null);
-        
-        
+
     }
- private void configurarNavegacion() {
+
+    private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-       
         if (BtnInicio1 != null) {
             BtnInicio1.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-       
+
         if (BtnPerfil1 != null) {
             BtnPerfil1.addActionListener(evt -> navegador.navegarPerfil(this));
         }
-       
+
         if (CMBOpciones1 != null) {
             CMBOpciones1.addActionListener(evt -> manejarAccionOpciones());
         }
-        if (btnGenerarReporte != null) { 
+        if (btnGenerarReporte != null) {
             btnGenerarReporte.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -114,11 +114,11 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             case "Ver Historial entrada":
                 navegador.navegarHistorialEntradas(this);
                 break;
-            
+
         }
         CMBOpciones1.setSelectedIndex(0); // Resetear
     }
-    
+
     private void cargarTodosLosLibros() {
         BoProductos bo = new BoProductos();
         try {
@@ -658,7 +658,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             return;
         }
 
-        
         IBuscadorHistorial buscadorTitulo = new Persistencia.BuscarHistorialPorTitulo();
         IBuscadorHistorial buscadorIsbn = new Persistencia.BuscarHistorialPorISBN();
         IBuscadorHistorial buscadorCategoria = new Persistencia.BuscarHistorialPorCategoria();
@@ -699,15 +698,11 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jScrollPane1.repaint();
     }
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-        //        GUIPerfil perfil = new GUIPerfil();
-        //        perfil.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-        //        GUICarrito carrito = new GUICarrito(this.carrito);
-        //        carrito.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
@@ -715,27 +710,19 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBOpcionesActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-        //        GUICategorias categorias = new GUICategorias();
-        //        categorias.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void BtnInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicio1ActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnInicio1ActionPerformed
 
     private void BtnPerfil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfil1ActionPerformed
-        //        GUIPerfil perfil = new GUIPerfil();
-        //        perfil.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_BtnPerfil1ActionPerformed
 
     private void BtnCarrito1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarrito1ActionPerformed
-        //        GUICarrito carrito = new GUICarrito(this.carrito);
-        //        carrito.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_BtnCarrito1ActionPerformed
 
     private void CMBOpciones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpciones1ActionPerformed
@@ -743,9 +730,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBOpciones1ActionPerformed
 
     private void btnCategorias1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategorias1ActionPerformed
-        //        GUICategorias categorias = new GUICategorias();
-        //        categorias.setVisible(true);
-        //        this.dispose();
+
     }//GEN-LAST:event_btnCategorias1ActionPerformed
 
     private void txtTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTituloActionPerformed
@@ -757,115 +742,115 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_agregarPortadaMouseClicked
 
     private void btnGenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarReporteActionPerformed
-     List<EntradaHistorialDTO> historial = ControlNavegacion.getInstase().obtenerHistorialDeEntradas();
-     if(historial == null || historial.isEmpty()){
+        List<EntradaHistorialDTO> historial = ControlNavegacion.getInstase().obtenerHistorialDeEntradas();
+        if (historial == null || historial.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No hay entradas en el historial para generar un reporte.", "Historial Vacío", JOptionPane.INFORMATION_MESSAGE);
             return;
-     }
-     List<EntradaHistorialDTO> historialParaReporte = new ArrayList<>(historial);
+        }
+        List<EntradaHistorialDTO> historialParaReporte = new ArrayList<>(historial);
         Collections.reverse(historialParaReporte);
-        
+
         try {
             generarReportePDFEntradas(historialParaReporte);
         } catch (IOException ex) {
             Logger.getLogger(GUIHistorialEntradas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGenerarReporteActionPerformed
-    
-    private void generarReportePDFEntradas(List<EntradaHistorialDTO> entradasParaReporte) throws IOException{
+
+    private void generarReportePDFEntradas(List<EntradaHistorialDTO> entradasParaReporte) throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("guardar reporte de entradas de libros: ");
         SimpleDateFormat sdfNombreArchivo = new SimpleDateFormat("yyyyMMdd_HHmmss");
         String nombreArchivoSugerido = "ReporteEntradaLibros_" + sdfNombreArchivo.format(new Date()) + ".pdf";
         fileChooser.setSelectedFile(new File(nombreArchivoSugerido));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF(*.pdf)","pdf"));
-        
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos PDF(*.pdf)", "pdf"));
+
         int userSelection = fileChooser.showSaveDialog(this);
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
             if (!fileToSave.getAbsolutePath().toLowerCase().endsWith(".pdf")) {
                 fileToSave = new File(fileToSave.getAbsolutePath() + ".pdf");
             }
-          Document document = new Document(PageSize.A4.rotate()); 
-          
+            Document document = new Document(PageSize.A4.rotate());
+
             try {
-                    com.lowagie.text.Font fontTituloDoc = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, java.awt.Color.BLACK); // <--- AQUÍ SE DECLARA E INICIALIZA
+                com.lowagie.text.Font fontTituloDoc = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, java.awt.Color.BLACK); // <--- AQUÍ SE DECLARA E INICIALIZA
 
                 PdfWriter.getInstance(document, new FileOutputStream(fileToSave));
                 document.open();
-                 Paragraph tituloDoc = new Paragraph("Reporte de Entradas de Libros", fontTituloDoc);
-                 tituloDoc.setAlignment(Element.ALIGN_CENTER);
-            tituloDoc.setSpacingBefore(10);
-            tituloDoc.setSpacingAfter(20);
-            document.add(tituloDoc);
+                Paragraph tituloDoc = new Paragraph("Reporte de Entradas de Libros", fontTituloDoc);
+                tituloDoc.setAlignment(Element.ALIGN_CENTER);
+                tituloDoc.setSpacingBefore(10);
+                tituloDoc.setSpacingAfter(20);
+                document.add(tituloDoc);
 
-            // Fecha de Generación
-            SimpleDateFormat sdfFechaHoraReporte = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Paragraph fechaGen = new Paragraph("Generado el: " + sdfFechaHoraReporte.format(new Date()), FontFactory.getFont(FontFactory.HELVETICA, 10));
-            fechaGen.setAlignment(Element.ALIGN_RIGHT);
-            fechaGen.setSpacingAfter(15);
-            document.add(fechaGen);
-            
-            // Creación de la tabla
-            PdfPTable table = new PdfPTable(5); 
-            table.setWidthPercentage(100);
-            float[] columnWidths = {2.5f, 4f, 1.5f, 2f, 1.5f};
-            try {
-                table.setWidths(columnWidths);
-            } catch (DocumentException ex) {
-                System.err.println("Error al establecer anchos de columna: " + ex.getMessage());
-            }
+                // Fecha de Generación
+                SimpleDateFormat sdfFechaHoraReporte = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Paragraph fechaGen = new Paragraph("Generado el: " + sdfFechaHoraReporte.format(new Date()), FontFactory.getFont(FontFactory.HELVETICA, 10));
+                fechaGen.setAlignment(Element.ALIGN_RIGHT);
+                fechaGen.setSpacingAfter(15);
+                document.add(fechaGen);
 
-            // Encabezados de la tabla
-                com.lowagie.text.Font fontEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, java.awt.Color.WHITE);
-            String[] headers = {"ISBN", "Título del Libro", "Cantidad Entrada", "Fecha Entrada", "Hora Entrada"};
-            
-            for (String header : headers) {
-                PdfPCell cell = new PdfPCell(new Phrase(header, fontEncabezado));
-                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cell.setBackgroundColor(new java.awt.Color(101, 85, 143)); 
-                cell.setPadding(5);
-                table.addCell(cell);
-            }
-            table.setHeaderRows(1);
-
-            // Contenido de la tabla
-                com.lowagie.text.Font fontCelda = FontFactory.getFont(FontFactory.HELVETICA, 9, java.awt.Color.BLACK);
-            for (EntradaHistorialDTO entrada : entradasParaReporte) {
-                table.addCell(new PdfPCell(new Phrase(entrada.getIsbn(), fontCelda)));
-                table.addCell(new PdfPCell(new Phrase(entrada.getTituloLibro(), fontCelda)));
-                
-                PdfPCell cellCantidad = new PdfPCell(new Phrase(String.valueOf(entrada.getCantidadEntrada()), fontCelda));
-                cellCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
-                table.addCell(cellCantidad);
-                
-                table.addCell(new PdfPCell(new Phrase(entrada.getFechaFormateada(), fontCelda)));
-                table.addCell(new PdfPCell(new Phrase(entrada.getHoraFormateada(), fontCelda)));
-            }
-
-            document.add(table);
-            document.close();
-
-            JOptionPane.showMessageDialog(this, "Reporte PDF generado exitosamente en:\n" + fileToSave.getAbsolutePath(), "PDF Generado", JOptionPane.INFORMATION_MESSAGE);
-
-          
-            if (Desktop.isDesktopSupported()) {
+                // Creación de la tabla
+                PdfPTable table = new PdfPTable(5);
+                table.setWidthPercentage(100);
+                float[] columnWidths = {2.5f, 4f, 1.5f, 2f, 1.5f};
                 try {
-                    Desktop.getDesktop().open(fileToSave);
-                } catch (IOException ex) {
-                    System.err.println("No se pudo abrir el PDF automáticamente: " + ex.getMessage());
-                    JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF automáticamente.\nPor favor, búsquelo en: " + fileToSave.getAbsolutePath(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    table.setWidths(columnWidths);
+                } catch (DocumentException ex) {
+                    System.err.println("Error al establecer anchos de columna: " + ex.getMessage());
                 }
-            }
 
-        } catch (DocumentException | FileNotFoundException e) {
-            JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage(), "Error de PDF", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+                // Encabezados de la tabla
+                com.lowagie.text.Font fontEncabezado = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, java.awt.Color.WHITE);
+                String[] headers = {"ISBN", "Título del Libro", "Cantidad Entrada", "Fecha Entrada", "Hora Entrada"};
+
+                for (String header : headers) {
+                    PdfPCell cell = new PdfPCell(new Phrase(header, fontEncabezado));
+                    cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cell.setBackgroundColor(new java.awt.Color(101, 85, 143));
+                    cell.setPadding(5);
+                    table.addCell(cell);
+                }
+                table.setHeaderRows(1);
+
+                // Contenido de la tabla
+                com.lowagie.text.Font fontCelda = FontFactory.getFont(FontFactory.HELVETICA, 9, java.awt.Color.BLACK);
+                for (EntradaHistorialDTO entrada : entradasParaReporte) {
+                    table.addCell(new PdfPCell(new Phrase(entrada.getIsbn(), fontCelda)));
+                    table.addCell(new PdfPCell(new Phrase(entrada.getTituloLibro(), fontCelda)));
+
+                    PdfPCell cellCantidad = new PdfPCell(new Phrase(String.valueOf(entrada.getCantidadEntrada()), fontCelda));
+                    cellCantidad.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    table.addCell(cellCantidad);
+
+                    table.addCell(new PdfPCell(new Phrase(entrada.getFechaFormateada(), fontCelda)));
+                    table.addCell(new PdfPCell(new Phrase(entrada.getHoraFormateada(), fontCelda)));
+                }
+
+                document.add(table);
+                document.close();
+
+                JOptionPane.showMessageDialog(this, "Reporte PDF generado exitosamente en:\n" + fileToSave.getAbsolutePath(), "PDF Generado", JOptionPane.INFORMATION_MESSAGE);
+
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().open(fileToSave);
+                    } catch (IOException ex) {
+                        System.err.println("No se pudo abrir el PDF automáticamente: " + ex.getMessage());
+                        JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF automáticamente.\nPor favor, búsquelo en: " + fileToSave.getAbsolutePath(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+
+            } catch (DocumentException | FileNotFoundException e) {
+                JOptionPane.showMessageDialog(this, "Error al generar el PDF: " + e.getMessage(), "Error de PDF", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
+            }
         }
+
     }
-                
-    }
+
     /**
      * @param args the command line arguments
      */

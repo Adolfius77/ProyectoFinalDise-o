@@ -1,21 +1,18 @@
 package Negocio;
 
 import DTOS.LibroDTO;
-import Persistencia.IlibroDAO; // Asegúrate que esta sea la interfaz correcta
-import Persistencia.LibroDAOImplMemoria; // Implementación en memoria
-import expciones.PersistenciaException; // Si aplica para los métodos DAO
+import Persistencia.IlibroDAO; 
+import Persistencia.LibroDAOImplMemoria; 
+import expciones.PersistenciaException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BoProductos {
 
-    // Usar la interfaz DAO para la persistencia de libros
+  
     private IlibroDAO libroDAO;
-
     public BoProductos() {
-        // Instanciar la implementación en memoria del DAO
-        // En una aplicación real, esto podría ser inyectado o gestionado por un framework.
         this.libroDAO = new LibroDAOImplMemoria();
     }
 

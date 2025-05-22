@@ -86,18 +86,17 @@ public class PanelLibro extends javax.swing.JPanel {
             BtnDetallesLibro.addActionListener(evt -> {
                 if (this.libro != null) {
                     JFrame frameActual = (JFrame) SwingUtilities.getWindowAncestor(this);
-                    String categoriaActualDelLibro = this.libro.getCategoria(); // O la categoría seleccionada en GUICategorias
+                    String categoriaActualDelLibro = this.libro.getCategoria();
 
-                    // Si el panel está dentro de GUICategorias, puedes obtener la categoría seleccionada del JComboBox
                     String categoriaSeleccionadaEnGUI = null;
                     if (frameActual instanceof GUICategorias) {
                         categoriaSeleccionadaEnGUI = ((GUICategorias) frameActual).getCategoriaSeleccionadaActual();
                     }
 
                     ControlNavegacion.getInstase().navegarDetallesLibro(frameActual, this.libro, categoriaSeleccionadaEnGUI != null ? categoriaSeleccionadaEnGUI : categoriaActualDelLibro);
-                } // ...
+                }
             });
-        } // ...
+        }
     }
 
     public void setAsAddedToCart() {
@@ -271,24 +270,24 @@ public class PanelLibro extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error: No hay información del libro para agregar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if(libro.getCantidad() <= 0){
+        if (libro.getCantidad() <= 0) {
             JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " esta agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
             BtnAgregarCarrito.setEnabled(false);
             return;
         }
         boolean agregadoConExito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
-        
+
         if (agregadoConExito) {
-            JOptionPane.showMessageDialog(this, libro.getTitulo() +  " agregado correctamente al carrito");
+            JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado correctamente al carrito");
             setAsAddedToCart();
-            
-            int stockActualLocal  = this.libro.getCantidad();
-            if(stockActualLocal > 0){
+
+            int stockActualLocal = this.libro.getCantidad();
+            if (stockActualLocal > 0) {
 //                this.libro.setCantidad(stockActualLocal - 1);
             }
             LblDisponibildiad.setText(String.format("%d disponibles", this.libro.getCantidad()));
-            
-        }else{
+
+        } else {
             System.out.println(" No se pudo agregar '" + libro.getTitulo() + "' al carrito (ControlNavegacion manejo el error).");
         }
     }//GEN-LAST:event_BtnAgregarCarritoActionPerformed

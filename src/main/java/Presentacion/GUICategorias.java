@@ -81,7 +81,7 @@ public class GUICategorias extends javax.swing.JFrame {
     public void seleccionarCategoria(String categoriaNombre) {
         if (CMBCategorias != null && categoriaNombre != null) {
             CMBCategorias.setSelectedItem(categoriaNombre);
-            // El ItemListener de CMBCategorias debería llamar a mostrarLibrosPorCategoria
+     
         }
     }
 
@@ -170,7 +170,7 @@ public class GUICategorias extends javax.swing.JFrame {
             PanelDinamico.add(new javax.swing.JLabel(categoria == null ? "No hay libros." : "No hay libros en la categoría: " + categoria.toUpperCase()));
         } else {
             for (LibroDTO libro : librosFiltrados) {
-                // Crea el panel para este libro, pasando el carrito compartido
+                // Crea el panel para este libro pasando el carrito compartido
                 PanelLibro panelito = new PanelLibro(libro, carritoCompartido, this);
 
                 // *** VERIFICACIÓN SI ESTÁ EN CARRITO ***
@@ -420,9 +420,7 @@ public class GUICategorias extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void CMBCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBCategoriasActionPerformed
@@ -432,9 +430,7 @@ public class GUICategorias extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBCategoriasActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
@@ -442,9 +438,7 @@ public class GUICategorias extends javax.swing.JFrame {
     }//GEN-LAST:event_CMBOpcionesActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void CMBCategoriasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_CMBCategoriasItemStateChanged

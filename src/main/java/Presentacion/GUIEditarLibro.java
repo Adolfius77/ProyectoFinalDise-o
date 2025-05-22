@@ -529,23 +529,23 @@ public class GUIEditarLibro extends javax.swing.JFrame {
             return;
         }
 
-        // 1. Recolectar datos de los campos
+       
         String titulo = txtFldNombreProducto.getText().trim();
         String autor = txtFldAutor.getText().trim();
-        String isbnDelLibro = libroOriginal.getIsbn(); // Usar el ISBN original, no del campo
+        String isbnDelLibro = libroOriginal.getIsbn(); 
         String fechaStr = txtFldFechaLanzamiento.getText().trim();
         String categoria = (String) cmbBoxCategoria.getSelectedItem();
         String editorial = txtFldEditorial.getText().trim();
         String numPaginasStr = txtFldNumPaginas.getText().trim();
-        // El campo de Stock fue removido, así que usaremos la cantidad original
+     
         int cantidadOriginal = libroOriginal.getCantidad();
         String precioStr = txtFldPrecio.getText().trim();
-        // this.rutaImagenSeleccionada se actualiza si el usuario usa btnAgregarPortadaActionPerformed
+    
 
-        // 2. VALIDACIONES (similares a GUIAgregarLibro, pero sin validar ISBN si no es editable)
+       
         if (titulo.isEmpty() || autor.isEmpty() || fechaStr.isEmpty() || editorial.isEmpty()
                 || numPaginasStr.isEmpty() || precioStr.isEmpty()
-                || (this.rutaImagenSeleccionada == null || this.rutaImagenSeleccionada.trim().isEmpty())) { // Portada sigue siendo requerida
+                || (this.rutaImagenSeleccionada == null || this.rutaImagenSeleccionada.trim().isEmpty())) {
             JOptionPane.showMessageDialog(this, "Todos los campos (incluida la portada) son obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -567,21 +567,21 @@ public class GUIEditarLibro extends javax.swing.JFrame {
             return;
         }
 
-        // 3. Crear el LibroDTO actualizado
+        
         LibroDTO libroActualizado = new LibroDTO(
                 titulo, autor, isbnDelLibro, fechaLanzamiento, categoria, precio,
                 editorial, numPaginas,
-                cantidadOriginal, // Usar la cantidad original ya que no hay campo de stock
-                this.rutaImagenSeleccionada // Esta puede haber sido actualizada por btnAgregarPortadaActionPerformed
+                cantidadOriginal,
+                this.rutaImagenSeleccionada 
         );
 
-        // 4. Llamar a la lógica de negocio para actualizar
+        
         BoProductos boProductos = new BoProductos();
         boolean actualizadoExitosamente = boProductos.actualizarLibro(libroActualizado);
 
         if (actualizadoExitosamente) {
             JOptionPane.showMessageDialog(this, "Libro \"" + titulo + "\" actualizado con éxito.");
-            ControlNavegacion.getInstase().navegarGestionLibro(this); // Vuelve y refresca
+            ControlNavegacion.getInstase().navegarGestionLibro(this);
         } else {
             JOptionPane.showMessageDialog(this, "Error al actualizar el libro. Verifique los datos o contacte al administrador.", "Error de Actualización", JOptionPane.ERROR_MESSAGE);
         }
@@ -688,6 +688,7 @@ public class GUIEditarLibro extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 Date fechaEjemplo = new Date();
                 LibroDTO libroDePrueba = new LibroDTO(

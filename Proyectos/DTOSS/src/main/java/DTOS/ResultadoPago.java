@@ -1,5 +1,5 @@
-// MUEVE ESTA CLASE A: Proyectos/DTOSS/src/main/java/DTOS/ResultadoPago.java
-package DTOS; // Asegúrate que el package sea DTOS
+
+package DTOS; 
 
 public class ResultadoPago {
     private boolean exito;

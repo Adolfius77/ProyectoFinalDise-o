@@ -15,7 +15,9 @@ import javax.swing.JOptionPane;
  * @author riosr
  */
 public class GUIEnvioDHL extends javax.swing.JFrame {
-private List<LibroDTO> carrito = new ArrayList<>();
+
+    private List<LibroDTO> carrito = new ArrayList<>();
+
     /**
      * Creates new form GUIEnvioDHL
      */
@@ -24,23 +26,21 @@ private List<LibroDTO> carrito = new ArrayList<>();
         configurarNavegacion();
         setLocationRelativeTo(this);
     }
-    
+
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
         if (BtnInicio != null) {
             BtnInicio.addActionListener(evt -> navegador.navegarInicio(this));
         }
-        
+
         if (BtnPerfil != null) {
             BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
         }
-        // El botón Carrito en la pantalla Carrito no debería hacer nada o estar deshabilitado
-        // if (BtnCarrito != null) BtnCarrito.setEnabled(false);
+
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
-        // Botón Proceder al Pago
 
         if (btnPedirPaquete != null) {
             btnPedirPaquete.addActionListener(evt -> navegador.navegarInicio(this));
@@ -375,26 +375,23 @@ private List<LibroDTO> carrito = new ArrayList<>();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
+
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
-        // TODO add your handling code here:
+   
     }//GEN-LAST:event_CMBOpcionesActionPerformed
 
     private void TxtFldCPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TxtFldCPActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_TxtFldCPActionPerformed
 
     private void btnPedirPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedirPaqueteActionPerformed
@@ -408,9 +405,9 @@ private List<LibroDTO> carrito = new ArrayList<>();
         String pais = TxtFldPais.getText().trim();
 
         //Validar campos no vacíos
-        if (calle.isEmpty() || numeroCasa.isEmpty() || codigoPostal.isEmpty()|| colonia.isEmpty() || ciudad.isEmpty() || estado.isEmpty() || pais.isEmpty()) {
+        if (calle.isEmpty() || numeroCasa.isEmpty() || codigoPostal.isEmpty() || colonia.isEmpty() || ciudad.isEmpty() || estado.isEmpty() || pais.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos de dirección.", "Error", JOptionPane.ERROR_MESSAGE);
-            return; 
+            return;
         }
         //Validar que el codigo postal sea de 5 numeros
         if (!codigoPostal.matches("\\d{5}")) {
@@ -463,6 +460,7 @@ private List<LibroDTO> carrito = new ArrayList<>();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIEnvioDHL().setVisible(true);
             }

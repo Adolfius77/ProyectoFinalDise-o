@@ -32,7 +32,7 @@ public class GUIAdmin extends javax.swing.JFrame {
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-        // Asegúrate que estos botones existan en tu initComponents
+     
         if (BtnInicio != null) {
             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
@@ -906,31 +906,23 @@ public class GUIAdmin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_CMBOpcionesActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-//        GUICategorias categorias = new GUICategorias();
-//        categorias.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     /**

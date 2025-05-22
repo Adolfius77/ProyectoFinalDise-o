@@ -28,7 +28,7 @@ public class DisponibilidadAdapter {
         } else {
             entidad.setFecha(null);
         }
-        // entidad.setItemId(...); // Asignar desde contexto
+       
         return entidad;
     }
    

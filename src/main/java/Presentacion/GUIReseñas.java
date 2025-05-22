@@ -25,9 +25,10 @@ import javax.swing.JTextArea;
  * @author emiim
  */
 public class GUIReseñas extends javax.swing.JFrame {
+
     private LibroDTO libroConResenas;
     private LibroDTO libroActual;
-    
+
     /**
      * Creates new form GUIReseñas
      */
@@ -38,7 +39,7 @@ public class GUIReseñas extends javax.swing.JFrame {
         configurarNavegacion();
         cargarResenas();
         setLocationRelativeTo(null);
-        
+
         if (this.libroConResenas != null && this.libroConResenas.getTitulo() != null) {
             if (lblTituloLibro != null) {
                 lblTituloLibro.setText(this.libroConResenas.getTitulo());
@@ -50,16 +51,16 @@ public class GUIReseñas extends javax.swing.JFrame {
             }
             setTitle("Reseñas de Libro");
         }
-        
+
         cargarResenas();
         setLocationRelativeTo(null);
     }
-    
+
     public GUIReseñas() {
         this(null);
     }
-    
-   private void configurarNavegacion() {
+
+    private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
         if (BtnInicio2 != null) {
@@ -93,44 +94,44 @@ public class GUIReseñas extends javax.swing.JFrame {
         if (BtnAgregarReseña != null) {
             BtnAgregarReseña.addActionListener(evt -> {
                 if (this.libroConResenas != null) {
-                     String nuevaResenaTexto = JOptionPane.showInputDialog(
-                         this, 
-                         "Escribe tu reseña para: " + libroConResenas.getTitulo(), 
-                         "Agregar Nueva Reseña", 
-                         JOptionPane.PLAIN_MESSAGE
-                     );
+                    String nuevaResenaTexto = JOptionPane.showInputDialog(
+                            this,
+                            "Escribe tu reseña para: " + libroConResenas.getTitulo(),
+                            "Agregar Nueva Reseña",
+                            JOptionPane.PLAIN_MESSAGE
+                    );
 
-                     if (nuevaResenaTexto != null && !nuevaResenaTexto.trim().isEmpty()) {
-                         // 1. Añadir la reseña al objeto LibroDTO en memoria
-                         this.libroConResenas.agregarReseña(nuevaResenaTexto.trim());
+                    if (nuevaResenaTexto != null && !nuevaResenaTexto.trim().isEmpty()) {
+                        // 1. Añadir la reseña al objeto LibroDTO en memoria
+                        this.libroConResenas.agregarReseña(nuevaResenaTexto.trim());
 
-                         // 2. Actualizar el libro en la "persistencia" (BoProductos)
-                         BoProductos boProductos = new BoProductos();
-                         try {
-                             boolean actualizado = boProductos.actualizarLibro(this.libroConResenas);
-                             
-                             if (actualizado) {
-                                 // 3. REGISTRAR LA RESEÑA COMO "DEL USUARIO"
-                                 ReseñaUsuarioDTO miResena = new ReseñaUsuarioDTO(this.libroConResenas.getTitulo(), nuevaResenaTexto.trim());
-                                 ControlNavegacion.getInstase().agregarResenaDelUsuario(miResena);
+                        // 2. Actualizar el libro en la "persistencia" (BoProductos)
+                        BoProductos boProductos = new BoProductos();
+                        try {
+                            boolean actualizado = boProductos.actualizarLibro(this.libroConResenas);
 
-                                 cargarResenas(); 
-                                 JOptionPane.showMessageDialog(this, "Reseña agregada y libro actualizado.");
-                             } else {
-                                 JOptionPane.showMessageDialog(this, "No se pudo guardar la reseña (libro no encontrado para actualizar).", "Error", JOptionPane.ERROR_MESSAGE);
-                             }
-                         } catch (Exception e) { 
-                             JOptionPane.showMessageDialog(this, "Error al guardar la reseña: " + e.getMessage(), "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
-                             e.printStackTrace();
-                         }
-                     }
+                            if (actualizado) {
+                                // 3. REGISTRAR LA RESEÑA COMO "DEL USUARIO"
+                                ReseñaUsuarioDTO miResena = new ReseñaUsuarioDTO(this.libroConResenas.getTitulo(), nuevaResenaTexto.trim());
+                                ControlNavegacion.getInstase().agregarResenaDelUsuario(miResena);
+
+                                cargarResenas();
+                                JOptionPane.showMessageDialog(this, "Reseña agregada y libro actualizado.");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "No se pudo guardar la reseña (libro no encontrado para actualizar).", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(this, "Error al guardar la reseña: " + e.getMessage(), "Error de Persistencia", JOptionPane.ERROR_MESSAGE);
+                            e.printStackTrace();
+                        }
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "No hay un libro seleccionado para agregar una reseña.", "Error", JOptionPane.WARNING_MESSAGE);
                 }
             });
         }
     }
-    
+
     private void manejarAccionOpciones(ControlNavegacion navegador) {
         String seleccion = (String) CMBOpciones.getSelectedItem();
         if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
@@ -150,8 +151,8 @@ public class GUIReseñas extends javax.swing.JFrame {
             case "Ver Historial":
                 navegador.navegarHistorialEntradas(this);
                 break;
-            case "Volver a Detalles del Libro": // Asegúrate que esta opción exista en tu JComboBox
-                 if (this.libroConResenas != null) {
+            case "Volver a Detalles del Libro":
+                if (this.libroConResenas != null) {
                     navegador.navegarDetallesLibro(this, this.libroConResenas, navegador.getUltimaCategoriaSeleccionada());
                 } else {
                     JOptionPane.showMessageDialog(this, "No hay detalles de libro para volver.");
@@ -166,84 +167,88 @@ public class GUIReseñas extends javax.swing.JFrame {
     }
 
     private void cargarResenas() {
-    if (panelReseñas == null) {
-        System.err.println("Error crítico: El panel para mostrar reseñas (jPanel4) no ha sido inicializado. Revisa initComponents().");
-        return;
-    }
-
-    panelReseñas.removeAll();
-    panelReseñas.setLayout(new BoxLayout(panelReseñas, BoxLayout.Y_AXIS));
-
-    if (libroConResenas != null && libroConResenas.getReseñas() != null && !libroConResenas.getReseñas().isEmpty()) {
-        
-        JLabel lblTituloDelLibro = new JLabel("Reseñas para: " + libroConResenas.getTitulo());
-        lblTituloDelLibro.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        lblTituloDelLibro.setAlignmentX(Component.CENTER_ALIGNMENT);
-        lblTituloDelLibro.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 0, 20, 0));
-        jPanel4.add(lblTituloDelLibro);
-
-        int contadorResenas = 1;
-        for (String resenaTexto : libroConResenas.getReseñas()) {
-            JPanel panelResenaIndividual = new JPanel(new BorderLayout(10,5)); // Añadir espacio horizontal entre número y texto
-            panelResenaIndividual.setBackground(new Color(248, 248, 248)); // Un fondo muy claro para cada reseña
-            panelResenaIndividual.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)), // Línea divisoria más sutil
-                    BorderFactory.createEmptyBorder(10, 15, 10, 15) // Más padding
-            ));
-
-            JLabel lblNumeroResena = new JLabel(contadorResenas + ". ");
-            lblNumeroResena.setFont(new Font("Segoe UI", Font.BOLD, 15));
-            lblNumeroResena.setVerticalAlignment(JLabel.TOP); // Alinear número arriba
-            panelResenaIndividual.add(lblNumeroResena, BorderLayout.WEST);
-            
-            JTextArea areaResena = new JTextArea(resenaTexto);
-            areaResena.setWrapStyleWord(true);
-            areaResena.setLineWrap(true);
-            areaResena.setEditable(false);
-            areaResena.setFont(new Font("Segoe UI", Font.PLAIN, 15)); // Fuente ligeramente más grande
-            areaResena.setOpaque(false); // Hacer transparente para que tome el fondo del panelResenaIndividual
-            // areaResena.setMargin(new java.awt.Insets(5, 5, 5, 5)); // No necesario si el panel tiene padding
-
-            panelResenaIndividual.add(areaResena, BorderLayout.CENTER);
-            
-            // Ajustar el tamaño máximo para que el BoxLayout no lo estire demasiado si hay pocas reseñas
-            panelResenaIndividual.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelResenaIndividual.getPreferredSize().height + 5));
-
-            panelReseñas.add(panelResenaIndividual);
-            // jPanel4.add(Box.createRigidArea(new Dimension(0, 8))); // Espacio entre reseñas si no usas bordes que ya lo den
-            contadorResenas++;
+        if (panelReseñas == null) {
+            System.err.println("Error crítico: El panel para mostrar reseñas (jPanel4) no ha sido inicializado. Revisa initComponents().");
+            return;
         }
-    } else {
-        // Crear y centrar el mensaje si no hay reseñas
-        panelReseñas.setLayout(new BorderLayout()); // Cambiar layout para centrar fácilmente
-        JLabel noResenasLabel = new JLabel(
-            libroConResenas != null ? "No hay reseñas disponibles para este libro." : "No se ha seleccionado un libro para mostrar reseñas."
-        );
-        noResenasLabel.setFont(new Font("Segoe UI", Font.ITALIC, 16));
-        noResenasLabel.setHorizontalAlignment(JLabel.CENTER);
-        panelReseñas.add(noResenasLabel, BorderLayout.CENTER);
+
+        panelReseñas.removeAll();
+        panelReseñas.setLayout(new BoxLayout(panelReseñas, BoxLayout.Y_AXIS));
+
+        if (libroConResenas != null && libroConResenas.getReseñas() != null && !libroConResenas.getReseñas().isEmpty()) {
+
+            JLabel lblTituloDelLibro = new JLabel("Reseñas para: " + libroConResenas.getTitulo());
+            lblTituloDelLibro.setFont(new Font("Segoe UI", Font.BOLD, 20));
+            lblTituloDelLibro.setAlignmentX(Component.CENTER_ALIGNMENT);
+            lblTituloDelLibro.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 0, 20, 0));
+            jPanel4.add(lblTituloDelLibro);
+
+            int contadorResenas = 1;
+            for (String resenaTexto : libroConResenas.getReseñas()) {
+                JPanel panelResenaIndividual = new JPanel(new BorderLayout(10, 5)); // Añadir espacio horizontal entre número y texto
+                panelResenaIndividual.setBackground(new Color(248, 248, 248)); // Un fondo muy claro para cada reseña
+                panelResenaIndividual.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)), // Línea divisoria más sutil
+                        BorderFactory.createEmptyBorder(10, 15, 10, 15) // Más padding
+                ));
+
+                JLabel lblNumeroResena = new JLabel(contadorResenas + ". ");
+                lblNumeroResena.setFont(new Font("Segoe UI", Font.BOLD, 15));
+                lblNumeroResena.setVerticalAlignment(JLabel.TOP); // Alinear número arriba
+                panelResenaIndividual.add(lblNumeroResena, BorderLayout.WEST);
+
+                JTextArea areaResena = new JTextArea(resenaTexto);
+                areaResena.setWrapStyleWord(true);
+                areaResena.setLineWrap(true);
+                areaResena.setEditable(false);
+                areaResena.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+                areaResena.setOpaque(false);
+
+                panelResenaIndividual.add(areaResena, BorderLayout.CENTER);
+
+                panelResenaIndividual.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelResenaIndividual.getPreferredSize().height + 5));
+
+                panelReseñas.add(panelResenaIndividual);
+                contadorResenas++;
+            }
+        } else {
+
+            panelReseñas.setLayout(new BorderLayout());
+            JLabel noResenasLabel = new JLabel(
+                    libroConResenas != null ? "No hay reseñas disponibles para este libro." : "No se ha seleccionado un libro para mostrar reseñas."
+            );
+            noResenasLabel.setFont(new Font("Segoe UI", Font.ITALIC, 16));
+            noResenasLabel.setHorizontalAlignment(JLabel.CENTER);
+            panelReseñas.add(noResenasLabel, BorderLayout.CENTER);
+        }
+
+        if (jScrollPaneParaResenas != null) {
+            jScrollPaneParaResenas.revalidate();
+            jScrollPaneParaResenas.repaint();
+        } else {
+            panelReseñas.revalidate();
+            panelReseñas.repaint();
+        }
     }
 
-    // Es crucial revalidar y repintar el JScrollPane que contiene jPanel4
-    if (jScrollPaneParaResenas != null) { // Asumiendo que tu JScrollPane se llama así
-        jScrollPaneParaResenas.revalidate();
-        jScrollPaneParaResenas.repaint();
-    } else { // Si jPanel4 es añadido directamente (menos ideal para contenido scrolleable)
-        panelReseñas.revalidate();
-        panelReseñas.repaint();
-    }
-}   
-    
     private void cargarDetallesLibro() {
         if (libroActual != null) {
-            if (lblTituloLibro != null) lblTituloLibro.setText(libroActual.getTitulo());
-            if (lblTituloLibro != null) lblTituloLibro.setText(libroActual.getTitulo());
-       } else {
-            if (lblTituloLibro != null) lblTituloLibro.setText("Detalles del Libro no disponibles");
-            if (lblTituloLibro != null) lblTituloLibro.setText("Detalles del Libro no disponibles");
-    }       
-}
-    
+            if (lblTituloLibro != null) {
+                lblTituloLibro.setText(libroActual.getTitulo());
+            }
+            if (lblTituloLibro != null) {
+                lblTituloLibro.setText(libroActual.getTitulo());
+            }
+        } else {
+            if (lblTituloLibro != null) {
+                lblTituloLibro.setText("Detalles del Libro no disponibles");
+            }
+            if (lblTituloLibro != null) {
+                lblTituloLibro.setText("Detalles del Libro no disponibles");
+            }
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -534,6 +539,7 @@ public class GUIReseñas extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIReseñas().setVisible(true);
             }

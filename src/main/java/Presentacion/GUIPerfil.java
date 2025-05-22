@@ -35,7 +35,7 @@ public class GUIPerfil extends javax.swing.JFrame {
     public GUIPerfil() {
         initComponents();
         configurarNavegacionPerfil();
-        cargarMisReseñas(); 
+        cargarMisReseñas();
         setLocationRelativeTo(null);
     }
 
@@ -53,11 +53,11 @@ public class GUIPerfil extends javax.swing.JFrame {
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
-        if(btnCategorias != null){
+        if (btnCategorias != null) {
             btnCategorias.addActionListener(evt -> navegador.navegarCategorias(this));
         }
     }
-    
+
     private void manejarAccionOpciones() {
         String seleccion = (String) CMBOpciones.getSelectedItem();
         if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
@@ -67,7 +67,7 @@ public class GUIPerfil extends javax.swing.JFrame {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         switch (seleccion) {
             case "Cambiar Contraseña":
-                navegador.navegarCambioPasssword(this); // Usa tu nombre de método
+                navegador.navegarCambioPasssword(this);
                 break;
             case "Cerrar Sesion":
                 navegador.cerrarSesion(this);
@@ -81,7 +81,7 @@ public class GUIPerfil extends javax.swing.JFrame {
     }
 
     private void cargarMisReseñas() {
-        if (panelReseñas == null) { 
+        if (panelReseñas == null) {
             System.err.println("Error: panelContenedorMisResenas no está inicializado en GUIPerfil.");
             panelReseñas = new JPanel();
             panelReseñas.setLayout(new BoxLayout(panelReseñas, BoxLayout.Y_AXIS));
@@ -102,13 +102,13 @@ public class GUIPerfil extends javax.swing.JFrame {
             JLabel noResenasLabel = new JLabel("Aún no has escrito ninguna reseña.");
             noResenasLabel.setFont(new Font("Segoe UI", Font.ITALIC, 16));
             noResenasLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-            noResenasLabel.setBorder(BorderFactory.createEmptyBorder(20,0,20,0));
+            noResenasLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
             panelReseñas.add(noResenasLabel);
         } else {
             JLabel tituloSeccion = new JLabel("Mis Reseñas");
             tituloSeccion.setFont(new Font("Segoe UI", Font.BOLD, 20));
             tituloSeccion.setAlignmentX(Component.CENTER_ALIGNMENT);
-            tituloSeccion.setBorder(BorderFactory.createEmptyBorder(10,0,15,0));
+            tituloSeccion.setBorder(BorderFactory.createEmptyBorder(10, 0, 15, 0));
             panelReseñas.add(tituloSeccion);
 
             for (ReseñaUsuarioDTO resena : misResenas) {
@@ -116,8 +116,8 @@ public class GUIPerfil extends javax.swing.JFrame {
                 panelResenaIndividual.setLayout(new BoxLayout(panelResenaIndividual, BoxLayout.Y_AXIS));
                 panelResenaIndividual.setBackground(Color.WHITE);
                 panelResenaIndividual.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(Color.LIGHT_GRAY),
-                    BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                        BorderFactory.createLineBorder(Color.LIGHT_GRAY),
+                        BorderFactory.createEmptyBorder(10, 10, 10, 10)
                 ));
                 panelResenaIndividual.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -130,10 +130,10 @@ public class GUIPerfil extends javax.swing.JFrame {
                 txtTextoResena.setLineWrap(true);
                 txtTextoResena.setEditable(false);
                 txtTextoResena.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-                txtTextoResena.setOpaque(false); 
+                txtTextoResena.setOpaque(false);
                 txtTextoResena.setFocusable(false);
                 panelResenaIndividual.add(txtTextoResena);
-                
+
                 panelResenaIndividual.setMaximumSize(new Dimension(Integer.MAX_VALUE, panelResenaIndividual.getPreferredSize().height));
 
                 panelReseñas.add(panelResenaIndividual);
@@ -148,7 +148,7 @@ public class GUIPerfil extends javax.swing.JFrame {
             jScrollMisReseñas.repaint();
         }
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -461,17 +461,13 @@ public class GUIPerfil extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//      GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
@@ -483,15 +479,11 @@ public class GUIPerfil extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void BTNCambioContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNCambioContraseñaActionPerformed
-//        GUICambioContraseña cambioContra = new GUICambioContraseña();
-//        cambioContra.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BTNCambioContraseñaActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-//        GUICategorias categorias = new GUICategorias();
-//        categorias.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     /**
@@ -524,6 +516,7 @@ public class GUIPerfil extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIPerfil().setVisible(true);
             }

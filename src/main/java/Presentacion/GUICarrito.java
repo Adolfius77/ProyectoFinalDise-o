@@ -53,8 +53,6 @@ public class GUICarrito extends javax.swing.JFrame {
         if (BtnPerfil != null) {
             BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
         }
-        // El botón Carrito en la pantalla Carrito no debería hacer nada o estar deshabilitado
-        // if (BtnCarrito != null) BtnCarrito.setEnabled(false);
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -97,7 +95,7 @@ public class GUICarrito extends javax.swing.JFrame {
         }
 
         PanelPrueba.removeAll();
-        PanelPrueba.setLayout(new BoxLayout(PanelPrueba, BoxLayout.Y_AXIS)); // Para apilar verticalmente
+        PanelPrueba.setLayout(new BoxLayout(PanelPrueba, BoxLayout.Y_AXIS)); 
 
         Map<String, Integer> conteoLibros = new HashMap<>();
         Map<String, LibroDTO> libroPorIsbn = new HashMap<>();
@@ -126,7 +124,7 @@ public class GUICarrito extends javax.swing.JFrame {
         int totalDeArticulos = 0;
 
         if (conteoLibros.isEmpty() && (this.carritoLista != null && !this.carritoLista.isEmpty())) {
-            // Esto podría ocurrir si todos los libros en carritoLista eran nulos o sin ISBN
+            
             System.err.println("GUICarrito: conteoLibros está vacío pero carritoLista no lo estaba inicialmente. Revisar datos.");
             JLabel lblErrorDatos = new JLabel("Error al procesar los ítems del carrito.");
             PanelPrueba.add(lblErrorDatos);
@@ -137,8 +135,7 @@ public class GUICarrito extends javax.swing.JFrame {
                 LibroDTO libroBase = libroPorIsbn.get(isbn);
 
                 if (libroBase != null) {
-                    // Crear una nueva instancia de LibroDTO para GUIcarritoDetalle para no afectar el DTO original en el carrito de ControlNavegacion
-                    // Esto es importante si GUIcarritoDetalle modifica el DTO (ej. para mostrar un stock diferente)
+                  
                     LibroDTO libroParaPanel = new LibroDTO(
                             libroBase.getTitulo(), libroBase.getAutor(), libroBase.getIsbn(),
                             libroBase.getFechaLanzamiento(), libroBase.getCategoria(), libroBase.getPrecio(),
@@ -148,7 +145,7 @@ public class GUICarrito extends javax.swing.JFrame {
 
                     GUIcarritoDetalle detallePanel = new GUIcarritoDetalle(libroParaPanel, cantidad, this);
                     PanelPrueba.add(detallePanel);
-                    // PanelPrueba.add(javax.swing.Box.createRigidArea(new java.awt.Dimension(0, 5))); // Espaciador
+                    
 
                     precioTotalCarrito += libroBase.getPrecio() * cantidad;
                     totalDeArticulos += cantidad;
@@ -529,15 +526,11 @@ public class GUICarrito extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito guiCarrito = new GUICarrito(this.carritoLista);
-//        guiCarrito.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
@@ -557,22 +550,18 @@ public class GUICarrito extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnPagarActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-//        GUICategorias categorias = new GUICategorias();
-//        categorias.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        // ... (código del look and feel) ...
+      
 
         java.awt.EventQueue.invokeLater(() -> {
 

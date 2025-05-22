@@ -1,4 +1,4 @@
-// Archivo: Proyectos/Persistenciaa/src/main/java/Persistencia/BuscarHistorialPorTitulo.java
+
 package Persistencia;
 
 import DTOS.EntradaHistorialDTO;

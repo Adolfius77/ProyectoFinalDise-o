@@ -55,7 +55,6 @@ public class ControlNavegacion {
 
     private static ControlNavegacion instancia;
     private ManejoPagos manejoPagos;
-//    private List<LibroDTO> carrito;
 
     private Map<String, List<LibroDTO>> carritosPorUsuario;
     private List<EntradaHistorialDTO> historialDeEntradas;
@@ -278,6 +277,14 @@ public class ControlNavegacion {
         }
     }
 
+    public ManejoPagos getManejoPagos() {
+        return this.manejoPagos;
+    }
+
+    public void setManejoPagos(ManejoPagos manejoPagos) {
+        this.manejoPagos = manejoPagos;
+    }
+
     // --- Métodos de Navegación ---
     private void cerrarFrameActual(JFrame frameActual) {
         if (frameActual != null) {
@@ -363,7 +370,7 @@ public class ControlNavegacion {
         mastercard.setVisible(true);
     }
 
-    public void navegarPaginaPagoTarjeta(JFrame frameActual) { // Usado si se navega sin monto/carrito previo
+    public void navegarPaginaPagoTarjeta(JFrame frameActual) { 
         cerrarFrameActual(frameActual);
         GUIPagoMastercard mastercard = new GUIPagoMastercard();
         mastercard.setVisible(true);
@@ -489,14 +496,6 @@ public class ControlNavegacion {
         cerrarFrameActual(frameActual);
         GUIHistorialEntradas entradas = new GUIHistorialEntradas();
         entradas.setVisible(true);
-    }
-
-    public ManejoPagos getManejoPagos() {
-        return this.manejoPagos;
-    }
-
-    public void setManejoPagos(ManejoPagos manejoPagos) {
-        this.manejoPagos = manejoPagos;
     }
 
 }

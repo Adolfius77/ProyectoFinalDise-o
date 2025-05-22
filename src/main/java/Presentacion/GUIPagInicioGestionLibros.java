@@ -246,7 +246,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
 
     }
 
-   private void manejarAccionOpciones() {
+    private void manejarAccionOpciones() {
         String seleccion = (String) CmbOpciones.getSelectedItem();
         if (seleccion == null || "Opciones".equals(seleccion) || CmbOpciones.getSelectedIndex() == 0) {
             return;
@@ -269,7 +269,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
             case "Ver Historial entrada":
                 navegador.navegarHistorialEntradas(this);
                 break;
-            
+
         }
         CmbOpciones.setSelectedIndex(0); // Resetear
     }
@@ -528,6 +528,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIPagInicioGestionLibros().setVisible(true);
             }

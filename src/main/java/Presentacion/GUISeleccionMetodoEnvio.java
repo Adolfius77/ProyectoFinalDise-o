@@ -377,20 +377,16 @@ public class GUISeleccionMetodoEnvio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnInicioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicioActionPerformed
-//        GUIINICIO inicio = new GUIINICIO();
-//        inicio.setVisible(true);
 
     }//GEN-LAST:event_BtnInicioActionPerformed
 
     private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-//        GUIPerfil perfil = new GUIPerfil();
-//        perfil.setVisible(true);
+
 
     }//GEN-LAST:event_BtnPerfilActionPerformed
 
     private void BtnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarritoActionPerformed
-//        GUICarrito carrito = new GUICarrito(this.carrito);
-//        carrito.setVisible(true);
+
 
     }//GEN-LAST:event_BtnCarritoActionPerformed
 
@@ -431,9 +427,7 @@ public class GUISeleccionMetodoEnvio extends javax.swing.JFrame {
     }//GEN-LAST:event_checkBoxDHLActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-//       GUICategorias categorias = new GUICategorias();
-//        categorias.setVisible(true);
-//        this.dispose();
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     /**
@@ -465,6 +459,7 @@ public class GUISeleccionMetodoEnvio extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
 //                new GUISeleccionMetodoEnvio().setVisible(true);
             }
