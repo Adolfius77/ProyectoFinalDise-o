@@ -28,11 +28,11 @@ public class PanelGestionClientes extends javax.swing.JPanel {
 
         lblTitulo2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        lblTitulo = new javax.swing.JLabel();
-        btnEditarLibro = new javax.swing.JButton();
-        lblTitulo1 = new javax.swing.JLabel();
-        lblTitulo3 = new javax.swing.JLabel();
-        lblTitulo4 = new javax.swing.JLabel();
+        lblIdCliente = new javax.swing.JLabel();
+        btnEditarCliente = new javax.swing.JButton();
+        lblApellidoCliente = new javax.swing.JLabel();
+        lblNombreCliente = new javax.swing.JLabel();
+        lblCorreoElectronico = new javax.swing.JLabel();
 
         lblTitulo2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo2.setText("Nombre");
@@ -41,99 +41,89 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jPanel1.setMaximumSize(new java.awt.Dimension(1300, 120));
 
-        lblTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblTitulo.setText("Id");
+        lblIdCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblIdCliente.setText("Id");
 
-        btnEditarLibro.setBackground(new java.awt.Color(101, 85, 143));
-        btnEditarLibro.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnEditarLibro.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditarLibro.setText("Editar Producto");
-        btnEditarLibro.addActionListener(new java.awt.event.ActionListener() {
+        btnEditarCliente.setBackground(new java.awt.Color(101, 85, 143));
+        btnEditarCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnEditarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarCliente.setText("Editar");
+        btnEditarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarLibroActionPerformed(evt);
+                btnEditarClienteActionPerformed(evt);
             }
         });
 
-        lblTitulo1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblTitulo1.setText("Nombre");
+        lblApellidoCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblApellidoCliente.setText("Apellidos");
 
-        lblTitulo3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblTitulo3.setText("Nombre");
+        lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblNombreCliente.setText("Nombre");
 
-        lblTitulo4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblTitulo4.setText("Nombre");
+        lblCorreoElectronico.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblCorreoElectronico.setText("Correo Electronico");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41)
-                .addComponent(lblTitulo3)
-                .addGap(95, 95, 95)
-                .addComponent(lblTitulo1)
-                .addGap(91, 91, 91)
-                .addComponent(lblTitulo4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 318, Short.MAX_VALUE)
-                .addComponent(btnEditarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addGap(50, 50, 50)
+                .addComponent(lblIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(lblNombreCliente)
+                .addGap(104, 104, 104)
+                .addComponent(lblApellidoCliente)
+                .addGap(104, 104, 104)
+                .addComponent(lblCorreoElectronico)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
+                .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(58, 58, 58))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
-                        .addComponent(btnEditarLibro, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTitulo1, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTitulo3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTitulo4, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1106, Short.MAX_VALUE)
+            .addGap(0, 1233, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 142, Short.MAX_VALUE)
+            .addGap(0, 152, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 3, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(8, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 4, Short.MAX_VALUE)))
+                    .addContainerGap(8, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEditarLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarLibroActionPerformed
+    private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnEditarLibroActionPerformed
+    }//GEN-LAST:event_btnEditarClienteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEditarLibro;
+    private javax.swing.JButton btnEditarCliente;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblTitulo1;
+    private javax.swing.JLabel lblApellidoCliente;
+    private javax.swing.JLabel lblCorreoElectronico;
+    private javax.swing.JLabel lblIdCliente;
+    private javax.swing.JLabel lblNombreCliente;
     private javax.swing.JLabel lblTitulo2;
-    private javax.swing.JLabel lblTitulo3;
-    private javax.swing.JLabel lblTitulo4;
     // End of variables declaration//GEN-END:variables
 }
