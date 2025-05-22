@@ -71,7 +71,7 @@ public class GUIEditarLibro extends javax.swing.JFrame {
 
     }
 
-    private void manejarAccionOpciones() {
+     private void manejarAccionOpciones() {
         String seleccion = (String) CmbOpciones.getSelectedItem();
         if (seleccion == null || "Opciones".equals(seleccion) || CmbOpciones.getSelectedIndex() == 0) {
             return;
@@ -87,10 +87,15 @@ public class GUIEditarLibro extends javax.swing.JFrame {
                 break;
             case "Gestion de Libros":
                 navegador.navegarGestionLibro(this);
-
+                break;
+            case "Registrar Entrada":
+                navegador.navegarRegistroEntrada(this);
+                break;
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
                 break;
         }
-        CmbOpciones.setSelectedIndex(0);
+            CmbOpciones.setSelectedIndex(0); // Resetear
     }
 
     private void cargarDatosLibro() {

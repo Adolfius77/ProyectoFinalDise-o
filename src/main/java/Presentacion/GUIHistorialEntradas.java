@@ -61,6 +61,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         configurarNavegacionAdicional();
         cargarTodosLosLibros();
         cargarHistorialEnPanel(ControlNavegacion.getInstase().obtenerHistorialDeEntradas());
+        configurarNavegacion();
         setLocationRelativeTo(null);
         
         
@@ -69,16 +70,16 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
        
-        if (BtnInicio != null) {
-            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+        if (BtnInicio1 != null) {
+            BtnInicio1.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
        
-        if (BtnPerfil != null) {
-            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        if (BtnPerfil1 != null) {
+            BtnPerfil1.addActionListener(evt -> navegador.navegarPerfil(this));
         }
        
-        if (CMBOpciones != null) {
-            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        if (CMBOpciones1 != null) {
+            CMBOpciones1.addActionListener(evt -> manejarAccionOpciones());
         }
         if (btnGenerarReporte != null) { 
             btnGenerarReporte.addActionListener(new ActionListener() {
@@ -91,8 +92,8 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }
 
     private void manejarAccionOpciones() {
-        String seleccion = (String) CMBOpciones.getSelectedItem();
-        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
+        String seleccion = (String) CMBOpciones1.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones1.getSelectedIndex() == 0) {
             return;
         }
 
@@ -113,8 +114,9 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             case "Ver Historial entrada":
                 navegador.navegarHistorialEntradas(this);
                 break;
+            
         }
-        CMBOpciones.setSelectedIndex(0); // Resetear
+        CMBOpciones1.setSelectedIndex(0); // Resetear
     }
     
     private void cargarTodosLosLibros() {
@@ -501,11 +503,11 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(BtnPerfil1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(CMBOpciones1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -547,6 +549,9 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
 
+        btnGenerarReporte.setBackground(new java.awt.Color(101, 85, 143));
+        btnGenerarReporte.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
+        btnGenerarReporte.setForeground(new java.awt.Color(255, 255, 255));
         btnGenerarReporte.setText("Generar Reporte en PDF");
         btnGenerarReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -569,22 +574,22 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                                 .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 1154, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addGap(519, 519, 519)
-                        .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(443, 443, 443)
+                        .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(txtBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(23, 23, 23)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGenerarReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -716,9 +721,9 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void BtnInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicio1ActionPerformed
-        GUIINICIO inicio = new GUIINICIO();
-        inicio.setVisible(true);
-        this.dispose();
+//        GUIINICIO inicio = new GUIINICIO();
+//        inicio.setVisible(true);
+//        this.dispose();
     }//GEN-LAST:event_BtnInicio1ActionPerformed
 
     private void BtnPerfil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfil1ActionPerformed

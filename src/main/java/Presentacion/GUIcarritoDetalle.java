@@ -18,23 +18,23 @@ import Control.ControlNavegacion;
 public class GUIcarritoDetalle extends javax.swing.JPanel {
 
     private LibroDTO libro;
-    private int cantidadEnCarrito;
+
     private GUICarrito carritoFrame;
 
     public GUIcarritoDetalle(LibroDTO libro, int cantidad, GUICarrito carritoFrame) {
         initComponents();
         this.libro = libro;
-        this.cantidadEnCarrito = cantidad;
+
         this.carritoFrame = carritoFrame;
-        mostrarLibroDetalle(libro,cantidad);
-        
-        if(BtnEliminar != null){
+        mostrarLibroDetalle(libro, cantidad);
+
+        if (BtnEliminar != null) {
             BtnEliminar.setEnabled(cantidad > 0);
         }
+       
     }
 
-    
-    private void mostrarLibroDetalle(LibroDTO libro,int cantidad) {
+    private void mostrarLibroDetalle(LibroDTO libro, int cantidad) {
         lblTituloLibro.setText(libro.getTitulo());
         lblAutorLibro.setText(libro.getAutor());
         lblPrecioLibro.setText(String.format("%.2f", libro.getPrecio()));
@@ -42,24 +42,24 @@ public class GUIcarritoDetalle extends javax.swing.JPanel {
         LblAnioLibro.setText(dateFormat.format(libro.getFechaLanzamiento()));
         lblCantidad.setText("Cantidad: ");
         cantidadtxt.setText("Cantidad: ");
-        
+
         cargarImagen(libro.getRutaImagen());
-        
-        if(cantidadtxt != null){
+
+        if (cantidadtxt != null) {
             cantidadtxt.setText(String.valueOf(cantidad));
         }
     }
 
     private void cargarImagen(String rutaImagen) {
-         if (rutaImagen != null && !rutaImagen.isEmpty()) {
+        if (rutaImagen != null && !rutaImagen.isEmpty()) {
             try {
                 java.net.URL imgUrl = getClass().getResource(rutaImagen);
                 if (imgUrl != null) {
-                     LblImagenSol.setIcon(new ImageIcon(imgUrl));
+                    LblImagenSol.setIcon(new ImageIcon(imgUrl));
                 } else {
-                     System.err.println("Recurso no encontrado: " + rutaImagen);
-                     LblImagenSol.setText("Imagen no encontrada");
-                     LblImagenSol.setIcon(null);
+                    System.err.println("Recurso no encontrado: " + rutaImagen);
+                    LblImagenSol.setText("Imagen no encontrada");
+                    LblImagenSol.setIcon(null);
                 }
             } catch (Exception e) {
                 System.err.println("Error al cargar la imagen: " + rutaImagen);
@@ -258,22 +258,34 @@ public class GUIcarritoDetalle extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-        System.out.println("Desea eliminar una copia del libro: " + libro.getTitulo());
-        if(libro != null && carritoFrame != null){
-            ControlNavegacion.getInstase().eliminarLibroCarrito(this.libro);
+        System.out.println("Intento de eliminar una copia del libro: " + (libro != null ? libro.getTitulo() : "LIBRO NULL"));
+        if (libro != null && carritoFrame != null) {
+            boolean exito = ControlNavegacion.getInstase().eliminarLibroCarrito(this.libro);
+            if (exito) {
+                System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito, actualizando UI de GUICarrito.");
+            } else {
+                System.err.println("No se pudo eliminar el libro '" + (libro != null ? libro.getTitulo() : "LIBRO NULL") + "' del carrito.");
+            }
             carritoFrame.actualizarListaCarrito();
-        }else{
-            System.err.println("Error al intentrar eliminar una copia del libro");
+        } else {
+            System.err.println("Error crítico: Libro o carritoFrame es null en BtnEliminarActionPerformed.");
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarActionPerformed
-        System.out.println("Desea agregar otra copia del libro: " + libro.getTitulo());
-        if(libro != null && carritoFrame != null){
-            ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
+       System.out.println("Intento de agregar otra copia del libro: " + (libro != null ? libro.getTitulo() : "LIBRO NULL"));
+        if (libro != null && carritoFrame != null) {
+            
+            boolean exito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
+            if (exito) {
+                System.out.println("Libro '" + libro.getTitulo() + "' agregado al carrito, actualizando UI de GUICarrito.");
+               
+            } else {
+                 System.err.println("No se pudo agregar el libro '" + (libro != null ? libro.getTitulo() : "LIBRO NULL") + "' al carrito (ver consola/mensajes de ControlNavegacion).");
+            }
             carritoFrame.actualizarListaCarrito();
-        }else{
-            System.err.println("Error al intentrar agregar otra copia del libro");
+        } else {
+            System.err.println("Error crítico: Libro o carritoFrame es null en BtnAgregarActionPerformed.");
         }
     }//GEN-LAST:event_BtnAgregarActionPerformed
 

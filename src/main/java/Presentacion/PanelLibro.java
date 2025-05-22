@@ -6,6 +6,7 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.LibroDTO;
+import Negocio.BoProductos;
 import Presentacion.GUIDetallesLibro;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -32,16 +33,16 @@ public class PanelLibro extends javax.swing.JPanel {
     private LibroDTO libro;
     private List<LibroDTO> carrito;
     private JFrame frameDetalles;
-    
-    public PanelLibro(LibroDTO libro, List<LibroDTO> carrito, JFrame frameDetalles) {  
+
+    public PanelLibro(LibroDTO libro, List<LibroDTO> carrito, JFrame frameDetalles) {
         initComponents();
-        
+
         this.libro = libro;
         this.carrito = carrito;
         this.frameDetalles = frameDetalles;
         if (libro != null) {
             this.LblNombreLibro.setText(libro.getTitulo());
-            this.LblPrecio.setText(String.format("$"+"%.2f", libro.getPrecio()));
+            this.LblPrecio.setText(String.format("$" + "%.2f", libro.getPrecio()));
             this.LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
             cargarImagen(libro.getRutaImagen());
         } else {
@@ -55,50 +56,50 @@ public class PanelLibro extends javax.swing.JPanel {
     private void cargarImagen(String rutaImagen) {
         if (rutaImagen != null && !rutaImagen.isEmpty()) {
             ImageIcon imagen = null;
-            
+
             URL imgUrl = getClass().getResource(rutaImagen);
-            if(imgUrl != null){
+            if (imgUrl != null) {
                 imagen = new ImageIcon(imgUrl);
-            }else{
+            } else {
                 File archivoImagen = new File(rutaImagen);
                 if (archivoImagen.exists() && archivoImagen.isFile()) {
                     imagen = new ImageIcon(rutaImagen);
                 }
             }
-            if(imagen != null && imagen.getImageLoadStatus() == java.awt.MediaTracker.COMPLETE){
+            if (imagen != null && imagen.getImageLoadStatus() == java.awt.MediaTracker.COMPLETE) {
                 LblImagenSol.setIcon(imagen);
                 LblImagenSol.setText("");
-            }else{
+            } else {
                 System.out.println("error al cargar la imagen o no es encontrada : " + rutaImagen);
                 LblImagenSol.setText("imagen no encontrada");
                 LblImagenSol.setIcon(null);
-                
+
             }
-        }else{
+        } else {
             LblImagenSol.setText("sin imagen");
             LblImagenSol.setIcon(null);
         }
     }
 
     private void configurarBotonDetallesLibro() {
-    if (BtnDetallesLibro != null) {
-        BtnDetallesLibro.addActionListener(evt -> {
-            if (this.libro != null) {
-                JFrame frameActual = (JFrame) SwingUtilities.getWindowAncestor(this);
-                String categoriaActualDelLibro = this.libro.getCategoria(); // O la categoría seleccionada en GUICategorias
-                
-                // Si el panel está dentro de GUICategorias, puedes obtener la categoría seleccionada del JComboBox
-                String categoriaSeleccionadaEnGUI = null;
-                if (frameActual instanceof GUICategorias) {
-                    categoriaSeleccionadaEnGUI = ((GUICategorias) frameActual).getCategoriaSeleccionadaActual();
-                }
-                
-                ControlNavegacion.getInstase().navegarDetallesLibro(frameActual, this.libro, categoriaSeleccionadaEnGUI != null ? categoriaSeleccionadaEnGUI : categoriaActualDelLibro);
-            } // ...
-        });
-    } // ...
-}
-    
+        if (BtnDetallesLibro != null) {
+            BtnDetallesLibro.addActionListener(evt -> {
+                if (this.libro != null) {
+                    JFrame frameActual = (JFrame) SwingUtilities.getWindowAncestor(this);
+                    String categoriaActualDelLibro = this.libro.getCategoria(); // O la categoría seleccionada en GUICategorias
+
+                    // Si el panel está dentro de GUICategorias, puedes obtener la categoría seleccionada del JComboBox
+                    String categoriaSeleccionadaEnGUI = null;
+                    if (frameActual instanceof GUICategorias) {
+                        categoriaSeleccionadaEnGUI = ((GUICategorias) frameActual).getCategoriaSeleccionadaActual();
+                    }
+
+                    ControlNavegacion.getInstase().navegarDetallesLibro(frameActual, this.libro, categoriaSeleccionadaEnGUI != null ? categoriaSeleccionadaEnGUI : categoriaActualDelLibro);
+                } // ...
+            });
+        } // ...
+    }
+
     public void setAsAddedToCart() {
         if (BtnAgregarCarrito != null) {
             BtnAgregarCarrito.setEnabled(false); // Deshabilita el botón
@@ -266,21 +267,30 @@ public class PanelLibro extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarCarritoActionPerformed
-        if (libro.getCantidad() <= 0) {
-            JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " está agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
+        if (libro == null) {
+            JOptionPane.showMessageDialog(this, "Error: No hay información del libro para agregar.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        if (carrito != null) {
-            carrito.add(libro); // Añade a la lista compartida
-            JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado al carrito.");
-            setAsAddedToCart(); // Llama al método para cambiar la apariencia del botón
-
-            libro.setCantidad(libro.getCantidad() - 1); 
-            LblDisponibildiad.setText(String.format("%d disponibles", libro.getCantidad()));
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: El carrito no está inicializado.", "Error", JOptionPane.ERROR_MESSAGE);
-        }    
+        if(libro.getCantidad() <= 0){
+            JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " esta agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
+            BtnAgregarCarrito.setEnabled(false);
+            return;
+        }
+        boolean agregadoConExito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
+        
+        if (agregadoConExito) {
+            JOptionPane.showMessageDialog(this, libro.getTitulo() +  " agregado correctamente al carrito");
+            setAsAddedToCart();
+            
+            int stockActualLocal  = this.libro.getCantidad();
+            if(stockActualLocal > 0){
+//                this.libro.setCantidad(stockActualLocal - 1);
+            }
+            LblDisponibildiad.setText(String.format("%d disponibles", this.libro.getCantidad()));
+            
+        }else{
+            System.out.println(" No se pudo agregar '" + libro.getTitulo() + "' al carrito (ControlNavegacion manejo el error).");
+        }
     }//GEN-LAST:event_BtnAgregarCarritoActionPerformed
 
     private void BtnDetallesLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDetallesLibroActionPerformed
@@ -292,7 +302,7 @@ public class PanelLibro extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Error de configuración: No se puede determinar la ventana actual para cerrar.", "Error de Navegación", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_BtnDetallesLibroActionPerformed
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnAgregarCarrito;
     private javax.swing.JButton BtnDetallesLibro;
@@ -305,4 +315,3 @@ public class PanelLibro extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel24;
     // End of variables declaration//GEN-END:variables
 }
-

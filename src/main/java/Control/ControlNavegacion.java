@@ -36,6 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import DTOS.ReseñaUsuarioDTO;
 import DTOS.usuarioDTO;
+import Negocio.BoProductos;
+import expciones.PersistenciaException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -165,53 +167,96 @@ public class ControlNavegacion {
         }
     }
 
-    public void agregarLibroCarrito(LibroDTO libro) {
+    public boolean agregarLibroCarrito(LibroDTO libro) {
         if (usuarioActual == null || usuarioActual.getCorreoElectronico() == null) {
             JOptionPane.showMessageDialog(null, "Debe iniciar sesión para agregar libros al carrito.", "Usuario no Logueado", JOptionPane.WARNING_MESSAGE);
-            return;
+            return false;
         }
-        if (libro != null) {
-            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+        if (libro == null) {
+            System.err.println("ControlNavegacion: Intento de agregar libro nulo al carrito.");
+            return false;
+        }
 
-            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.computeIfAbsent(userKey, k -> Collections.synchronizedList(new ArrayList<>()));
-            carritoDelUsuario.add(libro);
-            System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey);
+        BoProductos boProductos = new BoProductos();
+        LibroDTO libroDesdeFuenteDatos;
+        try {
+            libroDesdeFuenteDatos = boProductos.obtenerLibrosPorIsbn(libro.getIsbn());
+        } catch (PersistenciaException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar stock: " + e.getMessage(), "Error de Stock", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        if (libroDesdeFuenteDatos == null) {
+            JOptionPane.showMessageDialog(null, "El libro '" + libro.getTitulo() + "' no se encuentra en la base de datos.", "Error de Producto", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+        List<LibroDTO> carritoDelUsuario = carritosPorUsuario.computeIfAbsent(userKey, k -> Collections.synchronizedList(new ArrayList<>()));
+
+        long enCarritoParaEsteLibro = carritoDelUsuario.stream().filter(l -> l.getIsbn().equals(libro.getIsbn())).count();
+
+        if (libroDesdeFuenteDatos.getCantidad() <= 0 || enCarritoParaEsteLibro >= libroDesdeFuenteDatos.getCantidad()) {
+            JOptionPane.showMessageDialog(null, "No hay más stock disponible para '" + libro.getTitulo() + "'.", "Stock Insuficiente", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+
+        if (boProductos.decrementarStockLibro(libro.getIsbn(), 1)) {
+            carritoDelUsuario.add(new LibroDTO(libro.getTitulo(), libro.getAutor(), libro.getIsbn(), libro.getFechaLanzamiento(), libro.getCategoria(), libro.getPrecio(), libro.getEditorial(), libro.getNumPaginas(), 1, libro.getRutaImagen(), libro.getSinopsis(), libro.getReseñas()));
+            System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey + ". Stock decrementado.");
             guardarCarritosEnArchivo();
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo agregar '" + libro.getTitulo() + "' al carrito debido a un problema al actualizar el stock.", "Error de Stock", JOptionPane.ERROR_MESSAGE);
+            return false;
         }
     }
 
-    public void eliminarLibroCarrito(LibroDTO libro) {
+    public boolean eliminarLibroCarrito(LibroDTO libro) {
         if (usuarioActual == null || usuarioActual.getCorreoElectronico() == null) {
             System.err.println("No hay usuario logueado para eliminar del carrito.");
-            return;
+            return false;
         }
-        if (libro != null) {
-            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
-            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(userKey);
-            if (carritoDelUsuario != null) {
-                boolean removido = carritoDelUsuario.remove(libro);
-                if (removido) {
-                    System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey);
-                    guardarCarritosEnArchivo();
-                } else {
-                    System.out.println("Libro '" + libro.getTitulo() + "' no encontrado en el carrito de " + userKey);
-                }
-            }
-        } else {
+        if (libro == null) {
             System.err.println("Error: Intento de eliminar libro nulo del carrito.");
+            return false;
         }
+
+        String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+        List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(userKey);
+        boolean removido = false;
+
+        if (carritoDelUsuario != null) {
+
+            removido = carritoDelUsuario.remove(libro);
+
+            if (removido) {
+                BoProductos boProductos = new BoProductos();
+
+                if (boProductos.incrementarStockLibro(libro.getIsbn(), 1)) {
+                    System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey + ". Stock incrementado.");
+                } else {
+                    System.err.println("ADVERTENCIA: Libro eliminado del carrito pero no se pudo INCREMENTAR stock para " + libro.getIsbn());
+
+                }
+                guardarCarritosEnArchivo();
+            } else {
+                System.out.println("Libro '" + libro.getTitulo() + "' no encontrado en el carrito de " + userKey + " para eliminar.");
+            }
+        }
+        return removido;
     }
 
     private void guardarCarritosEnArchivo() {
-         synchronized (carritosPorUsuario) { 
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO_CARRITOS))) {
-            oos.writeObject(new HashMap<>(this.carritosPorUsuario));
-            System.out.println("Mapa de carritos de usuarios guardado en " + NOMBRE_ARCHIVO_CARRITOS);
-        } catch (IOException e) {
-            System.err.println("Error al guardar los carritos en archivo: " + e.getMessage());
-            e.printStackTrace();
+        synchronized (carritosPorUsuario) {
+            try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(NOMBRE_ARCHIVO_CARRITOS))) {
+                oos.writeObject(new HashMap<>(this.carritosPorUsuario));
+                System.out.println("Mapa de carritos de usuarios guardado en " + NOMBRE_ARCHIVO_CARRITOS);
+            } catch (IOException e) {
+                System.err.println("Error al guardar los carritos en archivo: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
-    }
     }
 
     public void cargarCarritosDesdeArchivo() {

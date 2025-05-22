@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -6,10 +6,12 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.LibroDTO;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -86,58 +88,85 @@ public class GUICarrito extends javax.swing.JFrame {
     }
 
     private void mostrarItemsCarrito() {
+        this.carritoLista = ControlNavegacion.getInstase().getCarrito();
+        System.out.println("GUICarrito - mostrarItemsCarrito: Carrito actualizado desde ControlNavegacion. Tamaño: " + (this.carritoLista != null ? this.carritoLista.size() : "null"));
+
         if (PanelPrueba == null) {
-            System.err.println("panel dinamico es igual a nulo");
-            return; //se sale si el panel no existe
+            System.err.println("Error crítico: PanelPrueba (el contenedor de los detalles del carrito) es nulo.");
+            return;
         }
-        if (carritoLista == null) {
-            System.err.println("la lista del carrito esta vacia");
-            carritoLista = new java.util.ArrayList<>();
-        }
-        PanelPrueba.removeAll(); // limpia el carrito antes de añadir
-        
+
+        PanelPrueba.removeAll();
+        PanelPrueba.setLayout(new BoxLayout(PanelPrueba, BoxLayout.Y_AXIS)); // Para apilar verticalmente
+
         Map<String, Integer> conteoLibros = new HashMap<>();
         Map<String, LibroDTO> libroPorIsbn = new HashMap<>();
-        
-        for (LibroDTO libro : carritoLista) {
-            if (libro != null && libro.getIsbn() != null) {
-                String isbn = libro.getIsbn();
-                conteoLibros.put(isbn, conteoLibros.getOrDefault(isbn, 0) + 1);
-                if (!libroPorIsbn.containsKey(isbn)) {
-                    libroPorIsbn.put(isbn, libro);
-                }
-            } else {
-                System.err.println("se encontro un libro null o sin isbn");
-            }
 
+        if (this.carritoLista == null || this.carritoLista.isEmpty()) {
+            System.out.println("GUICarrito: El carrito está vacío o es nulo.");
+            JLabel lblCarritoVacio = new JLabel("El carrito está vacío.");
+            lblCarritoVacio.setFont(new java.awt.Font("Segoe UI", java.awt.Font.ITALIC, 16));
+            lblCarritoVacio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            PanelPrueba.add(lblCarritoVacio);
+        } else {
+            for (LibroDTO libro : this.carritoLista) {
+                if (libro != null && libro.getIsbn() != null) {
+                    String isbn = libro.getIsbn();
+                    conteoLibros.put(isbn, conteoLibros.getOrDefault(isbn, 0) + 1);
+                    if (!libroPorIsbn.containsKey(isbn)) {
+                        libroPorIsbn.put(isbn, libro);
+                    }
+                } else {
+                    System.err.println("GUICarrito: Se encontró un libro nulo o sin ISBN en la lista del carrito.");
+                }
+            }
         }
+
         double precioTotalCarrito = 0;
         int totalDeArticulos = 0;
 
-        if (conteoLibros.isEmpty()) {
-            PanelPrueba.add(new javax.swing.JLabel("El carrito esta vacio."));
+        if (conteoLibros.isEmpty() && (this.carritoLista != null && !this.carritoLista.isEmpty())) {
+            // Esto podría ocurrir si todos los libros en carritoLista eran nulos o sin ISBN
+            System.err.println("GUICarrito: conteoLibros está vacío pero carritoLista no lo estaba inicialmente. Revisar datos.");
+            JLabel lblErrorDatos = new JLabel("Error al procesar los ítems del carrito.");
+            PanelPrueba.add(lblErrorDatos);
         } else {
             for (Map.Entry<String, Integer> entry : conteoLibros.entrySet()) {
                 String isbn = entry.getKey();
                 int cantidad = entry.getValue();
-                LibroDTO libro = libroPorIsbn.get(isbn);
+                LibroDTO libroBase = libroPorIsbn.get(isbn);
 
-                if (libro != null) {
-                    GUIcarritoDetalle detallePanel = new GUIcarritoDetalle(libro, cantidad, this);
+                if (libroBase != null) {
+                    // Crear una nueva instancia de LibroDTO para GUIcarritoDetalle para no afectar el DTO original en el carrito de ControlNavegacion
+                    // Esto es importante si GUIcarritoDetalle modifica el DTO (ej. para mostrar un stock diferente)
+                    LibroDTO libroParaPanel = new LibroDTO(
+                            libroBase.getTitulo(), libroBase.getAutor(), libroBase.getIsbn(),
+                            libroBase.getFechaLanzamiento(), libroBase.getCategoria(), libroBase.getPrecio(),
+                            libroBase.getEditorial(), libroBase.getNumPaginas(), libroBase.getCantidad(), // Aquí podrías pasar la cantidad original si la tienes
+                            libroBase.getRutaImagen(), libroBase.getSinopsis(), new ArrayList<>(libroBase.getReseñas())
+                    );
+
+                    GUIcarritoDetalle detallePanel = new GUIcarritoDetalle(libroParaPanel, cantidad, this);
                     PanelPrueba.add(detallePanel);
+                    // PanelPrueba.add(javax.swing.Box.createRigidArea(new java.awt.Dimension(0, 5))); // Espaciador
 
-                    precioTotalCarrito += libro.getPrecio() * cantidad;
+                    precioTotalCarrito += libroBase.getPrecio() * cantidad;
                     totalDeArticulos += cantidad;
                 }
             }
         }
+
         PanelPrueba.revalidate();
         PanelPrueba.repaint();
+        if (PanelDinamicoCarrito != null) { 
+            PanelDinamicoCarrito.revalidate();
+            PanelDinamicoCarrito.repaint();
+        }
 
         if (lblTotalArticulosValor != null) {
             lblTotalArticulosValor.setText(String.valueOf(totalDeArticulos));
         }
-        if (lblTotalArticulosValor != null) {
+        if (TxtTotalPagar != null) {
             TxtTotalPagar.setText(String.format("$%.2f", precioTotalCarrito));
         }
         if (BtnPagar != null) {
@@ -253,7 +282,7 @@ public class GUICarrito extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 20)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Registrar entrada", "Ver Historial", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial", "Cambiar Contraseña", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
