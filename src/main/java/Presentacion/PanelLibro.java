@@ -8,6 +8,7 @@ import Control.ControlNavegacion;
 import DTOS.LibroDTO;
 import Negocio.BoProductos;
 import Presentacion.GUIDetallesLibro;
+import expciones.PersistenciaException;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
@@ -266,30 +267,54 @@ public class PanelLibro extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnAgregarCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAgregarCarritoActionPerformed
-        if (libro == null) {
-            JOptionPane.showMessageDialog(this, "Error: No hay información del libro para agregar.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        if (libro.getCantidad() <= 0) {
-            JOptionPane.showMessageDialog(this, "Lo sentimos, " + libro.getTitulo() + " esta agotado.", "Sin Stock", JOptionPane.WARNING_MESSAGE);
-            BtnAgregarCarrito.setEnabled(false);
-            return;
-        }
-        boolean agregadoConExito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
+       if (libro == null) {
+        JOptionPane.showMessageDialog(this, "Error: No hay información del libro para agregar.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
-        if (agregadoConExito) {
-            JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado correctamente al carrito");
-            setAsAddedToCart();
 
-            int stockActualLocal = this.libro.getCantidad();
-            if (stockActualLocal > 0) {
-//                this.libro.setCantidad(stockActualLocal - 1);
-            }
-            LblDisponibildiad.setText(String.format("%d disponibles", this.libro.getCantidad()));
 
+    boolean agregadoConExito = ControlNavegacion.getInstase().agregarLibroCarrito(this.libro);
+
+    if (agregadoConExito) {
+        JOptionPane.showMessageDialog(this, libro.getTitulo() + " agregado correctamente al carrito");
+        setAsAddedToCart(); 
+
+
+        if (this.frameDetalles instanceof GUICategorias) { 
+            ((GUICategorias) this.frameDetalles).refrescarVisualizacionDelibros();
         } else {
-            System.out.println(" No se pudo agregar '" + libro.getTitulo() + "' al carrito (ControlNavegacion manejo el error).");
+          
+            BoProductos bo = new BoProductos();
+            try {
+                LibroDTO libroActualizado = bo.obtenerLibrosPorIsbn(this.libro.getIsbn());
+                if (libroActualizado != null) {
+                    LblDisponibildiad.setText(String.format("%d disponibles", libroActualizado.getCantidad()));
+                    if(libroActualizado.getCantidad() <= 0) {
+                         BtnAgregarCarrito.setEnabled(false); 
+                    }
+                }
+            } catch (PersistenciaException e) {
+                System.err.println("Error al re-consultar stock en PanelLibro: " + e.getMessage());
+            }
         }
+    } else {
+        
+        System.out.println("No se pudo agregar '" + libro.getTitulo() + "' al carrito (ControlNavegacion manejo el error).");
+       
+         BoProductos bo = new BoProductos();
+        try {
+            LibroDTO libroActualizado = bo.obtenerLibrosPorIsbn(this.libro.getIsbn());
+            if (libroActualizado != null) {
+                LblDisponibildiad.setText(String.format("%d disponibles", libroActualizado.getCantidad()));
+                 if(libroActualizado.getCantidad() <= 0) {
+                    BtnAgregarCarrito.setEnabled(false);
+                 }
+            }
+        } catch (PersistenciaException e) {
+             System.err.println("Error al re-consultar stock tras fallo en PanelLibro: " + e.getMessage());
+        }
+    }
     }//GEN-LAST:event_BtnAgregarCarritoActionPerformed
 
     private void BtnDetallesLibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDetallesLibroActionPerformed

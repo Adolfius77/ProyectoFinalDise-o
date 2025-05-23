@@ -175,13 +175,15 @@ public class ControlNavegacion {
             JOptionPane.showMessageDialog(null, "Debe iniciar sesión para agregar libros al carrito.", "Usuario no Logueado", JOptionPane.WARNING_MESSAGE);
             return false;
         }
-        if (libro == null) {
-            System.err.println("ControlNavegacion: Intento de agregar libro nulo al carrito.");
+
+        if (libro == null || libro.getIsbn() == null || libro.getIsbn().trim().isEmpty()) {
+            System.err.println("ControlNavegacion: Intento de agregar libro nulo o sin ISBN al carrito.");
             return false;
         }
 
         BoProductos boProductos = new BoProductos();
         LibroDTO libroDesdeFuenteDatos;
+
         try {
             libroDesdeFuenteDatos = boProductos.obtenerLibrosPorIsbn(libro.getIsbn());
         } catch (PersistenciaException e) {
@@ -196,55 +198,97 @@ public class ControlNavegacion {
 
         String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
         List<LibroDTO> carritoDelUsuario = carritosPorUsuario.computeIfAbsent(userKey, k -> Collections.synchronizedList(new ArrayList<>()));
-        long enCarritoParaEsteLibro = carritoDelUsuario.stream().filter(l -> l.getIsbn().equals(libro.getIsbn())).count();
 
-        if (libroDesdeFuenteDatos.getCantidad() <= 0 || enCarritoParaEsteLibro >= libroDesdeFuenteDatos.getCantidad()) {
-            JOptionPane.showMessageDialog(null, "No hay más stock disponible para '" + libro.getTitulo() + "'.", "Stock Insuficiente", JOptionPane.WARNING_MESSAGE);
+        long unidadesYaEnCarrito = carritoDelUsuario.stream()
+                .filter(l -> libro.getIsbn().equals(l.getIsbn()))
+                .count();
+
+        if (libroDesdeFuenteDatos.getCantidad() <= unidadesYaEnCarrito) {
+            JOptionPane.showMessageDialog(null,
+                    "No hay más stock disponible para '" + libro.getTitulo() + "'.\nStock actual en sistema: "
+                    + libroDesdeFuenteDatos.getCantidad() + ", Unidades en su carrito: " + unidadesYaEnCarrito,
+                    "Stock Insuficiente", JOptionPane.WARNING_MESSAGE);
             return false;
         }
 
-        carritoDelUsuario.add(new LibroDTO(libro.getTitulo(), libro.getAutor(), libro.getIsbn(), libro.getFechaLanzamiento(), libro.getCategoria(), libro.getPrecio(), libro.getEditorial(), libro.getNumPaginas(), 1, libro.getRutaImagen(), libro.getSinopsis(), libro.getReseñas()));
-        System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey + ".");
+        boolean stockDecrementadoExitosamente = boProductos.decrementarStockLibro(libro.getIsbn(), 1);
 
-        guardarCarritosEnArchivo();
-        return true;
+        if (stockDecrementadoExitosamente) {
+
+            carritoDelUsuario.add(new LibroDTO(
+                    libro.getTitulo(), libro.getAutor(), libro.getIsbn(),
+                    libro.getFechaLanzamiento(), libro.getCategoria(), libro.getPrecio(),
+                    libro.getEditorial(), libro.getNumPaginas(),
+                    1,
+                    libro.getRutaImagen(), libro.getSinopsis(),
+                    libro.getReseñas() != null ? new ArrayList<>(libro.getReseñas()) : new ArrayList<>()
+            ));
+            System.out.println("Libro '" + libro.getTitulo() + "' (ISBN: " + libro.getIsbn() + ") añadido al carrito de " + userKey + ". Stock global decrementado.");
+            guardarCarritosEnArchivo();
+            return true;
+        } else {
+
+            JOptionPane.showMessageDialog(null, "No se pudo agregar '" + libro.getTitulo() + "' al carrito. El stock podría haberse agotado o hubo un error al actualizar.", "Error al Actualizar Stock", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
 
     }
 
     public boolean eliminarLibroCarrito(LibroDTO libro) {
+
         if (usuarioActual == null || usuarioActual.getCorreoElectronico() == null) {
-            System.err.println("No hay usuario logueado para eliminar del carrito.");
+            System.err.println("ControlNavegacion: No hay usuario logueado para eliminar libro del carrito.");
             return false;
         }
-        if (libro == null) {
-            System.err.println("Error: Intento de eliminar libro nulo del carrito.");
+
+        if (libro == null || libro.getIsbn() == null || libro.getIsbn().trim().isEmpty()) {
+            System.err.println("ControlNavegacion: Intento de eliminar libro nulo o sin ISBN del carrito.");
             return false;
         }
 
         String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
         List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(userKey);
-        boolean removido = false;
 
-        if (carritoDelUsuario != null) {
+        boolean removidoExitosamente = false;
+
+        if (carritoDelUsuario != null && !carritoDelUsuario.isEmpty()) {
 
             LibroDTO libroARemover = null;
-            for (LibroDTO l : carritoDelUsuario) {
-                if (l.getIsbn().equals(libro.getIsbn())) {
-                    libroARemover = l;
+            for (LibroDTO libroEnCarrito : carritoDelUsuario) {
+                if (libro.getIsbn().equals(libroEnCarrito.getIsbn())) {
+                    libroARemover = libroEnCarrito;
                     break;
                 }
             }
+
             if (libroARemover != null) {
-                removido = carritoDelUsuario.remove(libroARemover);
+                removidoExitosamente = carritoDelUsuario.remove(libroARemover);
             }
-            if (removido) {
-                System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey + ".");
+
+            if (removidoExitosamente) {
+                System.out.println("Libro '" + libro.getTitulo() + "' (ISBN: " + libro.getIsbn() + ") eliminado del carrito de " + userKey + ".");
+
+                BoProductos boProductos = new BoProductos();
+                boolean stockIncrementado = boProductos.incrementarStockLibro(libro.getIsbn(), 1);
+
+                if (stockIncrementado) {
+                    System.out.println("Stock global para el libro '" + libro.getTitulo() + "' (ISBN: " + libro.getIsbn() + ") incrementado en 1.");
+                } else {
+
+                    System.err.println("ADVERTENCIA: Libro '" + libro.getTitulo() + "' (ISBN: " + libro.getIsbn()
+                            + ") eliminado del carrito, PERO NO se pudo incrementar el stock global.");
+                }
+
                 guardarCarritosEnArchivo();
+                return true;
             } else {
-                System.out.println("Libro '" + libro.getTitulo() + "' no encontrado en el carrito de " + userKey + " para eliminar.");
+                System.out.println("Libro '" + libro.getTitulo() + "' (ISBN: " + libro.getIsbn() + ") no encontrado en el carrito de " + userKey + " para eliminar.");
+                return false;
             }
+        } else {
+            System.out.println("El carrito del usuario " + userKey + " está vacío o no existe. No se puede eliminar el libro.");
+            return false;
         }
-        return removido;
     }
 
     private void guardarCarritosEnArchivo() {

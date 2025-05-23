@@ -60,7 +60,7 @@ public class Registro extends javax.swing.JFrame {
 
                     System.out.println("INFO: Contraseña para nuevo usuario " + correoIngresado + " es: [CONTRASEÑA NO MOSTRADA]. Implementar almacenamiento seguro.");
 
-                    boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
+                    boolean registroExitoso = GestionUsuarios.agregarUsuarioYContrasena(nuevoUsuario, contraIngresada);
 
                     if (registroExitoso) {
 
@@ -305,7 +305,7 @@ public class Registro extends javax.swing.JFrame {
         );
         System.out.println("INFO: Contraseña para nuevo usuario " + correoIngresado + " es: [CONTRASEÑA NO MOSTRADA]. Implementar almacenamiento seguro.");
 
-        boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
+        boolean registroExitoso = GestionUsuarios.agregarUsuarioYContrasena(nuevoUsuario, contraIngresada);
 
         if (registroExitoso) {
             JOptionPane.showMessageDialog(this, "Registro exitoso. Ahora puede iniciar sesion.");

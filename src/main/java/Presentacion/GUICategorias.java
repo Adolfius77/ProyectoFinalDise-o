@@ -30,7 +30,7 @@ public class GUICategorias extends javax.swing.JFrame {
         }
         return null;
     }
-    
+
     private void configurarNavegacionYCategorias() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         if (BtnInicio != null) {
@@ -57,7 +57,7 @@ public class GUICategorias extends javax.swing.JFrame {
             });
         }
         // Carga inicial
-        
+
         String categoriaGuardada = ControlNavegacion.getInstase().getUltimaCategoriaSeleccionada();
         if (categoriaGuardada != null) {
             CMBCategorias.setSelectedItem(categoriaGuardada); // Intenta seleccionar la guardada
@@ -65,11 +65,11 @@ public class GUICategorias extends javax.swing.JFrame {
         } else {
             String categoriaInicial = (String) CMBCategorias.getSelectedItem();
             if (categoriaInicial != null) {
-                 ControlNavegacion.getInstase().setUltimaCategoriaSeleccionada(categoriaInicial);
+                ControlNavegacion.getInstase().setUltimaCategoriaSeleccionada(categoriaInicial);
                 mostrarLibrosPorCategoria(categoriaInicial);
-            } 
+            }
         }
-        
+
         String categoriaInicial = (String) CMBCategorias.getSelectedItem();
         if (categoriaInicial != null) {
             mostrarLibrosPorCategoria(categoriaInicial);
@@ -77,11 +77,11 @@ public class GUICategorias extends javax.swing.JFrame {
             mostrarLibrosPorCategoria(librosDisponibles.get(0).getCategoria());
         }
     }
-    
+
     public void seleccionarCategoria(String categoriaNombre) {
         if (CMBCategorias != null && categoriaNombre != null) {
             CMBCategorias.setSelectedItem(categoriaNombre);
-     
+
         }
     }
 
@@ -159,27 +159,25 @@ public class GUICategorias extends javax.swing.JFrame {
         PanelDinamico.removeAll(); // Limpia el panel
         List<LibroDTO> librosFiltrados = filtrarLibrosPorCategoria(categoria);
 
-        // Obtiene la lista COMPARTIDA del carrito desde el Navegador/Controlador
         List<LibroDTO> carritoCompartido = ControlNavegacion.getInstase().getCarrito();
 
         if (PanelDinamico.getLayout() == null || !(PanelDinamico.getLayout() instanceof java.awt.FlowLayout)) {
-            PanelDinamico.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15)); // Espaciado
+            PanelDinamico.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 15, 15)); 
         }
 
         if (librosFiltrados.isEmpty()) {
             PanelDinamico.add(new javax.swing.JLabel(categoria == null ? "No hay libros." : "No hay libros en la categoría: " + categoria.toUpperCase()));
         } else {
             for (LibroDTO libro : librosFiltrados) {
-                // Crea el panel para este libro pasando el carrito compartido
                 PanelLibro panelito = new PanelLibro(libro, carritoCompartido, this);
 
-                // *** VERIFICACIÓN SI ESTÁ EN CARRITO ***
+         
                 if (carritoCompartido.contains(libro)) {
-                    panelito.setAsAddedToCart(); // Llama al método para deshabilitar botón
+                    panelito.setAsAddedToCart();
                 }
-                // *** FIN VERIFICACIÓN ***
+              
 
-                PanelDinamico.add(panelito); // Añade el panel configurado
+                PanelDinamico.add(panelito); 
             }
         }
 
@@ -198,7 +196,25 @@ public class GUICategorias extends javax.swing.JFrame {
     public void refrescarVisualizacionDelibros() {
         BoProductos boProductos = new BoProductos();
         this.librosDisponibles = boProductos.obtenerTodosLosLibros();
-        mostrarLibrosPorCategoria((String) CMBCategorias.getSelectedItem());
+
+        String categoriaSeleccionada = null;
+        if (CMBCategorias != null) {
+            categoriaSeleccionada = (String) CMBCategorias.getSelectedItem();
+        }
+
+        if (categoriaSeleccionada == null && !this.librosDisponibles.isEmpty()) {
+            categoriaSeleccionada = this.librosDisponibles.get(0).getCategoria();
+        }
+
+        if (categoriaSeleccionada != null) {
+            mostrarLibrosPorCategoria(categoriaSeleccionada);
+        } else {
+
+            PanelDinamico.removeAll();
+            PanelDinamico.add(new javax.swing.JLabel("No hay libros para mostrar."));
+            PanelDinamico.revalidate();
+            PanelDinamico.repaint();
+        }
     }
 
     private List<LibroDTO> filtrarLibrosPorCategoria(String categoria) {

@@ -4,7 +4,9 @@ import DTOS.ConsultarClienteDTO;
 import DTOS.ModificarClienteDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map; 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -14,33 +16,39 @@ public class GestionUsuarios {
     private static List<ConsultarClienteDTO> listaUsuarios = new ArrayList<>();
     private static final AtomicLong idCounter = new AtomicLong(System.currentTimeMillis());
 
+   
+    private static Map<String, String> almacenContrasenas = new HashMap<>();
+
     private static final List<String> CORREOS_ADMIN = Arrays.asList(
             "admin@mitas.com",
             "admin2@mitas.com"
     );
 
     static {
-        listaUsuarios.add(new ConsultarClienteDTO(idCounter.getAndIncrement(), "Usuario", "Prueba", "ado@gmail.com", true, "activo"));
-        listaUsuarios.add(new ConsultarClienteDTO(idCounter.getAndIncrement(), "Admin", "Principal", "admin@mitas.com", true, "activo"));
+       
+        ConsultarClienteDTO user1 = new ConsultarClienteDTO(idCounter.getAndIncrement(), "Usuario", "Prueba", "ado@gmail.com", true, "activo");
+        listaUsuarios.add(user1);
+        almacenContrasenas.put(user1.getCorreoElectronico().toLowerCase(), "123");
+
+       
+        ConsultarClienteDTO admin1 = new ConsultarClienteDTO(idCounter.getAndIncrement(), "Admin", "Principal", "admin@mitas.com", true, "activo");
+        listaUsuarios.add(admin1);
+        almacenContrasenas.put(admin1.getCorreoElectronico().toLowerCase(), "adminpass");
+
         System.out.println("Usuarios iniciales cargados en GestionUsuarios. Total: " + listaUsuarios.size());
         System.out.println("Correos de administradores definidos: " + CORREOS_ADMIN);
     }
 
-    public static String getPasswordForUser(String correo) {
-        if ("ado@gmail.com".equalsIgnoreCase(correo)) return "123";
-        if ("admin@mitas.com".equalsIgnoreCase(correo)) return "adminpass";
-        if ("nuevo@cliente.com".equalsIgnoreCase(correo)) return "nuevaclave";
-        if ("cliente@modificar.com".equalsIgnoreCase(correo)) return "original";
-        return null;
-    }
+  
 
     public static List<ConsultarClienteDTO> getListaUsuario() {
         return new ArrayList<>(listaUsuarios);
     }
 
-    public static synchronized boolean agregarUsuario(ConsultarClienteDTO usuario) {
-        if (usuario == null || usuario.getCorreoElectronico() == null) {
-            System.err.println("Error: Intento de agregar un usuario nulo o sin correo.");
+  
+    public static synchronized boolean agregarUsuarioYContrasena(ConsultarClienteDTO usuario, String contrasena) {
+        if (usuario == null || usuario.getCorreoElectronico() == null || contrasena == null || contrasena.isEmpty()) {
+            System.err.println("Error: Intento de agregar un usuario nulo, sin correo o sin contraseña.");
             return false;
         }
         for (ConsultarClienteDTO u : listaUsuarios) {
@@ -54,7 +62,8 @@ public class GestionUsuarios {
                  usuario.setIdCliente(idCounter.getAndIncrement());
             }
             listaUsuarios.add(usuario);
-            System.out.println("Usuario agregado: " + usuario.getCorreoElectronico());
+            almacenContrasenas.put(usuario.getCorreoElectronico().toLowerCase(), contrasena); // Guardar contraseña
+            System.out.println("Usuario agregado: " + usuario.getCorreoElectronico() + " con contraseña.");
             return true;
         } catch (Exception e) {
             System.err.println("Error al agregar el usuario: " + e.getMessage());
@@ -62,14 +71,18 @@ public class GestionUsuarios {
         }
     }
     
-    public static synchronized ConsultarClienteDTO autenticarUsuario(String correo, String contrasena) {
-        for (ConsultarClienteDTO usuario : listaUsuarios) {
-            String storedPassword = getPasswordForUser(usuario.getCorreoElectronico());
-            if (usuario.getCorreoElectronico().equalsIgnoreCase(correo) && storedPassword != null && storedPassword.equals(contrasena)) {
-                return usuario;
+    public static synchronized ConsultarClienteDTO autenticarUsuario(String correo, String contrasenaIngresada) {
+        String correoLower = correo.toLowerCase();
+        String contrasenaAlmacenada = almacenContrasenas.get(correoLower);
+
+        if (contrasenaAlmacenada != null && contrasenaAlmacenada.equals(contrasenaIngresada)) {
+            for (ConsultarClienteDTO usuario : listaUsuarios) {
+                if (usuario.getCorreoElectronico().equalsIgnoreCase(correo)) {
+                    return usuario;
+                }
             }
         }
-        return null;
+        return null; 
     }
 
     public static boolean esAdmin(String correo) {
@@ -77,8 +90,7 @@ public class GestionUsuarios {
             return false;
         }
         boolean isAdmin = CORREOS_ADMIN.stream().anyMatch(adminCorreo -> adminCorreo.equalsIgnoreCase(correo));
-        System.out.println("Verificando si " + correo + " es admin: " + isAdmin);
-        return isAdmin;
+        return isAdmin; 
     }
 
     public static ConsultarClienteDTO buscarClientePorId(long idCliente) {
@@ -98,15 +110,21 @@ public class GestionUsuarios {
 
         for (int i = 0; i < listaUsuarios.size(); i++) {
             ConsultarClienteDTO clienteExistente = listaUsuarios.get(i);
-           
             if (clienteExistente.getIdCliente() == clienteModificado.getId()) {
                 clienteExistente.setNombreCliente(clienteModificado.getNombreCliente());
                 clienteExistente.setApellidoCliente(clienteModificado.getApellidoCliente());
                 
                 if (!clienteExistente.getCorreoElectronico().equalsIgnoreCase(clienteModificado.getCorreoElectronico())) {
+                 
+                    String contrasenaAntigua = almacenContrasenas.remove(clienteExistente.getCorreoElectronico().toLowerCase());
+                    if (contrasenaAntigua != null) {
+                         almacenContrasenas.put(clienteModificado.getCorreoElectronico().toLowerCase(), contrasenaAntigua);
+                    }
                     for (ConsultarClienteDTO u : listaUsuarios) {
                         if (u.getCorreoElectronico().equalsIgnoreCase(clienteModificado.getCorreoElectronico()) && u.getIdCliente() != clienteModificado.getId()) {
                             System.err.println("Error: El nuevo correo electrónico '" + clienteModificado.getCorreoElectronico() + "' ya está en uso por otro cliente.");
+                           
+                            if(contrasenaAntigua != null) almacenContrasenas.put(clienteExistente.getCorreoElectronico().toLowerCase(), contrasenaAntigua);
                             return false; 
                         }
                     }
@@ -116,7 +134,8 @@ public class GestionUsuarios {
                 clienteExistente.setEstado(clienteModificado.isActivo() ? "activo" : "inactivo");
 
                 if (clienteModificado.getContraseña() != null && !clienteModificado.getContraseña().isEmpty()) {
-                    System.out.println("INFO: Contraseña para el usuario " + clienteExistente.getCorreoElectronico() + " se ha solicitado cambiar. (Implementar lógica de hashing y almacenamiento seguro).");
+                    System.out.println("INFO: Contraseña para el usuario " + clienteExistente.getCorreoElectronico() + " se ha solicitado cambiar.");
+                    almacenContrasenas.put(clienteExistente.getCorreoElectronico().toLowerCase(), clienteModificado.getContraseña());
                 }
 
                 listaUsuarios.set(i, clienteExistente);
