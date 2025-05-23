@@ -40,7 +40,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
     private LibroDTO libroEcontrado = null;
 
     public GUIRegistrarEntrada() {
-        initComponents();
+       initComponents();
         setLocationRelativeTo(null);
         configurarNavegacion();
         habilitarCamposRegistroEntrada(false);
@@ -54,8 +54,6 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         if (btnInicio != null) {
             btnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-
-     
 
         if (CmbOpciones != null) {
             CmbOpciones.addActionListener(evt -> manejarAccionOpciones());
@@ -94,6 +92,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
     }
 
     private void inicializarCamposEntrada() {
+
         SimpleDateFormat sdfDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
         Date now = new Date();
@@ -102,12 +101,13 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         }
         if (txtHoraEntrada != null) {
             txtHoraEntrada.setText(sdfTime.format(now));
+        
         }
 
     }
 
     private void habilitarCamposInfoLibro(boolean habilitar) {
-        txtTitulo.setEditable(false);
+      txtTitulo.setEditable(false);
         txtAutor.setEditable(false);
         txtStockActual.setEditable(false);
 
@@ -115,6 +115,7 @@ public class GUIRegistrarEntrada extends javax.swing.JFrame {
         txtAutor.setEnabled(habilitar);
         txtStockActual.setEnabled(habilitar);
         lblImagen.setEnabled(habilitar);
+
 
     }
 

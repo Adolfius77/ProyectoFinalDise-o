@@ -7,8 +7,15 @@ package Presentacion;
 import Control.ControlNavegacion;
 import DTOS.ConsultarClienteDTO;
 import Negocio.GestionUsuarios;
+import Persistencia.BuscarClienteId;
+import Persistencia.BuscarClienteNombre;
+import Persistencia.IBuscarCliente;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -20,24 +27,25 @@ import javax.swing.JOptionPane;
  */
 public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
 
-    /**
-     * Creates new form GUIPagInicioGestionClientes
-     */
+    private IBuscarCliente buscadorClientesNombre;
+    private IBuscarCliente buscadorClientesId;
+
     public GUIPagInicioGestionClientes() {
         initComponents();
+        this.buscadorClientesNombre = new BuscarClienteNombre();
+        this.buscadorClientesId = new BuscarClienteId();
         configurarNavegacion();
-        cargarClientesPanel();
+        cargarClientesPanel(null);
         setLocationRelativeTo(null);
     }
-    
+
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-     
         if (BtnInicio != null) {
             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-       
+
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -76,38 +84,44 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         }
         CMBOpciones.setSelectedIndex(0); // Resetear
     }
-    
-    public void cargarClientesPanel(){
-        if(panelCliente == null){
+
+    public void cargarClientesPanel(List<ConsultarClienteDTO> clientesAMostrar) {
+        if (panelCliente == null) {
             System.err.println("El panel cliente es nulo, verifica el nombre del panel");
             return;
         }
+
         panelCliente.removeAll();
-        panelCliente.setLayout(new BoxLayout(panelCliente,BoxLayout.Y_AXIS));
-        
-        List<ConsultarClienteDTO> cliente = GestionUsuarios.getListaUsuario();
-        
-        if(cliente == null || cliente.isEmpty()){
-            panelCliente.add(new JLabel("No hay clientes para mostrar"));
-        }else{
-            for (ConsultarClienteDTO consultarClienteDTO : cliente) {
+        panelCliente.setLayout(new BoxLayout(panelCliente, BoxLayout.Y_AXIS));
+
+        List<ConsultarClienteDTO> clientesParaMostrar;
+        if (clientesAMostrar == null) {
+            clientesParaMostrar = GestionUsuarios.getListaUsuario(); //
+        } else {
+            clientesParaMostrar = clientesAMostrar;
+        }
+
+        if (clientesParaMostrar == null || clientesParaMostrar.isEmpty()) {
+            panelCliente.add(new JLabel("No hay clientes para mostrar."));
+        } else {
+            for (ConsultarClienteDTO consultarClienteDTO : clientesParaMostrar) {
                 PanelGestionClientes itemPanel = new PanelGestionClientes(consultarClienteDTO, this);
-                itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, itemPanel.getPreferredSize().height+10));
+
+                itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, itemPanel.getPreferredSize().height + 10));
                 panelCliente.add(itemPanel);
                 panelCliente.add(Box.createRigidArea(new Dimension(0, 8)));
             }
         }
-        
+
         panelCliente.revalidate();
         panelCliente.repaint();
-        
-        if(jScrollPane1 != null){
+
+        if (jScrollPane1 != null) {
+            jScrollPane1.getViewport().setViewPosition(new Point(0, 0));
             jScrollPane1.revalidate();
             jScrollPane1.repaint();
         }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -301,7 +315,35 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+      String criterio = txtFldBuscador.getText();
+        if (criterio == null || criterio.trim().isEmpty()) {
+            cargarClientesPanel(null); 
+            return;
+        }
+
+        List<ConsultarClienteDTO> todosLosClientes = GestionUsuarios.getListaUsuario(); 
+        Set<ConsultarClienteDTO> resultadosSet = new HashSet<>(); 
+
+        // Buscar por nombre
+        List<ConsultarClienteDTO> resultadosPorNombre = buscadorClientesNombre.buscar(criterio, todosLosClientes); 
+        if (resultadosPorNombre != null) {
+            resultadosSet.addAll(resultadosPorNombre);
+        }
+
+        // Buscar por ID
+        List<ConsultarClienteDTO> resultadosPorId = buscadorClientesId.buscar(criterio, todosLosClientes); 
+        if (resultadosPorId != null) {
+            resultadosSet.addAll(resultadosPorId);
+        }
+        
+        List<ConsultarClienteDTO> resultadosCombinados = new ArrayList<>(resultadosSet);
+
+        if (resultadosCombinados.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se encontraron clientes con el criterio: " + criterio, "Búsqueda sin resultados", JOptionPane.INFORMATION_MESSAGE);
+            cargarClientesPanel(new ArrayList<>());
+        } else {
+            cargarClientesPanel(resultadosCombinados);
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtFldBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldBuscadorActionPerformed
@@ -337,6 +379,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GUIPagInicioGestionClientes().setVisible(true);
             }
