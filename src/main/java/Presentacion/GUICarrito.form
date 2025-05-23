@@ -263,11 +263,9 @@
                   <Font name="Segoe UI Black" size="20" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
+                  <StringArray count="2">
                     <StringItem index="0" value="Opciones"/>
-                    <StringItem index="1" value="Ver Historial"/>
-                    <StringItem index="2" value="Cambiar Contrase&#xf1;a"/>
-                    <StringItem index="3" value="Cerrar Sesion"/>
+                    <StringItem index="1" value="Cerrar Sesion"/>
                   </StringArray>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
