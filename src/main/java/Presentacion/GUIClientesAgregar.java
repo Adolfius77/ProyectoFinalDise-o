@@ -5,12 +5,15 @@
 package Presentacion;
 
 import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
+import Negocio.GestionUsuarios;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author riosr
  */
+
 public class GUIClientesAgregar extends javax.swing.JFrame {
 
     /**
@@ -18,34 +21,42 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
      */
     public GUIClientesAgregar() {
         initComponents();
+        configurarNavegacion();
+        setLocationRelativeTo(null);
     }
 
+    
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-     
         if (BtnInicio != null) {
             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-        if (BtnPerfil != null) {
-            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        if (BtnPerfil != null) { // This likely navigates to an admin profile or main admin screen
+            BtnPerfil.addActionListener(evt -> navegador.navegarAdminGui(this)); // Example
         }
-        if (CMBOpciones != null) {
-            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
-        }
+//        if (CMBOpciones != null) {
+//            CMBOpciones.addActionListener(evt -> manejarAccionOpciones(navegador));
+//        }
         if (btnRegresarGestionCliente != null) {
             btnRegresarGestionCliente.addActionListener(evt -> {
                 int confirmacion = JOptionPane.showConfirmDialog(
                         this,
-                        "¿Está seguro de que desea regresar? Perderá los datos no guardados.",
+                        "¿Está seguro de que desea regresar? Los datos no guardados se perderán.",
                         "Confirmar Salida",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-
                 if (confirmacion == JOptionPane.YES_OPTION) {
                     navegador.navegarInicioGestionClientes(this);
                 }
             });
+        }
+        if (btnAgregarCliente != null) {
+            // Clear existing listeners from GUI builder if any, to avoid duplicate actions
+            for(java.awt.event.ActionListener al : btnAgregarCliente.getActionListeners()) {
+                btnAgregarCliente.removeActionListener(al);
+            }
+            btnAgregarCliente.addActionListener(evt -> agregarNuevoCliente());
         }
 
     }
@@ -77,8 +88,10 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                 navegador.navegarInicioGestionClientes(this);
                 break;
         }
-        CMBOpciones.setSelectedIndex(0); // Resetear
+        CMBOpciones.setSelectedIndex(0);
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -257,7 +270,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         btnAgregarCliente.setBackground(new java.awt.Color(101, 85, 143));
         btnAgregarCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         btnAgregarCliente.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarCliente.setText("Editar");
+        btnAgregarCliente.setText("Agregar");
         btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarClienteActionPerformed(evt);
@@ -409,8 +422,79 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbBoxEstadoActionPerformed
 
-    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
+    public void agregarNuevoCliente() {
+        String idStr = txtFldIdCliente.getText().trim();
+        String nombre = txtFldNombreCliente.getText().trim();
+        String apellido = txtFldApellido.getText().trim();
+        String correo = txtFldCorreoElectronico.getText().trim();
+        String contrasena = txtFldContraseña.getText().trim();
+        boolean activo = "Activo".equalsIgnoreCase(cmbBoxEstado.getSelectedItem().toString());
 
+        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre, apellido, correo y contraseña son campos obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un correo electrónico válido.", "Correo Inválido", JOptionPane.WARNING_MESSAGE);
+            txtFldCorreoElectronico.requestFocus();
+            return;
+        }
+        if (contrasena.length() < 3) { 
+            JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 3 caracteres.", "Contraseña Corta", JOptionPane.WARNING_MESSAGE);
+            txtFldContraseña.requestFocus();
+            return;
+        }
+
+        long idCliente = 0; 
+        if (!idStr.isEmpty()) {
+            try {
+                idCliente = Long.parseLong(idStr);
+                if (idCliente != 0) { 
+                    ConsultarClienteDTO clienteExistente = GestionUsuarios.buscarClientePorId(idCliente);
+                    if (clienteExistente != null) {
+                        JOptionPane.showMessageDialog(this, "El ID de cliente '" + idCliente + "' ya existe. Deje el campo ID vacío o ingrese 0 para autogenerar uno nuevo.", "ID Duplicado", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "El ID debe ser un número válido o dejarse vacío (o 0) para autogeneración.", "ID Inválido", JOptionPane.ERROR_MESSAGE);
+                txtFldIdCliente.requestFocus();
+                return;
+            }
+        }
+
+        ConsultarClienteDTO nuevoCliente = new ConsultarClienteDTO(
+                idCliente, 
+                nombre,
+                apellido,
+                correo,
+                activo,
+                activo ? "activo" : "inactivo"
+        );
+
+      
+        if (GestionUsuarios.agregarUsuarioYContrasena(nuevoCliente, contrasena)) {
+            JOptionPane.showMessageDialog(this, "Cliente '" + nombre + " " + apellido + "' agregado exitosamente con ID: " + nuevoCliente.getIdCliente() + ".", "Registro Exitoso", JOptionPane.INFORMATION_MESSAGE);
+            
+            
+            txtFldIdCliente.setText("");
+            txtFldNombreCliente.setText("");
+            txtFldApellido.setText("");
+            txtFldCorreoElectronico.setText("");
+            txtFldContraseña.setText("");
+            cmbBoxEstado.setSelectedIndex(0); 
+
+            
+            ControlNavegacion.getInstase().navegarInicioGestionClientes(this);
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "No se pudo agregar el cliente. El correo electrónico '" + correo + "' podría ya estar en uso.", "Error de Registro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+
+    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
+        agregarNuevoCliente();
     }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
     private void btnRegresarGestionClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarGestionClienteActionPerformed
@@ -429,37 +513,37 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+    /* Set the Nimbus look and feel */
+    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+     */
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) {
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUIClientesAgregar().setVisible(true);
-            }
-        });
+    } catch (ClassNotFoundException ex) {
+        java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (InstantiationException ex) {
+        java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (IllegalAccessException ex) {
+        java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        java.util.logging.Logger.getLogger(GUIClientesAgregar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
     }
+    //</editor-fold>
+    //</editor-fold>
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+        public void run() {
+            new GUIClientesAgregar().setVisible(true);
+        }
+    });
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnInicio;

@@ -26,6 +26,17 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         this.pantallaGestion = pantallaGestion;
         initComponents();
         cargarDatosCliente();
+        configurarListeners();
+    }
+    
+    private void cargarDatosCliente(){
+        if(cliente != null){
+            lblIdCliente.setText(String.valueOf(cliente.getIdCliente()));
+            lblNombreCliente.setText(cliente.getNombreCliente());
+            lblApellidoCliente.setText(cliente.getApellidoCliente());
+            lblCorreoElectronico.setText(cliente.getCorreoElectronico());
+            lblEstadoCliente.setText(cliente.getEstado());
+        }
     }
 
     /**
@@ -93,9 +104,9 @@ public class PanelGestionClientes extends javax.swing.JPanel {
                 .addComponent(lblCorreoElectronico)
                 .addGap(99, 99, 99)
                 .addComponent(lblEstadoCliente)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 110, Short.MAX_VALUE)
                 .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                .addGap(16, 16, 16))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +152,7 @@ public class PanelGestionClientes extends javax.swing.JPanel {
                     System.out.println("PanelGestionCliente: Editando Cliente - " + this.cliente.getNombreCliente());
                     ControlNavegacion.getInstase().navegarEditarCliente(this.pantallaGestion, this.cliente);
                 } else {
-                    System.err.println("PanelGestionCliente: Error al intentar editar. pantallaGestion o libro es null.");
+                    System.err.println("PanelGestionCliente: Error al intentar editar. pantallaGestion o cliente es null.");
                 }
             });
         } else {
@@ -149,15 +160,7 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         }
     }
 
-    private void cargarDatosCliente(){
-        if(cliente != null){
-//            lblIdCliente.setText(cliente.getIdCliente());
-            lblNombreCliente.setText(cliente.getNombreCliente());
-            lblApellidoCliente.setText(cliente.getApellidoCliente());
-            lblCorreoElectronico.setText(cliente.getCorreoElectronico());
-            lblEstadoCliente.setText(cliente.getEstado());
-        }
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarCliente;

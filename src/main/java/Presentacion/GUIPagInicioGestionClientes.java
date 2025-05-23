@@ -5,6 +5,13 @@
 package Presentacion;
 
 import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
+import Negocio.GestionUsuarios;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +25,9 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
      */
     public GUIPagInicioGestionClientes() {
         initComponents();
+        configurarNavegacion();
+        cargarClientesPanel();
+        setLocationRelativeTo(null);
     }
     
     private void configurarNavegacion() {
@@ -67,6 +77,36 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
                 break;
         }
         CMBOpciones.setSelectedIndex(0); // Resetear
+    }
+    
+    public void cargarClientesPanel(){
+        if(panelCliente == null){
+            System.err.println("El panel cliente es nulo, verifica el nombre del panel");
+            return;
+        }
+        panelCliente.removeAll();
+        panelCliente.setLayout(new BoxLayout(panelCliente,BoxLayout.Y_AXIS));
+        
+        List<ConsultarClienteDTO> cliente = GestionUsuarios.getListaUsuario();
+        
+        if(cliente == null || cliente.isEmpty()){
+            panelCliente.add(new JLabel("No hay clientes para mostrar"));
+        }else{
+            for (ConsultarClienteDTO consultarClienteDTO : cliente) {
+                PanelGestionClientes itemPanel = new PanelGestionClientes(consultarClienteDTO, this);
+                itemPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, itemPanel.getPreferredSize().height+10));
+                panelCliente.add(itemPanel);
+                panelCliente.add(Box.createRigidArea(new Dimension(0, 8)));
+            }
+        }
+        
+        panelCliente.revalidate();
+        panelCliente.repaint();
+        
+        if(jScrollPane1 != null){
+            jScrollPane1.revalidate();
+            jScrollPane1.repaint();
+        }
     }
 
     /**
@@ -204,13 +244,11 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAgregarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(535, 535, 535))
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

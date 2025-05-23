@@ -96,7 +96,7 @@ public class ConsultarClienteDTO implements Serializable{
                 usuario.getApellidos(),
                 usuario.getCorreoElectronico(),
                 usuario.isActivo(),
-                null 
+                usuario.getEstado()
         );
     }
     

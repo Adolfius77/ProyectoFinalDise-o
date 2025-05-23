@@ -6,6 +6,8 @@ package Presentacion;
 
 import Control.ControlNavegacion;
 import DTOS.ConsultarClienteDTO;
+import DTOS.ModificarClienteDTO;
+import Negocio.GestionUsuarios;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,43 +16,134 @@ import javax.swing.JOptionPane;
  */
 public class GUIClientesModificar extends javax.swing.JFrame {
 
-    private ConsultarClienteDTO cliente;
+    private ConsultarClienteDTO clienteOriginal;
     /**
      * Creates new form GUIClientesModificar
      */
-    public GUIClientesModificar() {
+    public GUIClientesModificar(ConsultarClienteDTO cliente) {
+        this.clienteOriginal = cliente;
         initComponents();
+        configurarNavegacion();
+        cargarDatosCliente();
+        setLocationRelativeTo(null);
+        if(lblIdCliente != null && this.clienteOriginal != null){
+            lblIdCliente.setText("ID del Cliente: " + this.clienteOriginal.getIdCliente());
+        }else if(lblIdCliente != null ){
+            lblIdCliente.setText("ID del Cliente: N/A");
+        }
+    }
+    
+    public GUIClientesModificar(){
+        initComponents();
+        configurarNavegacion();
+        setLocationRelativeTo(null);
+        btnEditarCliente.setEnabled(false);
+        if(lblIdCliente != null){
+            lblIdCliente.setText("ID del Cliente: N/A");
+        }
+        
     }
     
     private void configurarNavegacion() {
         final ControlNavegacion navegador = ControlNavegacion.getInstase();
 
-     
         if (BtnInicio != null) {
-            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
         if (BtnPerfil != null) {
-            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+             BtnPerfil.addActionListener(evt -> navegador.navegarAdminGui(this)); // O a perfil de admin
         }
-        if (CMBOpciones != null) {
-            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
-        }   
+//        if (CMBOpciones != null) {
+//            CMBOpciones.addActionListener(evt -> manejarAccionOpciones(navegador));
+//        }
         if (btnRegresarGestionCliente != null) {
             btnRegresarGestionCliente.addActionListener(evt -> {
                 int confirmacion = JOptionPane.showConfirmDialog(
                         this,
-                        "¿Está seguro de que desea regresar? Perderá los datos no guardados.",
+                        "¿Está seguro de que desea regresar? Los cambios no guardados se perderán.",
                         "Confirmar Salida",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.QUESTION_MESSAGE);
-
                 if (confirmacion == JOptionPane.YES_OPTION) {
                     navegador.navegarInicioGestionClientes(this);
                 }
             });
         }
-
+        // El botón "Editar Cliente" (o "Guardar Cambios") llamará a modificarClienteExistente()
+        if (btnEditarCliente != null) { 
+            // Asegurarse de que no haya listeners duplicados
+            for (java.awt.event.ActionListener al : btnEditarCliente.getActionListeners()) {
+                btnEditarCliente.removeActionListener(al);
+            }
+            btnEditarCliente.addActionListener(evt -> modificarClienteExistente());
+        }
     }
+    
+    private void cargarDatosCliente(){
+        if(clienteOriginal != null){
+            lblIdCliente.setText("ID del Cliente: " + clienteOriginal.getIdCliente());
+            txtFldNombreCliente.setText(clienteOriginal.getNombreCliente());
+            txtFldApellido.setText(clienteOriginal.getApellidoCliente());
+            txtFldCorreoElectronico.setText(clienteOriginal.getCorreoElectronico());
+            txtFldContraseña.setText("");
+            cmbBoxEstado.setSelectedItem(clienteOriginal.isActivo() ? "activo" : "no activo");
+            btnEditarCliente.setEnabled(true);
+        }else{
+            JOptionPane.showMessageDialog(this, "No se han cargado los datos del cliente para modificar", "Error", JOptionPane.ERROR_MESSAGE);
+            txtFldNombreCliente.setEnabled(false);
+            txtFldApellido.setEnabled(false);
+            txtFldCorreoElectronico.setEnabled(false);
+            txtFldContraseña.setEnabled(false);
+            cmbBoxEstado.setEnabled(false);
+            btnEditarCliente.setEnabled(false);
+        }
+    }
+    
+    private void modificarClienteExistente() {
+        if (clienteOriginal == null) {
+            JOptionPane.showMessageDialog(this, "No hay cliente cargado para modificar.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String nombre = txtFldNombreCliente.getText().trim();
+        String apellido = txtFldApellido.getText().trim();
+        String correo = txtFldCorreoElectronico.getText().trim();
+        String nuevaContrasena = txtFldContraseña.getText().trim(); 
+        boolean activo = "Activo".equalsIgnoreCase(cmbBoxEstado.getSelectedItem().toString());
+
+        if (nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre, apellido y correo son campos obligatorios.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+         if (!correo.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un correo electrónico válido.", "Correo Inválido", JOptionPane.WARNING_MESSAGE);
+            txtFldCorreoElectronico.requestFocus();
+            return;
+        }
+        if (!nuevaContrasena.isEmpty() && nuevaContrasena.length() < 3) {
+             JOptionPane.showMessageDialog(this, "Si desea cambiar la contraseña, esta debe tener al menos 3 caracteres.", "Nueva Contraseña Corta", JOptionPane.WARNING_MESSAGE);
+            txtFldContraseña.requestFocus();
+            return;
+        }
+
+        ModificarClienteDTO clienteModificado = new ModificarClienteDTO(
+                clienteOriginal.getIdCliente(), 
+                nombre,
+                apellido,
+                correo,
+                activo,
+                nuevaContrasena.isEmpty() ? null : nuevaContrasena 
+        );
+
+        if (GestionUsuarios.modificarUsuario(clienteModificado)) {
+            JOptionPane.showMessageDialog(this, "Cliente modificado exitosamente.", "Modificación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+            ControlNavegacion.getInstase().navegarInicioGestionClientes(this); 
+        } else {
+             JOptionPane.showMessageDialog(this, "No se pudo modificar el cliente. Verifique los datos (ej. el nuevo correo podría ya estar en uso por otro usuario).", "Error de Modificación", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
     
     
 
@@ -81,7 +174,7 @@ public class GUIClientesModificar extends javax.swing.JFrame {
                 navegador.navegarInicioGestionClientes(this);
                 break;
         }
-        CMBOpciones.setSelectedIndex(0); // Resetear
+        CMBOpciones.setSelectedIndex(0); 
     }
 
     /**
@@ -398,7 +491,7 @@ public class GUIClientesModificar extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFldNombreClienteActionPerformed
 
     private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
-
+        
     }//GEN-LAST:event_btnEditarClienteActionPerformed
 
     private void btnRegresarGestionClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarGestionClienteActionPerformed
