@@ -102,10 +102,10 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        BtnPerfil = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         BtnInicio = new javax.swing.JButton();
-        BtnPerfil = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         CMBOpciones = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -127,6 +127,14 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         btnAgregarCliente = new javax.swing.JButton();
         btnRegresarGestionCliente = new javax.swing.JButton();
 
+        BtnPerfil.setBackground(new java.awt.Color(101, 85, 143));
+        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
+        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPerfilActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(217, 202, 218));
@@ -138,14 +146,6 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         BtnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnInicioActionPerformed(evt);
-            }
-        });
-
-        BtnPerfil.setBackground(new java.awt.Color(101, 85, 143));
-        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
-        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnPerfilActionPerformed(evt);
             }
         });
 
@@ -164,7 +164,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel6.setText("ADMINISTRADOR");
+        jLabel6.setText("AGREGAR CLIENTES");
 
         javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
         jPanel24.setLayout(jPanel24Layout);
@@ -173,7 +173,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
             .addGroup(jPanel24Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel6)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,14 +192,12 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                 .addComponent(BtnInicio)
                 .addGap(38, 38, 38)
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
+                .addGap(26, 26, 26)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(125, 125, 125)
                 .addComponent(jLabel21)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CMBOpciones, 0, 158, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(CMBOpciones, 0, 216, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -211,7 +209,6 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                         .addComponent(BtnInicio)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(CMBOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnPerfil, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addComponent(jPanel24, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19))

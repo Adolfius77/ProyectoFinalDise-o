@@ -48,9 +48,6 @@ public class GUIEditarLibro extends javax.swing.JFrame {
         if (btnInicio != null) {
             btnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-        if (btnPerfil != null) {
-            btnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
-        }
         if (CmbOpciones != null) {
             CmbOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -169,7 +166,6 @@ public class GUIEditarLibro extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         btnInicio = new javax.swing.JButton();
-        btnPerfil = new javax.swing.JButton();
         LblLogo = new javax.swing.JLabel();
         lblGestionLibros = new javax.swing.JLabel();
         CmbOpciones = new javax.swing.JComboBox<>();
@@ -211,14 +207,6 @@ public class GUIEditarLibro extends javax.swing.JFrame {
             }
         });
 
-        btnPerfil.setBackground(new java.awt.Color(101, 85, 143));
-        btnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
-        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerfilActionPerformed(evt);
-            }
-        });
-
         LblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
 
         lblGestionLibros.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -246,9 +234,7 @@ public class GUIEditarLibro extends javax.swing.JFrame {
                 .addComponent(lblGestionLibros, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(LblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(144, 144, 144)
-                .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(228, 228, 228)
                 .addComponent(CmbOpciones, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
@@ -266,9 +252,7 @@ public class GUIEditarLibro extends javax.swing.JFrame {
                             .addComponent(lblGestionLibros, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(25, 25, 25))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CmbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(CmbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(19, 19, 19))))
         );
 
@@ -504,10 +488,6 @@ public class GUIEditarLibro extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnInicioActionPerformed
 
-    private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
-
-    }//GEN-LAST:event_btnPerfilActionPerformed
-
     private void txtFldNombreProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldNombreProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFldNombreProductoActionPerformed
@@ -691,7 +671,6 @@ public class GUIEditarLibro extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEditarPortada;
     private javax.swing.JButton btnInicio;
-    private javax.swing.JButton btnPerfil;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cmbBoxCategoria;
     private com.toedter.calendar.JCalendar jCalendarFechaLanzamiento;

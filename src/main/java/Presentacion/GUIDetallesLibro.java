@@ -366,9 +366,12 @@ private LibroDTO libroActual;
                     .addComponent(lblCategoriaLibro)
                     .addComponent(lblAutorLibro)
                     .addComponent(lblNumPaginasLibro)
-                    .addComponent(lblTituloLibro)
                     .addComponent(lblPrecioLibro))
-                .addGap(26, 26, 26))
+                .addGap(99, 99, 99))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addComponent(lblTituloLibro)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

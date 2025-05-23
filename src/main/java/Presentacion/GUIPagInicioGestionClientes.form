@@ -83,9 +83,7 @@
                       <Component id="jPanel24" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" pref="398" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="BtnPerfil" min="-2" pref="56" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="107" max="-2" attributes="0"/>
                       <Component id="jLabel21" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="CMBOpciones" pref="140" max="32767" attributes="0"/>
@@ -102,7 +100,6 @@
                               <Component id="BtnInicio" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                                   <Component id="CMBOpciones" alignment="1" min="-2" pref="57" max="-2" attributes="0"/>
-                                  <Component id="BtnPerfil" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -129,19 +126,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnInicioActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="BtnPerfil">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="8f" green="55" red="65" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/usuario.png"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnPerfilActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel21">

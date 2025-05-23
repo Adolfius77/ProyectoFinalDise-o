@@ -220,9 +220,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
         if (btnInicio != null) {
             btnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-        if (btnPerfil != null) {
-            btnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
-        }
+
         if (CmbOpciones != null) {
             CmbOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -289,7 +287,6 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         btnInicio = new javax.swing.JButton();
-        btnPerfil = new javax.swing.JButton();
         LblLogo = new javax.swing.JLabel();
         txtFldBuscador = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
@@ -316,14 +313,6 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
             }
         });
 
-        btnPerfil.setBackground(new java.awt.Color(101, 85, 143));
-        btnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
-        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerfilActionPerformed(evt);
-            }
-        });
-
         LblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
 
         btnBuscar.setBackground(new java.awt.Color(101, 85, 143));
@@ -345,7 +334,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
         });
 
         jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 24)); // NOI18N
-        jLabel6.setText("ADMINISTRADOR");
+        jLabel6.setText("GESTION LIBROS");
 
         javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
         jPanel24.setLayout(jPanel24Layout);
@@ -354,7 +343,7 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
             .addGroup(jPanel24Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel6)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -373,16 +362,14 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
                 .addComponent(btnInicio)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(52, 52, 52)
                 .addComponent(LblLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFldBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(btnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(CmbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFldBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32)
+                .addComponent(CmbOpciones, 0, 199, Short.MAX_VALUE)
                 .addGap(21, 21, 21))
         );
         jPanel1Layout.setVerticalGroup(
@@ -397,7 +384,6 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
                     .addComponent(CmbOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(btnInicio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPerfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(txtFldBuscador)
                         .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(25, 25, 25))
@@ -488,10 +474,6 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnInicioActionPerformed
 
-    private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
-
-    }//GEN-LAST:event_btnPerfilActionPerformed
-
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -562,7 +544,6 @@ public class GUIPagInicioGestionLibros extends javax.swing.JFrame {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGenerarPDF;
     private javax.swing.JButton btnInicio;
-    private javax.swing.JButton btnPerfil;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

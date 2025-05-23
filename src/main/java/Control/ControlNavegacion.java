@@ -40,6 +40,7 @@ import DTOS.usuarioDTO;
 import Negocio.BoProductos;
 import Presentacion.GUIClientesAgregar;
 import Presentacion.GUIClientesModificar;
+import Presentacion.GUIDetallesLibroEntradas;
 import Presentacion.GUIPagInicioGestionClientes;
 import expciones.PersistenciaException;
 import java.io.File;
@@ -48,8 +49,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -483,6 +486,18 @@ public class ControlNavegacion {
         admin.setVisible(true);
     }
 
+    public void navegarDetallesEntrada(JFrame frameActual, LibroDTO libroSeleccionado) {
+        cerrarFrameActual(frameActual);
+
+        if (libroSeleccionado == null) {
+            System.err.println("Error Crítico: Se intento navegar a detalles de entrada SIN un libro seleccionado.");
+            JOptionPane.showMessageDialog(null, "No se puede mostrar detalles, libro no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        GUIDetallesLibroEntradas detallesEntradaScreen = new GUIDetallesLibroEntradas(libroSeleccionado);
+        detallesEntradaScreen.setVisible(true);
+    }
+
     public void cerrarSesion(JFrame frameActual) {
         System.out.println("Cerrando sesion para: " + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "nadie"));
 
@@ -564,7 +579,7 @@ public class ControlNavegacion {
 
     public void navegarEditarCliente(JFrame frameActual, ConsultarClienteDTO consultarCliente) {
         cerrarFrameActual(frameActual);
-        GUIClientesModificar entrarAregarCliente = new GUIClientesModificar(consultarCliente); 
+        GUIClientesModificar entrarAregarCliente = new GUIClientesModificar(consultarCliente);
         entrarAregarCliente.setVisible(true);
     }
 

@@ -37,9 +37,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         if (BtnInicio != null) {
             BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-        if (BtnPerfil != null) {
-            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
-        }
+       
         if (CMBOpciones != null) {
             CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -121,7 +119,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         BtnInicio = new javax.swing.JButton();
-        BtnPerfil = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         CMBOpciones = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -142,14 +139,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         BtnInicio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnInicioActionPerformed(evt);
-            }
-        });
-
-        BtnPerfil.setBackground(new java.awt.Color(101, 85, 143));
-        BtnPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
-        BtnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnPerfilActionPerformed(evt);
             }
         });
 
@@ -198,9 +187,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(BtnPerfil, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addGap(107, 107, 107)
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CMBOpciones, 0, 140, Short.MAX_VALUE)
@@ -215,7 +202,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
                         .addComponent(BtnInicio)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(CMBOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnPerfil, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addComponent(jPanel24, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19))
@@ -279,10 +265,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BtnInicioActionPerformed
 
-    private void BtnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfilActionPerformed
-
-    }//GEN-LAST:event_BtnPerfilActionPerformed
-
     private void CMBOpcionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CMBOpcionesActionPerformed
 
     }//GEN-LAST:event_CMBOpcionesActionPerformed
@@ -328,7 +310,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnInicio;
-    private javax.swing.JButton BtnPerfil;
     private javax.swing.JComboBox<String> CMBOpciones;
     private javax.swing.JButton btnAgregarCliente;
     private javax.swing.JLabel jLabel21;

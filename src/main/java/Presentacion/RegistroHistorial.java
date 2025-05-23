@@ -1,5 +1,6 @@
 package Presentacion;
 
+import Control.ControlNavegacion;
 import DTOS.EntradaHistorialDTO;
 import DTOS.LibroDTO;
 import Negocio.BoProductos;
@@ -7,6 +8,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import expciones.PersistenciaException;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -36,6 +38,7 @@ public class RegistroHistorial extends javax.swing.JPanel {
         this.pantallaHistorial = pantallaHistorial;
         initComponents();
         cargarDatosEntrada();
+        configurarListeners();
     }
 
     private void cargarDatosEntrada() {
@@ -97,6 +100,17 @@ public class RegistroHistorial extends javax.swing.JPanel {
             lblHoraEntrada.setText("N/A");
             lblPortada.setText("S/P");
             lblPortada.setIcon(null);
+        }
+    }
+
+    public void configurarListeners() {
+        if (BtnVerDetalles != null) {
+            BtnVerDetalles.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    bntDellesActionPerformed(evt);
+                }
+            });
         }
     }
 
@@ -202,11 +216,15 @@ public class RegistroHistorial extends javax.swing.JPanel {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BUSQUEDA.png"))); // NOI18N
 
+        BtnVerDetalles.setBackground(new java.awt.Color(101, 85, 143));
         BtnVerDetalles.setFont(new java.awt.Font("Comic Sans MS", 1, 14)); // NOI18N
+        BtnVerDetalles.setForeground(new java.awt.Color(255, 255, 255));
         BtnVerDetalles.setText("Ver Detalles");
 
-        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Comic Sans MS", 1, 17)); // NOI18N
         jLabel2.setText("Cantidad entrada");
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         lblCantidadEntrada.setText("jLabel5");
 
@@ -227,8 +245,10 @@ public class RegistroHistorial extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Comic Sans MS", 1, 17)); // NOI18N
         jLabel6.setText("Fecha Entrada");
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         lblFechaEntrada.setText("jLabel7");
 
@@ -249,8 +269,10 @@ public class RegistroHistorial extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Comic Sans MS", 1, 17)); // NOI18N
         jLabel8.setText("Hora entrada");
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
         lblHoraEntrada.setText("jLabel9");
 
@@ -259,9 +281,9 @@ public class RegistroHistorial extends javax.swing.JPanel {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(15, 15, 15)
                 .addComponent(lblHoraEntrada)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,8 +312,7 @@ public class RegistroHistorial extends javax.swing.JPanel {
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(lblIsbn, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(40, 40, 40)
-                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -300,13 +321,13 @@ public class RegistroHistorial extends javax.swing.JPanel {
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel8)
                                 .addGap(18, 18, 18)
                                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(41, 41, 41)
                                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(40, 40, 40))
+                .addGap(40, 56, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -327,11 +348,11 @@ public class RegistroHistorial extends javax.swing.JPanel {
                                     .addComponent(jLabel6)
                                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)))
+                                .addGap(24, 24, 24)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -372,7 +393,28 @@ public class RegistroHistorial extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPdfActionPerformed
 
     private void bntDellesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntDellesActionPerformed
+        if (this.entrada == null || this.entrada.getIsbn() == null) {
+            JOptionPane.showMessageDialog(this, "No hay información de libro disponible para esta entrada del historial.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        ControlNavegacion navegador = ControlNavegacion.getInstase();
+        BoProductos bo = new BoProductos();
+        LibroDTO libroParaDetalles = null;
+
+        try {
+            libroParaDetalles = bo.obtenerLibrosPorIsbn(this.entrada.getIsbn());
+        } catch (PersistenciaException e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener los detalles del libro: " + e.getMessage(), "Error de Datos", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+            return;
+        }
+
+        if (libroParaDetalles != null) {
+            navegador.navegarDetallesEntrada(this.pantallaHistorial, libroParaDetalles);
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudieron encontrar los detalles completos del libro con ISBN: " + this.entrada.getIsbn(), "Libro no Encontrado", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_bntDellesActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

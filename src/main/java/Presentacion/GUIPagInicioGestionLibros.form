@@ -79,16 +79,14 @@
                       <Component id="btnInicio" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel24" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       <Component id="LblLogo" min="-2" pref="355" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="txtFldBuscador" min="-2" pref="229" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="btnPerfil" min="-2" pref="66" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="CmbOpciones" min="-2" pref="123" max="-2" attributes="0"/>
+                      <Component id="txtFldBuscador" min="-2" pref="281" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="CmbOpciones" pref="199" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -106,7 +104,6 @@
                           <Component id="CmbOpciones" min="-2" pref="57" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="btnInicio" alignment="1" max="32767" attributes="0"/>
-                              <Component id="btnPerfil" alignment="1" max="32767" attributes="0"/>
                               <Component id="txtFldBuscador" alignment="1" max="32767" attributes="0"/>
                               <Component id="btnBuscar" alignment="1" max="32767" attributes="0"/>
                           </Group>
@@ -128,19 +125,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnInicioActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JButton" name="btnPerfil">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="8f" green="55" red="65" type="rgb"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/img/usuario.png"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPerfilActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="LblLogo">
@@ -206,7 +190,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="107" max="32767" attributes="0"/>
+                          <EmptySpace pref="56" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -226,7 +210,7 @@
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Comic Sans MS" size="24" style="1"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="ADMINISTRADOR"/>
+                    <Property name="text" type="java.lang.String" value="GESTION LIBROS"/>
                   </Properties>
                 </Component>
               </SubComponents>

@@ -73,11 +73,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         if (BtnInicio1 != null) {
             BtnInicio1.addActionListener(evt -> navegador.navegarAdminGui(this));
         }
-
-        if (BtnPerfil1 != null) {
-            BtnPerfil1.addActionListener(evt -> navegador.navegarPerfil(this));
-        }
-
         if (CMBOpciones1 != null) {
             CMBOpciones1.addActionListener(evt -> manejarAccionOpciones());
         }
@@ -179,7 +174,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         BtnInicio1 = new javax.swing.JButton();
-        BtnPerfil1 = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         CMBOpciones1 = new javax.swing.JComboBox<>();
         jPanel24 = new javax.swing.JPanel();
@@ -453,14 +447,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             }
         });
 
-        BtnPerfil1.setBackground(new java.awt.Color(101, 85, 143));
-        BtnPerfil1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/usuario.png"))); // NOI18N
-        BtnPerfil1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnPerfil1ActionPerformed(evt);
-            }
-        });
-
         jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones1.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
@@ -506,9 +492,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(BtnPerfil1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(80, 80, 80)
                 .addComponent(jLabel22)
                 .addGap(18, 18, 18)
                 .addComponent(CMBOpciones1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -527,8 +511,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
                         .addComponent(BtnInicio1)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel22)
-                            .addComponent(CMBOpciones1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(BtnPerfil1))))
+                            .addComponent(CMBOpciones1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(19, 19, 19))
         );
 
@@ -634,7 +617,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_BtnInicioActionPerformed
     private void configurarNavegacionAdicional() {
-        if (jButton1 != null && txtBuscador != null) { // jButton1 es tu botón de lupa/buscar
+        if (jButton1 != null && txtBuscador != null) { 
             jButton1.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -643,7 +626,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             });
         }
         if (txtBuscador != null) {
-            txtBuscador.addActionListener(new ActionListener() { // Para buscar al presionar Enter
+            txtBuscador.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     ejecutarBusquedaHistorial();
@@ -653,6 +636,7 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     }
 
     private void ejecutarBusquedaHistorial() {
+        
         String criterio = txtBuscador.getText().trim();
         List<EntradaHistorialDTO> historialCompleto = ControlNavegacion.getInstase().obtenerHistorialDeEntradas();
 
@@ -719,10 +703,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private void BtnInicio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnInicio1ActionPerformed
 
     }//GEN-LAST:event_BtnInicio1ActionPerformed
-
-    private void BtnPerfil1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPerfil1ActionPerformed
-
-    }//GEN-LAST:event_BtnPerfil1ActionPerformed
 
     private void BtnCarrito1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCarrito1ActionPerformed
 
@@ -897,7 +877,6 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
     private javax.swing.JButton BtnInicio;
     private javax.swing.JButton BtnInicio1;
     private javax.swing.JButton BtnPerfil;
-    private javax.swing.JButton BtnPerfil1;
     private javax.swing.JComboBox<String> CMBOpciones;
     private javax.swing.JComboBox<String> CMBOpciones1;
     private javax.swing.JPanel PanelActualizable;
