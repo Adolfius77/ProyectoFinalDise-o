@@ -77,13 +77,7 @@ public class ConsultarClienteDTO implements Serializable{
     }
 
     
-    public static ConsultarClienteDTO fromUsuarioDTO (usuarioDTO usuario){
-        if(usuario == null){
-            return null;
-        }
-        
-        return new ConsultarClienteDTO(usuario.getId(), usuario.getNombres(), usuario.getApellidos(),usuario.getCorreoElectronico(), true, usuario.getEstado());
-    }
+    
     
     
     @Override
@@ -91,6 +85,19 @@ public class ConsultarClienteDTO implements Serializable{
         return "ConsultarClienteDTO{" + "idCliente=" + idCliente + ", nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", activo=" + activo + ", estado=" + estado + '}';
     }
 
-    
+    public static ConsultarClienteDTO fromUsuarioDTO(usuarioDTO usuario){
+        if(usuario == null){
+            return null;
+        }
+
+        return new ConsultarClienteDTO(
+                usuario.getId(),
+                usuario.getNombres(),
+                usuario.getApellidos(),
+                usuario.getCorreoElectronico(),
+                usuario.isActivo(),
+                null 
+        );
+    }
     
 }

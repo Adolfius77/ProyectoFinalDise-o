@@ -5,6 +5,7 @@
 package Presentacion;
 
 import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
 import DTOS.usuarioDTO;
 import Negocio.GestionUsuarios;
 import java.awt.event.ActionEvent;
@@ -32,44 +33,53 @@ public class Registro extends javax.swing.JFrame {
 
         if (btnRegistrarse != null) {
             btnRegistrarse.addActionListener(new ActionListener() {
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String nombresIngresado = txtNombres.getText().trim();
-                    String apellidosIngresado = apellidos.getText().trim();
+                    String apellidosIngresado = txtApellidos.getText().trim();
                     String correoIngresado = txtCorreoElectronico.getText().trim();
                     String contraIngresada = new String(password.getPassword());
 
-                    if (nombresIngresado.isEmpty()) {
-                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus nombres.");
-                        return;
-                    }
-                    if (apellidosIngresado.isEmpty()) {
-                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese sus apellidos.");
-                        return;
-                    }
-                    if (correoIngresado.isEmpty()) {
-                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su correo electrónico.");
-                        return;
-                    }
-                    if (contraIngresada.isEmpty()) {
-                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese su contraseña.");
+                    if (nombresIngresado.isEmpty() || apellidosIngresado.isEmpty() || correoIngresado.isEmpty() || contraIngresada.isEmpty()) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, complete todos los campos.");
                         return;
                     }
 
-                    usuarioDTO nuevoUsuario = new usuarioDTO(id, nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada, rootPaneCheckingEnabled, correoIngresado);
+                    if (!correoIngresado.contains("@") || !correoIngresado.contains(".")) {
+                        JOptionPane.showMessageDialog(Registro.this, "Por favor, ingrese un correo electrónico válido.");
+                        return;
+                    }
+                    ConsultarClienteDTO nuevoUsuario = new ConsultarClienteDTO(
+                            0,
+                            nombresIngresado,
+                            apellidosIngresado,
+                            correoIngresado,
+                            true,
+                            "activo"
+                    );
+
+                    System.out.println("INFO: Contraseña para nuevo usuario " + correoIngresado + " es: [CONTRASEÑA NO MOSTRADA]. Implementar almacenamiento seguro.");
 
                     boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
 
                     if (registroExitoso) {
+
                         JOptionPane.showMessageDialog(Registro.this, "Registro exitoso. Ahora puede iniciar sesión.");
+
+                        txtNombres.setText("");
+                        txtApellidos.setText("");
+                        txtCorreoElectronico.setText("");
+                        password.setText("");
                         navegador.navegarInicioSesion(Registro.this);
                     } else {
-                        JOptionPane.showMessageDialog(Registro.this, "Error al registrar el usuario. Inténtelo de nuevo.");
 
+                        JOptionPane.showMessageDialog(Registro.this, "Error al registrar el usuario. El correo podría ya estar en uso.", "Error de Registro", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             });
+        }
+        if (btnRegresar != null) {
+            btnRegresar.addActionListener(evt -> navegador.navegarInicioSesion(this));
         }
 
     }
@@ -270,23 +280,45 @@ public class Registro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        String nombres = txtNombres.getText();
-        String apellidos = txtApellidos.getText();
-        String correo = txtCorreoElectronico.getText();
-        String contra = new String(password.getPassword());
+        String nombresIngresado = txtNombres.getText().trim();
+        String apellidosIngresado = txtApellidos.getText().trim();
+        String correoIngresado = txtCorreoElectronico.getText().trim();
+        String contraIngresada = new String(password.getPassword());
 
-        usuarioDTO nuevoUsuario = new usuarioDTO(nombres, apellidos, contra, correo);
-        nuevoUsuario.setNombres(nombres);
-        nuevoUsuario.setApellidos(apellidos);
-        nuevoUsuario.setCorreoElectronico(correo);
-        nuevoUsuario.setContrasena(contra);
+        if (nombresIngresado.isEmpty() || apellidosIngresado.isEmpty() || correoIngresado.isEmpty() || contraIngresada.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            return;
+        }
 
-        GestionUsuarios.agregarUsuario(nuevoUsuario);
+        if (!correoIngresado.contains("@") || !correoIngresado.contains(".")) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un correo electronico valido.");
+            return;
+        }
 
-        txtNombres.setText("");
-        txtApellidos.setText("");
-        txtCorreoElectronico.setText("");
-        password.setText("");
+        ConsultarClienteDTO nuevoUsuario = new ConsultarClienteDTO(
+                0,
+                nombresIngresado,
+                apellidosIngresado,
+                correoIngresado,
+                true,
+                "activo"
+        );
+        System.out.println("INFO: Contraseña para nuevo usuario " + correoIngresado + " es: [CONTRASEÑA NO MOSTRADA]. Implementar almacenamiento seguro.");
+
+        boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
+
+        if (registroExitoso) {
+            JOptionPane.showMessageDialog(this, "Registro exitoso. Ahora puede iniciar sesion.");
+
+            txtNombres.setText("");
+            txtApellidos.setText("");
+            txtCorreoElectronico.setText("");
+            password.setText("");
+            ControlNavegacion.getInstase().navegarInicioSesion(this);
+        } else {
+
+            JOptionPane.showMessageDialog(this, "Error al registrar el usuario. El correo podria ya estar en uso.", "Error de Registro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

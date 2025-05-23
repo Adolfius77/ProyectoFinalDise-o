@@ -5,6 +5,7 @@
 package Presentacion;
 
 import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
 import DTOS.usuarioDTO;
 import Negocio.GestionUsuarios;
 import java.awt.event.ActionEvent;
@@ -28,8 +29,9 @@ public class InicioSesion extends javax.swing.JFrame {
     }
 
     private void configurarNavegacion() {
-        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+         final ControlNavegacion navegador = ControlNavegacion.getInstase();
         if (btnInicioSesion != null) {
+          
             btnInicioSesion.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -41,19 +43,11 @@ public class InicioSesion extends javax.swing.JFrame {
                         return;
                     }
 
-                    usuarioDTO usuarioAutenticado = null;
+                    ConsultarClienteDTO usuarioAutenticado = GestionUsuarios.autenticarUsuario(correoIngresado, contraIngresada);
 
-                    for (usuarioDTO usuario : GestionUsuarios.getListaUsuario()) {
-                        if (usuario.getCorreoElectronico().equalsIgnoreCase(correoIngresado)
-                                && usuario.getContrasena().equals(contraIngresada)) {
-                            usuarioAutenticado = usuario;
-                            break;
-                        }
-                    }
                     if (usuarioAutenticado != null) {
-
                         navegador.setUsuarioActual(usuarioAutenticado);
-                        JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesion exitoso. ¡Bienvenido " + usuarioAutenticado.getNombres() + "!");
+                        JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión exitoso. ¡Bienvenido " + usuarioAutenticado.getNombreCliente() + "!");
 
                         if (GestionUsuarios.esAdmin(usuarioAutenticado.getCorreoElectronico())) {
                             System.out.println("Navegando a GUIAdmin para: " + usuarioAutenticado.getCorreoElectronico());
@@ -258,20 +252,7 @@ public class InicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnInicioSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInicioSesionActionPerformed
-        String correoIngresado = txtCorreo.getText();
-        String contraIngresada = new String(contra.getPassword());
-
-        boolean inicioDeSesionExitoso = false;
-
-        usuarioDTO usuarioAutentificado = null;
-        for (usuarioDTO usuario : GestionUsuarios.getListaUsuario()) {
-            if (usuario.getCorreoElectronico().equals(correoIngresado)
-                    && usuario.getContrasena().equals(contraIngresada)) {
-                usuarioAutentificado = usuario;
-                inicioDeSesionExitoso = true;
-                break;
-            }
-        }
+       
     }//GEN-LAST:event_btnInicioSesionActionPerformed
 
     private void contraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contraActionPerformed

@@ -151,7 +151,7 @@ public class PanelGestionClientes extends javax.swing.JPanel {
 
     private void cargarDatosCliente(){
         if(cliente != null){
-            lblIdCliente.setText(cliente.getIdCliente());
+//            lblIdCliente.setText(cliente.getIdCliente());
             lblNombreCliente.setText(cliente.getNombreCliente());
             lblApellidoCliente.setText(cliente.getApellidoCliente());
             lblCorreoElectronico.setText(cliente.getCorreoElectronico());

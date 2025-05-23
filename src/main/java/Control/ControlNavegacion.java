@@ -64,7 +64,7 @@ public class ControlNavegacion {
     private List<EntradaHistorialDTO> historialDeEntradas;
     private String ultimaCategoriaSeleccionada = null;
     private List<ReseñaUsuarioDTO> reseñaUsuario;
-    private usuarioDTO usuarioActual = null;
+    private ConsultarClienteDTO usuarioActual = null;
 
     private static final String NOMBRE_ARCHIVO_CARRITOS = "carritos_usuarios.dat"; // Archivo para persistir carritos
 
@@ -81,7 +81,7 @@ public class ControlNavegacion {
         }
     }
 
-    public void setUsuarioActual(usuarioDTO usuario) {
+    public void setUsuarioActual(ConsultarClienteDTO usuario) {
         this.usuarioActual = usuario;
         if (usuario != null) {
             System.out.println("Usuario actual establecido: " + usuario.getCorreoElectronico());
@@ -92,7 +92,7 @@ public class ControlNavegacion {
 
     }
 
-    public usuarioDTO getUsuarioActual() {
+    public ConsultarClienteDTO getUsuarioActual() {
         return this.usuarioActual;
     }
 
@@ -196,7 +196,6 @@ public class ControlNavegacion {
 
         String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
         List<LibroDTO> carritoDelUsuario = carritosPorUsuario.computeIfAbsent(userKey, k -> Collections.synchronizedList(new ArrayList<>()));
-
         long enCarritoParaEsteLibro = carritoDelUsuario.stream().filter(l -> l.getIsbn().equals(libro.getIsbn())).count();
 
         if (libroDesdeFuenteDatos.getCantidad() <= 0 || enCarritoParaEsteLibro >= libroDesdeFuenteDatos.getCantidad()) {
@@ -204,15 +203,12 @@ public class ControlNavegacion {
             return false;
         }
 
-        if (boProductos.decrementarStockLibro(libro.getIsbn(), 1)) {
-            carritoDelUsuario.add(new LibroDTO(libro.getTitulo(), libro.getAutor(), libro.getIsbn(), libro.getFechaLanzamiento(), libro.getCategoria(), libro.getPrecio(), libro.getEditorial(), libro.getNumPaginas(), 1, libro.getRutaImagen(), libro.getSinopsis(), libro.getReseñas()));
-            System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey + ". Stock decrementado.");
-            guardarCarritosEnArchivo();
-            return true;
-        } else {
-            JOptionPane.showMessageDialog(null, "No se pudo agregar '" + libro.getTitulo() + "' al carrito debido a un problema al actualizar el stock.", "Error de Stock", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
+        carritoDelUsuario.add(new LibroDTO(libro.getTitulo(), libro.getAutor(), libro.getIsbn(), libro.getFechaLanzamiento(), libro.getCategoria(), libro.getPrecio(), libro.getEditorial(), libro.getNumPaginas(), 1, libro.getRutaImagen(), libro.getSinopsis(), libro.getReseñas()));
+        System.out.println("Libro '" + libro.getTitulo() + "' añadido al carrito de " + userKey + ".");
+
+        guardarCarritosEnArchivo();
+        return true;
+
     }
 
     public boolean eliminarLibroCarrito(LibroDTO libro) {
@@ -231,17 +227,18 @@ public class ControlNavegacion {
 
         if (carritoDelUsuario != null) {
 
-            removido = carritoDelUsuario.remove(libro);
-
-            if (removido) {
-                BoProductos boProductos = new BoProductos();
-
-                if (boProductos.incrementarStockLibro(libro.getIsbn(), 1)) {
-                    System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey + ". Stock incrementado.");
-                } else {
-                    System.err.println("ADVERTENCIA: Libro eliminado del carrito pero no se pudo INCREMENTAR stock para " + libro.getIsbn());
-
+            LibroDTO libroARemover = null;
+            for (LibroDTO l : carritoDelUsuario) {
+                if (l.getIsbn().equals(libro.getIsbn())) {
+                    libroARemover = l;
+                    break;
                 }
+            }
+            if (libroARemover != null) {
+                removido = carritoDelUsuario.remove(libroARemover);
+            }
+            if (removido) {
+                System.out.println("Libro '" + libro.getTitulo() + "' eliminado del carrito de " + userKey + ".");
                 guardarCarritosEnArchivo();
             } else {
                 System.out.println("Libro '" + libro.getTitulo() + "' no encontrado en el carrito de " + userKey + " para eliminar.");
@@ -270,14 +267,16 @@ public class ControlNavegacion {
                 if (this.carritosPorUsuario == null) {
                     this.carritosPorUsuario = new HashMap<>();
                 }
+                this.carritosPorUsuario.replaceAll((k, v) -> Collections.synchronizedList(new ArrayList<>(v)));
+
                 System.out.println("Carritos de usuarios cargados desde " + NOMBRE_ARCHIVO_CARRITOS);
             } catch (IOException | ClassNotFoundException e) {
                 System.err.println("Error al cargar los carritos desde archivo: " + e.getMessage() + ". Se creará un mapa nuevo.");
-                this.carritosPorUsuario = new HashMap<>();
+                this.carritosPorUsuario = Collections.synchronizedMap(new HashMap<>());
             }
         } else {
             System.out.println("Archivo de carritos " + NOMBRE_ARCHIVO_CARRITOS + " no encontrado. Se creará uno nuevo.");
-            this.carritosPorUsuario = new HashMap<>();
+            this.carritosPorUsuario = Collections.synchronizedMap(new HashMap<>());
         }
     }
 
@@ -374,7 +373,7 @@ public class ControlNavegacion {
         mastercard.setVisible(true);
     }
 
-    public void navegarPaginaPagoTarjeta(JFrame frameActual) { 
+    public void navegarPaginaPagoTarjeta(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUIPagoMastercard mastercard = new GUIPagoMastercard();
         mastercard.setVisible(true);
@@ -441,9 +440,21 @@ public class ControlNavegacion {
     }
 
     public void cerrarSesion(JFrame frameActual) {
-        System.out.println("Cerrando sesión para: " + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "nadie"));
+        System.out.println("Cerrando sesion para: " + (usuarioActual != null ? usuarioActual.getCorreoElectronico() : "nadie"));
+
+        if (usuarioActual != null && usuarioActual.getCorreoElectronico() != null) {
+            String userKey = usuarioActual.getCorreoElectronico().toLowerCase();
+            List<LibroDTO> carritoDelUsuario = carritosPorUsuario.get(userKey);
+            if (carritoDelUsuario != null && !carritoDelUsuario.isEmpty()) {
+                BoProductos boProductos = new BoProductos();
+                for (LibroDTO libroEnCarrito : new ArrayList<>(carritoDelUsuario)) {
+
+                }
+                System.out.println("Stock restaurado para los libros en el carrito del usuario: " + userKey);
+            }
+        }
+
         setUsuarioActual(null);
-        limpiarCarrito();
 
         if (frameActual != null) {
             frameActual.dispose();
@@ -452,8 +463,7 @@ public class ControlNavegacion {
         InicioSesion pantallaLogin = new InicioSesion();
         pantallaLogin.setVisible(true);
 
-        JOptionPane.showMessageDialog(pantallaLogin, "Sesión cerrada exitosamente. Por favor, inicie sesión de nuevo.");
-
+        JOptionPane.showMessageDialog(pantallaLogin, "Sesion cerrada exitosamente. Por favor, inicie sesion de nuevo.");
     }
 
     public void navegarRegistroEntrada(JFrame frameActual) {
@@ -501,20 +511,20 @@ public class ControlNavegacion {
         GUIHistorialEntradas entradas = new GUIHistorialEntradas();
         entradas.setVisible(true);
     }
-    
-    public void navegarAgregarCliente(JFrame frameActual){
+
+    public void navegarAgregarCliente(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUIClientesAgregar entrarAregarCliente = new GUIClientesAgregar();
         entrarAregarCliente.setVisible(true);
     }
-    
-    public void navegarEditarCliente(JFrame frameActual, ConsultarClienteDTO consultarCliente){
+
+    public void navegarEditarCliente(JFrame frameActual, ConsultarClienteDTO consultarCliente) {
         cerrarFrameActual(frameActual);
         GUIClientesModificar entrarAregarCliente = new GUIClientesModificar();
         entrarAregarCliente.setVisible(true);
     }
-    
-    public void navegarInicioGestionClientes(JFrame frameActual){
+
+    public void navegarInicioGestionClientes(JFrame frameActual) {
         cerrarFrameActual(frameActual);
         GUIPagInicioGestionClientes entrarGestionCliente = new GUIPagInicioGestionClientes();
         entrarGestionCliente.setVisible(true);

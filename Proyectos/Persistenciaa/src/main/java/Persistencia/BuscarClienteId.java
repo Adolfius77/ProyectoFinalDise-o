@@ -1,28 +1,31 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
-/**
- *
- * @author riosr
- */
 import DTOS.ConsultarClienteDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BuscarClienteId implements IBuscarCliente{
-    
+public class BuscarClienteId implements IBuscarCliente {
+
     @Override
-    public List<ConsultarClienteDTO> buscar (String criterio, List<ConsultarClienteDTO> listaDeClientes) {
+    public List<ConsultarClienteDTO> buscar(String criterio, List<ConsultarClienteDTO> listaDeClientes) {
         if (criterio == null || criterio.trim().isEmpty()) {
+
             return new ArrayList<>(listaDeClientes);
         }
-        String criterioLimpio = criterio.toLowerCase().trim().replaceAll("[\\s-]+", "");
+
+        long idBuscado;
+        try {
+
+            idBuscado = Long.parseLong(criterio.trim());
+        } catch (NumberFormatException e) {
+
+            System.err.println("Criterio de búsqueda de ID no es un número válido: " + criterio);
+            return new ArrayList<>();
+        }
+
         return listaDeClientes.stream()
-                .filter(entrada -> entrada.getIdCliente() !=  null && entrada.getIdCliente().replaceAll("[\\s-]+", "").equalsIgnoreCase(criterioLimpio))
+                .filter(cliente -> cliente.getIdCliente() == idBuscado)
                 .collect(Collectors.toList());
     }
 }

@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DTOS;
 
-/**
- *
- * @author riosr
- */
 public class ModificarClienteDTO {
     private static final long serialversion = 301L;
     private long id;
@@ -18,16 +10,24 @@ public class ModificarClienteDTO {
     private boolean activo;
 
     public ModificarClienteDTO(long id, String nombreCliente, String apellidoCliente, String correoElectronico, boolean activo, String contraseña) {
+        this.id = id;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.correoElectronico = correoElectronico;
         this.contraseña = contraseña;
         this.activo = activo;
     }
-    
+
     public ModificarClienteDTO(long id, String nombreCliente, String apellidoCliente, String correoElectronico, boolean activo){
         this(id, nombreCliente, apellidoCliente, correoElectronico, activo, null);
+       
     }
+
+
+    public long getId() {
+        return id;
+    }
+    
 
     public String getNombreCliente() {
         return nombreCliente;
@@ -71,22 +71,23 @@ public class ModificarClienteDTO {
 
     @Override
     public String toString() {
-        return "ModificarClienteDTO{" + "nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contraseña + ", activo=" + activo + '}';
+        return "ModificarClienteDTO{" + "id=" + id + ", nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", contraseña=" + contraseña + ", activo=" + activo + '}';
     }
-   
+
     public static ModificarClienteDTO fromUsuarioDTO(usuarioDTO usuario){
         if(usuario == null){
             return null;
         }
-        
+
         return new ModificarClienteDTO(
                 usuario.getId(),
                 usuario.getNombres(),
                 usuario.getApellidos(),
                 usuario.getCorreoElectronico(),
                 usuario.isActivo(),
-                null
+                null 
         );
     }
-    
+
+  
 }
