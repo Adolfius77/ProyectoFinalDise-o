@@ -4,6 +4,7 @@
  */
 package Control;
 
+import DTOS.ConsultarClienteDTO;
 import DTOS.EntradaHistorialDTO;
 import DTOS.LibroDTO;
 import Negocio.ManejoPagos;
@@ -37,6 +38,9 @@ import javax.swing.JOptionPane;
 import DTOS.ReseñaUsuarioDTO;
 import DTOS.usuarioDTO;
 import Negocio.BoProductos;
+import Presentacion.GUIClientesAgregar;
+import Presentacion.GUIClientesModificar;
+import Presentacion.GUIPagInicioGestionClientes;
 import expciones.PersistenciaException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -496,6 +500,24 @@ public class ControlNavegacion {
         cerrarFrameActual(frameActual);
         GUIHistorialEntradas entradas = new GUIHistorialEntradas();
         entradas.setVisible(true);
+    }
+    
+    public void navegarAgregarCliente(JFrame frameActual){
+        cerrarFrameActual(frameActual);
+        GUIClientesAgregar entrarAregarCliente = new GUIClientesAgregar();
+        entrarAregarCliente.setVisible(true);
+    }
+    
+    public void navegarEditarCliente(JFrame frameActual, ConsultarClienteDTO consultarCliente){
+        cerrarFrameActual(frameActual);
+        GUIClientesModificar entrarAregarCliente = new GUIClientesModificar();
+        entrarAregarCliente.setVisible(true);
+    }
+    
+    public void navegarInicioGestionClientes(JFrame frameActual){
+        cerrarFrameActual(frameActual);
+        GUIPagInicioGestionClientes entrarGestionCliente = new GUIPagInicioGestionClientes();
+        entrarGestionCliente.setVisible(true);
     }
 
 }

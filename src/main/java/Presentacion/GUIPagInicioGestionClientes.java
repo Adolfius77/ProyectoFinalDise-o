@@ -4,6 +4,9 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author riosr
@@ -15,6 +18,55 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
      */
     public GUIPagInicioGestionClientes() {
         initComponents();
+    }
+    
+    private void configurarNavegacion() {
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+
+     
+        if (BtnInicio != null) {
+            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+        }
+        if (BtnPerfil != null) {
+            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        }
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        }
+        if (btnAgregarCliente != null) {
+            btnAgregarCliente.addActionListener(evt -> navegador.navegarAgregarCliente(this));
+        }
+
+    }
+
+    private void manejarAccionOpciones() {
+        String seleccion = (String) CMBOpciones.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
+            return;
+        }
+
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        switch (seleccion) {
+            case "Cambiar Contraseña":
+                navegador.navegarCambioPasssword(this);
+                break;
+            case "Cerrar Sesion":
+                navegador.cerrarSesion(this);
+                break;
+            case "Gestion de Libros":
+                navegador.navegarGestionLibro(this);
+                break;
+            case "Registrar Entrada":
+                navegador.navegarRegistroEntrada(this);
+                break;
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
+                break;
+            case "Gestion de Clientes":
+                navegador.navegarInicioGestionClientes(this);
+                break;
+        }
+        CMBOpciones.setSelectedIndex(0); // Resetear
     }
 
     /**

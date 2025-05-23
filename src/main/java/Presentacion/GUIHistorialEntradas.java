@@ -114,6 +114,9 @@ public class GUIHistorialEntradas extends javax.swing.JFrame {
             case "Ver Historial entrada":
                 navegador.navegarHistorialEntradas(this);
                 break;
+            case "Gestion de Clientes":
+                navegador.navegarInicioGestionClientes(this);
+                break;
 
         }
         CMBOpciones1.setSelectedIndex(0); // Resetear

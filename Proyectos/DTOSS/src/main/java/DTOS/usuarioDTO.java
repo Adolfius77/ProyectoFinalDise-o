@@ -9,17 +9,30 @@ package DTOS;
  * @author USER
  */
 public class usuarioDTO {
+    private long id;
     private String nombres;
     private String apellidos;
     private String correoElectronico;
     private String contrasena;
-    
+    private boolean activo;
+    private String estado;
 
-    public usuarioDTO(String nombres, String apellidos, String correoElectronico, String contrasena) {
+    public usuarioDTO(long id, String nombres, String apellidos, String correoElectronico, String contrasena, boolean activo, String estado) {
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.correoElectronico = correoElectronico;
         this.contrasena = contrasena;
+        this.id = id;
+        this.activo = activo;
+        this.estado = activo ? "activo" : "inactivo";
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getNombres() {
@@ -54,10 +67,28 @@ public class usuarioDTO {
         this.contrasena = contrasena;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
-        return "usuarioDTO{" + "nombres=" + nombres + ", apellidos=" + apellidos + ", correoElectronico=" + correoElectronico + ", contrasena=" + contrasena + '}';
+        return "usuarioDTO{" + "id=" + id + ", nombres=" + nombres + ", apellidos=" + apellidos + ", correoElectronico=" + correoElectronico + ", contrasena=" + contrasena + ", activo=" + activo + ", estado=" + estado + '}';
     }
+
     
+   
     
 }

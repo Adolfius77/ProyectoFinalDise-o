@@ -4,17 +4,84 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author riosr
  */
 public class GUIClientesModificar extends javax.swing.JFrame {
 
+    private ConsultarClienteDTO cliente;
     /**
      * Creates new form GUIClientesModificar
      */
     public GUIClientesModificar() {
         initComponents();
+    }
+    
+    private void configurarNavegacion() {
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+
+     
+        if (BtnInicio != null) {
+            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+        }
+        if (BtnPerfil != null) {
+            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        }
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        }   
+        if (btnRegresarGestionCliente != null) {
+            btnRegresarGestionCliente.addActionListener(evt -> {
+                int confirmacion = JOptionPane.showConfirmDialog(
+                        this,
+                        "¿Está seguro de que desea regresar? Perderá los datos no guardados.",
+                        "Confirmar Salida",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    navegador.navegarInicioGestionClientes(this);
+                }
+            });
+        }
+
+    }
+    
+    
+
+    private void manejarAccionOpciones() {
+        String seleccion = (String) CMBOpciones.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
+            return;
+        }
+
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        switch (seleccion) {
+            case "Cambiar Contraseña":
+                navegador.navegarCambioPasssword(this);
+                break;
+            case "Cerrar Sesion":
+                navegador.cerrarSesion(this);
+                break;
+            case "Gestion de Libros":
+                navegador.navegarGestionLibro(this);
+                break;
+            case "Registrar Entrada":
+                navegador.navegarRegistroEntrada(this);
+                break;
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
+                break;
+            case "Gestion de Clientes":
+                navegador.navegarInicioGestionClientes(this);
+                break;
+        }
+        CMBOpciones.setSelectedIndex(0); // Resetear
     }
 
     /**

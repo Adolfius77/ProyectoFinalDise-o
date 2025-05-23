@@ -4,6 +4,9 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author riosr
@@ -17,6 +20,66 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         initComponents();
     }
 
+    private void configurarNavegacion() {
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+
+     
+        if (BtnInicio != null) {
+            BtnInicio.addActionListener(evt -> navegador.navegarAdminGui(this));
+        }
+        if (BtnPerfil != null) {
+            BtnPerfil.addActionListener(evt -> navegador.navegarPerfil(this));
+        }
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        }
+        if (btnRegresarGestionCliente != null) {
+            btnRegresarGestionCliente.addActionListener(evt -> {
+                int confirmacion = JOptionPane.showConfirmDialog(
+                        this,
+                        "¿Está seguro de que desea regresar? Perderá los datos no guardados.",
+                        "Confirmar Salida",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+
+                if (confirmacion == JOptionPane.YES_OPTION) {
+                    navegador.navegarInicioGestionClientes(this);
+                }
+            });
+        }
+
+    }
+
+    private void manejarAccionOpciones() {
+        String seleccion = (String) CMBOpciones.getSelectedItem();
+        if (seleccion == null || "Opciones".equals(seleccion) || CMBOpciones.getSelectedIndex() == 0) {
+            return;
+        }
+
+        final ControlNavegacion navegador = ControlNavegacion.getInstase();
+        switch (seleccion) {
+            case "Cambiar Contraseña":
+                navegador.navegarCambioPasssword(this);
+                break;
+            case "Cerrar Sesion":
+                navegador.cerrarSesion(this);
+                break;
+            case "Gestion de Libros":
+                navegador.navegarGestionLibro(this);
+                break;
+            case "Registrar Entrada":
+                navegador.navegarRegistroEntrada(this);
+                break;
+            case "Ver Historial entrada":
+                navegador.navegarHistorialEntradas(this);
+                break;
+            case "Gestion de Clientes":
+                navegador.navegarInicioGestionClientes(this);
+                break;
+        }
+        CMBOpciones.setSelectedIndex(0); // Resetear
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -46,9 +109,9 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         cmbBoxEstado = new javax.swing.JComboBox<>();
         lblIdCliente = new javax.swing.JLabel();
         txtFldIdCliente = new javax.swing.JTextField();
-        lblNombreCliente1 = new javax.swing.JLabel();
+        lblNombreCliente = new javax.swing.JLabel();
         txtFldNombreCliente = new javax.swing.JTextField();
-        btnEditarCliente = new javax.swing.JButton();
+        btnAgregarCliente = new javax.swing.JButton();
         btnRegresarGestionCliente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -181,8 +244,8 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
             }
         });
 
-        lblNombreCliente1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblNombreCliente1.setText("Nombre:");
+        lblNombreCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblNombreCliente.setText("Nombre:");
 
         txtFldNombreCliente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtFldNombreCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -191,13 +254,13 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
             }
         });
 
-        btnEditarCliente.setBackground(new java.awt.Color(101, 85, 143));
-        btnEditarCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnEditarCliente.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditarCliente.setText("Editar");
-        btnEditarCliente.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarCliente.setBackground(new java.awt.Color(101, 85, 143));
+        btnAgregarCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnAgregarCliente.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarCliente.setText("Editar");
+        btnAgregarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarClienteActionPerformed(evt);
+                btnAgregarClienteActionPerformed(evt);
             }
         });
 
@@ -234,7 +297,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                                 .addComponent(txtFldContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(cmbBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(95, 95, 95)
-                .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAgregarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(44, 44, 44))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -247,7 +310,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                         .addComponent(lblIdCliente)
                         .addGap(584, 584, 584))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(lblNombreCliente1)
+                        .addComponent(lblNombreCliente)
                         .addGap(546, 546, 546))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(lblApellidoCliente)
@@ -267,7 +330,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtFldIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(lblNombreCliente1)
+                .addComponent(lblNombreCliente)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtFldNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -287,7 +350,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnRegresarGestionCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnAgregarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -346,9 +409,9 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbBoxEstadoActionPerformed
 
-    private void btnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarClienteActionPerformed
+    private void btnAgregarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarClienteActionPerformed
 
-    }//GEN-LAST:event_btnEditarClienteActionPerformed
+    }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
     private void btnRegresarGestionClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarGestionClienteActionPerformed
         // TODO add your handling code here:
@@ -402,7 +465,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
     private javax.swing.JButton BtnInicio;
     private javax.swing.JButton BtnPerfil;
     private javax.swing.JComboBox<String> CMBOpciones;
-    private javax.swing.JButton btnEditarCliente;
+    private javax.swing.JButton btnAgregarCliente;
     private javax.swing.JButton btnRegresarGestionCliente;
     private javax.swing.JComboBox<String> cmbBoxEstado;
     private javax.swing.JLabel jLabel21;
@@ -417,7 +480,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
     private javax.swing.JLabel lblCorreoElectronico;
     private javax.swing.JLabel lblEstadoCliente;
     private javax.swing.JLabel lblIdCliente;
-    private javax.swing.JLabel lblNombreCliente1;
+    private javax.swing.JLabel lblNombreCliente;
     private javax.swing.JTextField txtFldApellido;
     private javax.swing.JTextField txtFldContraseña;
     private javax.swing.JTextField txtFldCorreoElectronico;

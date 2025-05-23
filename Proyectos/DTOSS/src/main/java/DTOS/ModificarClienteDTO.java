@@ -9,16 +9,24 @@ package DTOS;
  * @author riosr
  */
 public class ModificarClienteDTO {
+    private static final long serialversion = 301L;
+    private long id;
     private String nombreCliente;
     private String apellidoCliente;
     private String correoElectronico;
-    private String estado;
+    private String contraseña;
+    private boolean activo;
 
-    public ModificarClienteDTO(String nombreCliente, String apellidoCliente, String correoElectronico, String estado) {
+    public ModificarClienteDTO(long id, String nombreCliente, String apellidoCliente, String correoElectronico, boolean activo, String contraseña) {
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.correoElectronico = correoElectronico;
-        this.estado = estado;
+        this.contraseña = contraseña;
+        this.activo = activo;
+    }
+    
+    public ModificarClienteDTO(long id, String nombreCliente, String apellidoCliente, String correoElectronico, boolean activo){
+        this(id, nombreCliente, apellidoCliente, correoElectronico, activo, null);
     }
 
     public String getNombreCliente() {
@@ -45,18 +53,40 @@ public class ModificarClienteDTO {
         this.correoElectronico = correoElectronico;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getContraseña() {
+        return contraseña;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 
     @Override
     public String toString() {
-        return "ModificarClienteDTO{" + "nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", estado=" + estado + '}';
+        return "ModificarClienteDTO{" + "nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", contrase\u00f1a=" + contraseña + ", activo=" + activo + '}';
     }
-    
+   
+    public static ModificarClienteDTO fromUsuarioDTO(usuarioDTO usuario){
+        if(usuario == null){
+            return null;
+        }
+        
+        return new ModificarClienteDTO(
+                usuario.getId(),
+                usuario.getNombres(),
+                usuario.getApellidos(),
+                usuario.getCorreoElectronico(),
+                usuario.isActivo(),
+                null
+        );
+    }
     
 }

@@ -91,6 +91,9 @@ public class GUIAgregarLibro extends javax.swing.JFrame {
             case "Ver Historial entrada":
                 navegador.navegarHistorialEntradas(this);
                 break;
+            case "Gestion de Clientes":
+                navegador.navegarInicioGestionClientes(this);
+                break;
         }
             CmbOpciones.setSelectedIndex(0); // Resetear
     }

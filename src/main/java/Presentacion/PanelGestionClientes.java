@@ -4,17 +4,28 @@
  */
 package Presentacion;
 
+import Control.ControlNavegacion;
+import DTOS.ConsultarClienteDTO;
+import java.util.Locale;
+
 /**
  *
  * @author riosr
  */
 public class PanelGestionClientes extends javax.swing.JPanel {
 
+    
+    private ConsultarClienteDTO cliente;
+    private GUIPagInicioGestionClientes pantallaGestion;
+    
     /**
      * Creates new form PanelGestionClientes
      */
-    public PanelGestionClientes() {
+    public PanelGestionClientes(ConsultarClienteDTO cliente, GUIPagInicioGestionClientes pantallaGestion) {
+        this.cliente = cliente;
+        this.pantallaGestion = pantallaGestion;
         initComponents();
+        cargarDatosCliente();
     }
 
     /**
@@ -33,6 +44,7 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         lblApellidoCliente = new javax.swing.JLabel();
         lblNombreCliente = new javax.swing.JLabel();
         lblCorreoElectronico = new javax.swing.JLabel();
+        lblEstadoCliente = new javax.swing.JLabel();
 
         lblTitulo2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblTitulo2.setText("Nombre");
@@ -63,6 +75,9 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         lblCorreoElectronico.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lblCorreoElectronico.setText("Correo Electronico");
 
+        lblEstadoCliente.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblEstadoCliente.setText("Estado");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -76,20 +91,23 @@ public class PanelGestionClientes extends javax.swing.JPanel {
                 .addComponent(lblApellidoCliente)
                 .addGap(104, 104, 104)
                 .addComponent(lblCorreoElectronico)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 242, Short.MAX_VALUE)
+                .addGap(99, 99, 99)
+                .addComponent(lblEstadoCliente)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                 .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(58, 58, 58))
+                .addGap(17, 17, 17))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
+                .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblApellidoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblNombreCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblCorreoElectronico, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEditarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEstadoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -116,12 +134,37 @@ public class PanelGestionClientes extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEditarClienteActionPerformed
 
+    private void configurarListeners() {
+        if (btnEditarCliente != null) { 
+            btnEditarCliente.addActionListener(e -> {
+                if (this.pantallaGestion != null && this.cliente != null) {
+                    System.out.println("PanelGestionCliente: Editando Cliente - " + this.cliente.getNombreCliente());
+                    ControlNavegacion.getInstase().navegarEditarCliente(this.pantallaGestion, this.cliente);
+                } else {
+                    System.err.println("PanelGestionCliente: Error al intentar editar. pantallaGestion o libro es null.");
+                }
+            });
+        } else {
+            System.err.println("PanelGestionLibros: btnEditarLibro no está inicializado. Verifica el nombre en el diseñador.");
+        }
+    }
+
+    private void cargarDatosCliente(){
+        if(cliente != null){
+            lblIdCliente.setText(cliente.getIdCliente());
+            lblNombreCliente.setText(cliente.getNombreCliente());
+            lblApellidoCliente.setText(cliente.getApellidoCliente());
+            lblCorreoElectronico.setText(cliente.getCorreoElectronico());
+            lblEstadoCliente.setText(cliente.getEstado());
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEditarCliente;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblApellidoCliente;
     private javax.swing.JLabel lblCorreoElectronico;
+    private javax.swing.JLabel lblEstadoCliente;
     private javax.swing.JLabel lblIdCliente;
     private javax.swing.JLabel lblNombreCliente;
     private javax.swing.JLabel lblTitulo2;

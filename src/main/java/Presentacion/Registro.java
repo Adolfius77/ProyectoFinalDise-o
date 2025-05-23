@@ -10,6 +10,7 @@ import Negocio.GestionUsuarios;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import static org.bouncycastle.asn1.x509.X509ObjectIdentifiers.id;
 
 /**
  *
@@ -56,7 +57,7 @@ public class Registro extends javax.swing.JFrame {
                         return;
                     }
 
-                    usuarioDTO nuevoUsuario = new usuarioDTO(nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada);
+                    usuarioDTO nuevoUsuario = new usuarioDTO(id, nombresIngresado, apellidosIngresado, correoIngresado, contraIngresada, rootPaneCheckingEnabled, correoIngresado);
 
                     boolean registroExitoso = GestionUsuarios.agregarUsuario(nuevoUsuario);
 

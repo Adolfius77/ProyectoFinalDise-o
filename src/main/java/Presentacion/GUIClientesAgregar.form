@@ -260,7 +260,7 @@
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="95" max="-2" attributes="0"/>
-                      <Component id="btnEditarCliente" min="-2" pref="161" max="-2" attributes="0"/>
+                      <Component id="btnAgregarCliente" min="-2" pref="161" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
@@ -276,7 +276,7 @@
                               <EmptySpace min="-2" pref="584" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="lblNombreCliente1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNombreCliente" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="546" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
@@ -303,7 +303,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtFldIdCliente" min="-2" pref="38" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lblNombreCliente1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblNombreCliente" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="txtFldNombreCliente" min="-2" pref="38" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -323,7 +323,7 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="btnRegresarGestionCliente" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
-                                  <Component id="btnEditarCliente" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
+                                  <Component id="btnAgregarCliente" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
@@ -427,7 +427,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFldIdClienteActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblNombreCliente1">
+            <Component class="javax.swing.JLabel" name="lblNombreCliente">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Segoe UI" size="24" style="1"/>
@@ -445,7 +445,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtFldNombreClienteActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnEditarCliente">
+            <Component class="javax.swing.JButton" name="btnAgregarCliente">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="8f" green="55" red="65" type="rgb"/>
@@ -459,7 +459,7 @@
                 <Property name="text" type="java.lang.String" value="Editar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarClienteActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarClienteActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnRegresarGestionCliente">

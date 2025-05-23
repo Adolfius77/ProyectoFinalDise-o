@@ -4,28 +4,35 @@
  */
 package DTOS;
 
+import java.io.Serializable;
+
 /**
  *
  * @author riosr
  */
-public class ConsultarClienteDTO {
-    private String idCliente;
+public class ConsultarClienteDTO implements Serializable{
+    private static final long serialversion = 201L;
+    private long idCliente;
     private String nombreCliente;
     private String apellidoCliente;
     private String correoElectronico;
+    private boolean activo;
+    private String estado;
 
-    public ConsultarClienteDTO(String idCliente, String nombreCliente, String apellidoCliente, String correoElectronico) {
+    public ConsultarClienteDTO(long idCliente, String nombreCliente, String apellidoCliente, String correoElectronico, boolean activo, String estado) {
         this.idCliente = idCliente;
         this.nombreCliente = nombreCliente;
         this.apellidoCliente = apellidoCliente;
         this.correoElectronico = correoElectronico;
+        this.activo = activo;
+        this.estado = activo ? "activo" : "inactivo";
     }
 
-    public String getIdCliente() {
+    public long getIdCliente() {
         return idCliente;
     }
 
-    public void setIdCliente(String idCliente) {
+    public void setIdCliente(long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -53,8 +60,37 @@ public class ConsultarClienteDTO {
         this.correoElectronico = correoElectronico;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    
+    public static ConsultarClienteDTO fromUsuarioDTO (usuarioDTO usuario){
+        if(usuario == null){
+            return null;
+        }
+        
+        return new ConsultarClienteDTO(usuario.getId(), usuario.getNombres(), usuario.getApellidos(),usuario.getCorreoElectronico(), true, usuario.getEstado());
+    }
+    
+    
     @Override
     public String toString() {
-        return "ConsultarClienteDTO{" + "idCliente=" + idCliente + ", nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + '}';
+        return "ConsultarClienteDTO{" + "idCliente=" + idCliente + ", nombreCliente=" + nombreCliente + ", apellidoCliente=" + apellidoCliente + ", correoElectronico=" + correoElectronico + ", activo=" + activo + ", estado=" + estado + '}';
     }
+
+    
+    
 }
