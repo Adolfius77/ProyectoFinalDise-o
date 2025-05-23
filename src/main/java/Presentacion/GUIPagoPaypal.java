@@ -140,7 +140,7 @@ public class GUIPagoPaypal extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/LOG.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 20)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Registrar entrada", "Ver Historial", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +176,7 @@ public class GUIPagoPaypal extends javax.swing.JFrame {
                 .addComponent(BtnInicio)
                 .addGap(64, 64, 64)
                 .addComponent(btnCategorias)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(BtnPerfil)
@@ -266,8 +266,7 @@ public class GUIPagoPaypal extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(86, 86, 86))
+                                    .addComponent(jLabel5)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(37, 37, 37)
                                 .addComponent(jLabel3))
