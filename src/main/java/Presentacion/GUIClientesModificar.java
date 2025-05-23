@@ -53,9 +53,9 @@ public class GUIClientesModificar extends javax.swing.JFrame {
         if (BtnPerfil != null) {
              BtnPerfil.addActionListener(evt -> navegador.navegarAdminGui(this)); // O a perfil de admin
         }
-//        if (CMBOpciones != null) {
-//            CMBOpciones.addActionListener(evt -> manejarAccionOpciones(navegador));
-//        }
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+        }
         if (btnRegresarGestionCliente != null) {
             btnRegresarGestionCliente.addActionListener(evt -> {
                 int confirmacion = JOptionPane.showConfirmDialog(

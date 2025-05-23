@@ -35,9 +35,9 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         if (BtnPerfil != null) { // This likely navigates to an admin profile or main admin screen
             BtnPerfil.addActionListener(evt -> navegador.navegarAdminGui(this)); // Example
         }
-//        if (CMBOpciones != null) {
-//            CMBOpciones.addActionListener(evt -> manejarAccionOpciones(navegador));
-//        }
+        if (CMBOpciones != null) {
+            CMBOpciones.addActionListener(evt -> manejarAccionOpciones());
+       }
         if (btnRegresarGestionCliente != null) {
             btnRegresarGestionCliente.addActionListener(evt -> {
                 int confirmacion = JOptionPane.showConfirmDialog(

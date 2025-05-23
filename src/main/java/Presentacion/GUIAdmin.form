@@ -686,14 +686,15 @@
                   <Font name="Segoe UI Black" size="16" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="7">
+                  <StringArray count="8">
                     <StringItem index="0" value="Opciones"/>
                     <StringItem index="1" value="Gestion de Libros"/>
                     <StringItem index="2" value="Registrar Entrada"/>
                     <StringItem index="3" value="Ver Historial entrada"/>
                     <StringItem index="4" value="Cambiar Contrase&#xf1;a"/>
                     <StringItem index="5" value="ver historial de ventas"/>
-                    <StringItem index="6" value="Cerrar Sesion"/>
+                    <StringItem index="6" value="Gestion de Clientes"/>
+                    <StringItem index="7" value="Cerrar Sesion"/>
                   </StringArray>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

@@ -225,7 +225,7 @@ public class GUIEditarLibro extends javax.swing.JFrame {
         lblGestionLibros.setText("Gestion de Libros");
 
         CmbOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CmbOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial compras", "Cambiar Contraseña", "Cerrar Sesion" }));
+        CmbOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Ver Historial compras", "Cambiar Contraseña", "Gestion de Clientes", "Cerrar Sesion" }));
         CmbOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CmbOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CmbOpciones.addActionListener(new java.awt.event.ActionListener() {
