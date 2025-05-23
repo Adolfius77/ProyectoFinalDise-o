@@ -106,6 +106,8 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
             jScrollPane1.repaint();
         }
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -124,6 +126,8 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jPanel24 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        btnBuscar = new javax.swing.JButton();
+        txtFldBuscador = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         panelCliente = new javax.swing.JPanel();
         btnAgregarCliente = new javax.swing.JButton();
@@ -145,7 +149,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Cambiar Contraseña", "Ver historial de Ventas", "Gestion de Clientes", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Gestion de Clientes", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
@@ -166,7 +170,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
             .addGroup(jPanel24Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel6)
-                .addContainerGap(107, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,38 +180,61 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
+        btnBuscar.setBackground(new java.awt.Color(101, 85, 143));
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        txtFldBuscador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFldBuscadorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(15, 15, 15)
                 .addComponent(BtnInicio)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(70, 70, 70)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(107, 107, 107)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscar)
+                .addGap(18, 18, 18)
+                .addComponent(txtFldBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(49, 49, 49)
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CMBOpciones, 0, 140, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(CMBOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BtnInicio)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtFldBuscador, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscar)
+                            .addComponent(jLabel21)
+                            .addComponent(CMBOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(CMBOpciones, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING)))
-                    .addComponent(jPanel24, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 15, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BtnInicio)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane1.setBackground(new java.awt.Color(217, 202, 218));
@@ -273,6 +300,14 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnAgregarClienteActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void txtFldBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFldBuscadorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFldBuscadorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -312,6 +347,7 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
     private javax.swing.JButton BtnInicio;
     private javax.swing.JComboBox<String> CMBOpciones;
     private javax.swing.JButton btnAgregarCliente;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
@@ -320,5 +356,6 @@ public class GUIPagInicioGestionClientes extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel24;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelCliente;
+    private javax.swing.JTextField txtFldBuscador;
     // End of variables declaration//GEN-END:variables
 }

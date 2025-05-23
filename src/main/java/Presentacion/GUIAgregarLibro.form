@@ -100,20 +100,18 @@
                       <Component id="LblLogo" min="-2" pref="93" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="CmbOpciones" min="-2" pref="57" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="CmbOpciones" min="-2" pref="57" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="btnInicio" alignment="1" max="32767" attributes="0"/>
+                          <Component id="lblGestionLibros" alignment="1" max="32767" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btnInicio" alignment="1" max="32767" attributes="0"/>
-                              <Component id="lblGestionLibros" alignment="1" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-                      </Group>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -156,15 +154,13 @@
                   <Font name="Segoe UI Black" size="16" style="0"/>
                 </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="8">
+                  <StringArray count="6">
                     <StringItem index="0" value="Opciones"/>
                     <StringItem index="1" value="Gestion de Libros"/>
                     <StringItem index="2" value="Registrar Entrada"/>
                     <StringItem index="3" value="Ver Historial entrada"/>
-                    <StringItem index="4" value="Cambiar Contrase&#xf1;a"/>
-                    <StringItem index="5" value="ver historial de ventas"/>
-                    <StringItem index="6" value="Gestion de Clientes"/>
-                    <StringItem index="7" value="Cerrar Sesion"/>
+                    <StringItem index="4" value="Gestion de Clientes"/>
+                    <StringItem index="5" value="Cerrar Sesion"/>
                   </StringArray>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

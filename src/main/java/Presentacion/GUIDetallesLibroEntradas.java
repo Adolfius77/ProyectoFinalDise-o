@@ -477,7 +477,7 @@ public class GUIDetallesLibroEntradas extends javax.swing.JFrame {
         jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones2.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Cambiar Contraseña", "ver historial de ventas", "Gestion de Clientes", "Cerrar Sesion" }));
+        CMBOpciones2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Gestion de Clientes", "Cerrar Sesion" }));
         CMBOpciones2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones2.addActionListener(new java.awt.event.ActionListener() {

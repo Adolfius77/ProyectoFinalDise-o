@@ -152,7 +152,7 @@ public class GUIClientesAgregar extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/list.png"))); // NOI18N
 
         CMBOpciones.setFont(new java.awt.Font("Segoe UI Black", 0, 16)); // NOI18N
-        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Cambiar Contraseña", "Ver historial de Ventas", "Gestion de Clientes", "Cerrar Sesion" }));
+        CMBOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Opciones", "Gestion de Libros", "Registrar Entrada", "Ver Historial entrada", "Gestion de Clientes", "Cerrar Sesion" }));
         CMBOpciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         CMBOpciones.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         CMBOpciones.addActionListener(new java.awt.event.ActionListener() {
