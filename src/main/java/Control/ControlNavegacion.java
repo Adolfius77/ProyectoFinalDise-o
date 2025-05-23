@@ -564,7 +564,7 @@ public class ControlNavegacion {
 
     public void navegarEditarCliente(JFrame frameActual, ConsultarClienteDTO consultarCliente) {
         cerrarFrameActual(frameActual);
-        GUIClientesModificar entrarAregarCliente = new GUIClientesModificar(consultarCliente); // Esta línea usa el constructor incorrecto
+        GUIClientesModificar entrarAregarCliente = new GUIClientesModificar(consultarCliente); 
         entrarAregarCliente.setVisible(true);
     }
 
